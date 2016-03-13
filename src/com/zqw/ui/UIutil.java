@@ -1,0 +1,187 @@
+package com.zqw.ui;
+
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import com.zqw.bean.CheckListItem;
+import com.zqw.bean.CurtainShop;
+import com.zqw.bean.CurtainShopGoods;
+import com.zqw.bean.Goods;
+import com.zqw.bean.OrderGoods;
+import com.zqw.bean.OrderLst;
+import com.zqw.listener.CheckListRenderer;
+import com.zqw.util.DBUtil;
+
+public class UIutil {
+
+	static String hqlCurtainShop_All = "select new CurtainShop(cs.id,cs.name,cs.telephone,cs.address,cs.owner) from CurtainShop cs order by convert(name, 'gbk')";
+	static String hqlCurtainShop_From_Name = "select new CurtainShop(cs.id,cs.name,cs.telephone,cs.address,cs.owner) from CurtainShop cs where name = :name0";
+	static String hqlCurtainShop_From_Name_Have_Arrears = "select new OrderLst(g.arrears,g.curtainShop,g.date,g.id,g.orderState) from OrderLst g where  orderState = :name0";
+	static String hqlCurtainShopOrderLst_From_Name = "select new OrderLst(g.arrears,g.curtainShop,g.date,g.id,g.orderState) from OrderLst g where curtainShop = :name";
+	static String hqlCurtainShopGoods_From_Name = "select new CurtainShopGoods(g.id,g.serialNumber,g.sellingPrice,g.curtainShop,g.remarks) from CurtainShopGoods g where curtainShop = :name order by serialNumber";
+	static String hqlGoods_From_Name = "select new Goods(g.id,g.serialNumber,g.purchasePrice,g.factory,g.telephone,g.bankCard,g.remark) from Goods g where serialNumber = :name0";
+	static String hqlOrderLst_Max = "select max(id) from OrderLst";
+	static String hqlOrderGoods_From_CurtainShopName = "select new OrderGoods(g.serialNumber,g.sellingPrice,g.purchasePrice,g.number,g.date) from OrderGoods g where curtainShop = :name order by serialNumber";
+	static String hqlOrderGoods_From_OrderId = "select new OrderGoods(g.serialNumber,g.sellingPrice,g.purchasePrice,g.number) from OrderGoods g where orderId = :name";
+	static String sqlDel_ordergoods_is_null = "DELETE  FROM  _ordergoods  WHERE  Order_id is null";
+
+	public static ArrayList<CurtainShop> initCurtainShop(ListSelectionListener UI, JList<String> curtainShopjList) {
+		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		ArrayList<CurtainShop> curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getLstClass("name","",CurtainShop.class, "");
+		DefaultListModel<String> lm = new DefaultListModel<String>();
+		for (int i = 0; i < curtainShopLst.size(); i++) {
+			lm.addElement(curtainShopLst.get(i).getName());
+		}
+		curtainShopjList.setModel(lm);
+		curtainShopjList.removeListSelectionListener(UI);
+		curtainShopjList.addListSelectionListener(UI);
+		curtainShopjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		return curtainShopLst;
+	}
+
+	public static List<CurtainShopGoods> getCurtainShopGoodsLstFromName(String name) {
+		List<CurtainShopGoods> goodsLst = (List<CurtainShopGoods>) DBUtil.getClassLst(hqlCurtainShopGoods_From_Name, name);
+		return goodsLst;
+	}
+
+	public static void delFromCurtainShopGoods() {
+		DBUtil.delBySql(sqlDel_ordergoods_is_null);
+	}
+
+	public static JList<String> initCurtainShopGoodsLstFromName(ListSelectionListener UI, JList<String> goodsjList,
+			List<CurtainShopGoods> goodsLst) {
+		DefaultListModel<String> lm = new DefaultListModel<String>();
+		for (int i = 0; i < goodsLst.size(); i++) {
+			lm.addElement(goodsLst.get(i).getSerialNumber());
+		}
+		goodsjList.setModel(lm);
+		goodsjList.addListSelectionListener(UI);
+		goodsjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		return goodsjList;
+	}
+
+	public static Goods getGoodsFromName(String serialNumber) {
+		return (Goods) DBUtil.get(hqlGoods_From_Name, serialNumber, "");
+	}
+
+	public static CurtainShop getCurtainShopFromName(String name) {
+		return (CurtainShop) DBUtil.get(hqlCurtainShop_From_Name, name, "");
+	}
+
+	public static int getMaxIdFromOrderLst() {
+		return (Integer) DBUtil.get(hqlOrderLst_Max, "", "") + 1;
+	}
+
+	public static List<OrderLst> getCurtainShopOrderLstFromName(String name) {
+		return (List<OrderLst>) DBUtil.getClassLst(hqlCurtainShopOrderLst_From_Name, name);
+	}
+
+	public static int getCurtainShopArrears(String name,List<OrderLst> curtainShopOrderLst) {
+		int arrears = 0;
+		for (int j = 0; j < curtainShopOrderLst.size(); j++) {
+			OrderLst csol = curtainShopOrderLst.get(j);
+			if (csol.getArrears() > 0) {
+				arrears += csol.getArrears();
+			}
+		}
+		return arrears;
+	}
+
+	public static List<OrderGoods> getOrderGoodsFromCurtainShopName(String name) {
+		return (List<OrderGoods>) DBUtil.getClassLst(hqlOrderGoods_From_CurtainShopName, name);
+	}
+
+	public static void initCurtainShopOrder(ListSelectionListener UI, JList<String> curtainShopOrderjList,
+			List<OrderLst> curtainShopOrderLst) {
+		DefaultListModel<String> lm = new DefaultListModel<String>();
+		// 寻找有欠款的订单
+		ArrayList<Integer> colLst = new ArrayList<Integer>();
+		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
+			OrderLst ol = curtainShopOrderLst.get(i);
+			lm.addElement(ol.getCurtainShop() + ol.getDeliveryTime());
+			if (ol.getArrears() > 0) {
+				colLst.add(i);
+			}
+		}
+		// 把有欠款的设置为红色
+		int[] col = new int[colLst.size()];
+		for (int i = 0; i < col.length; i++) {
+			col[i] = colLst.get(i);
+		}
+		curtainShopOrderjList.setCellRenderer(new MyRenderer(col, Color.red));
+		curtainShopOrderjList.setModel(lm);
+		curtainShopOrderjList.removeListSelectionListener(UI);
+		curtainShopOrderjList.addListSelectionListener(UI);
+		curtainShopOrderjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	}
+
+	public static List<OrderGoods> getOrderGoodsFromOrderId(int id) {
+		return (List<OrderGoods>) DBUtil.getClassLst(hqlOrderGoods_From_OrderId, id + "");
+	}
+
+	public static void updateOrderLstArrears(OrderLst ol, String string) {
+		String hqlupdate_OrderLst_Arrears = "update OrderLst o set o.arrears =:name0 where o.id =:name1 ";
+		DBUtil.update(hqlupdate_OrderLst_Arrears, string, ol.getId());
+	}
+
+	@SuppressWarnings("unchecked")
+	public static ArrayList<OrderLst> initLately(ListSelectionListener UI, JList latelyjList, MouseAdapter listAdapter, boolean checkbox,
+			ArrayList<OrderLst> orderLst) {
+		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
+		DefaultListModel<String> model = new DefaultListModel<String>();
+		ArrayList<OrderLst> curtainShopOrderLst;
+		if (orderLst == null) {
+			curtainShopOrderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("","gt",OrderLst.class, "orderState", "0","int");
+		} else {
+			curtainShopOrderLst = orderLst;
+		}
+		for (int i = 0; i < curtainShopOrderLst.size(); i++) {// 遍历并插入历史订单
+			OrderLst ol = curtainShopOrderLst.get(i);
+			checkboxModel.add(i, new CheckListItem(ol.getCurtainShop() + ol.getSimpleDate() + "(" + ol.getOrderStateToString() + ")",
+					false));
+			model.add(i, ol.getCurtainShop() + ol.getSimpleDate());
+		}
+		if (checkbox) {
+			latelyjList.setModel(checkboxModel);
+			latelyjList.setCellRenderer(new CheckListRenderer());
+			if (latelyjList.getMouseListeners().length < 3) {
+				latelyjList.addMouseListener(listAdapter);
+			}
+		} else {
+			latelyjList.setModel(model);
+			latelyjList.addListSelectionListener(UI);
+		}
+		latelyjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		latelyjList.setSelectionBackground(new Color(177, 232, 58));// 186,212,239,177,232,58
+		latelyjList.setSelectionForeground(Color.black);
+		return curtainShopOrderLst;
+	}
+
+	public static List<OrderLst> isCurtainShopHaveArrears() {
+		return (List<OrderLst>) DBUtil.getClassLst(hqlCurtainShop_From_Name_Have_Arrears, 1);
+	}
+
+	public static void tableAddAll(List<OrderGoods> Lst, DefaultTableModel tableModel) {
+		for (int i = 0; i < tableModel.getRowCount();) {
+			tableModel.removeRow(0);
+		}
+		for (int i = 0; i < Lst.size(); i++) {
+			tableAddLine(Lst.get(i), tableModel);
+		}
+	}
+
+	public static void tableAddLine(OrderGoods g, DefaultTableModel tableModel) {
+		String[] rowValues = { g.getSerialNumber(), g.getPurchasePrice() + "", g.getSellingPrice() + "", g.getNumber() + "", g.getRemark() };
+		tableModel.addRow(rowValues); // 添加一行
+	}
+
+}
