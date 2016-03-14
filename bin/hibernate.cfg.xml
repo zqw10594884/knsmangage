@@ -11,9 +11,9 @@
 			com.mysql.jdbc.Driver
 		</property>
 		<property name="hibernate.connection.url">
-			jdbc:mysql://123.56.246.226:3306/kns?useUnicode=true&amp;characterEncoding=utf8
+			jdbc:mysql://localhost:3306/kns?useUnicode=true&amp;characterEncoding=utf8
 		</property>
-		<property name="connection.username">knsonline</property>
+		<property name="connection.username">root</property>
 		<property name="connection.password">zqw110119</property>
 		<property name="hibernate.hbm2ddl.auto">update</property>
 		<mapping resource="com/zqw/bean/CurtainShop.hbm.xml" />

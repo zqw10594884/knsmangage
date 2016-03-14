@@ -133,9 +133,11 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				currentOrder = new OrderLst();
 				currentOrder.setCurtainShop(curtainShop.getName());
 				currentOrder.setGoodsLst(new ArrayList<OrderGoods>());
-				goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber", "eq", CurtainShopGoods.class, "curtainShop",
-						currentOrder.getCurtainShop(), "String");
-				UIutil.initCurtainShopGoodsLstFromName(this, goodsjList, goodsLst);
+				goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass(
+						"serialNumber", "eq", CurtainShopGoods.class,
+						"curtainShop", currentOrder.getCurtainShop(), "String");
+				UIutil.initCurtainShopGoodsLstFromName(this, goodsjList,
+						goodsLst);
 				initTable();
 				// 重置版面信息
 				number.setText("");
@@ -176,12 +178,14 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		latelyjList = new JList<>();
 		listAdapter = new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {
-				JList<CheckListItem> list = (JList<CheckListItem>) event.getSource();
+				JList<CheckListItem> list = (JList<CheckListItem>) event
+						.getSource();
 				// Get index of item clicked
 				// 获得用户点击项的索引
 				latelyLstindex = list.locationToIndex(event.getPoint());
 				if (event.getX() < 17) {
-					CheckListItem item = list.getModel().getElementAt(latelyLstindex);
+					CheckListItem item = list.getModel().getElementAt(
+							latelyLstindex);
 					// 设置列表中项的选择状态
 					item.setSelected(!item.isSelected());
 				} else {
@@ -197,7 +201,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		latelyLst = UIutil.initLately(this, latelyjList, listAdapter, true, null);
+		latelyLst = UIutil.initLately(this, latelyjList, listAdapter, true,
+				null);
 		scrollPane_3.setViewportView(latelyjList);
 	}
 
@@ -212,9 +217,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			public void mouseClicked(MouseEvent e) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow != -1) {
-					serialNumber.setText(tableModel.getValueAt(selectedRow, 0).toString());
-					sellingPrice.setText(tableModel.getValueAt(selectedRow, 1).toString());
-					number.setText(tableModel.getValueAt(selectedRow, 3).toString());
+					serialNumber.setText(tableModel.getValueAt(selectedRow, 0)
+							.toString());
+					sellingPrice.setText(tableModel.getValueAt(selectedRow, 1)
+							.toString());
+					number.setText(tableModel.getValueAt(selectedRow, 3)
+							.toString());
 					modifyBtn.getActionListeners();
 					addModifyBtnAndDeleteBtn();
 
@@ -434,7 +442,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		contentPane.add(goodChangeCB);
 
 		flowersComboBox = new JComboBox<String>();
-		flowersComboBox.setModel(new DefaultComboBoxModel<String>(new String[] { "不对花", "就近", "强制多", "强制少" }));
+		flowersComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
+				"不对花", "就近", "强制多", "强制少" }));
 		flowersComboBox.setFont(new Font("宋体", Font.PLAIN, 13));
 		flowersComboBox.setBounds(452, 80, 66, 21);
 		contentPane.add(flowersComboBox);
@@ -549,6 +558,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(3);
 			currentOrder.setSubmitTime(new Date());
+			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			latelyLst.add(currentOrder);
 			UIutil.initLately(this, latelyjList, listAdapter, true, latelyLst);
 			removeSubmit();
@@ -568,10 +578,13 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				CheckListItem cli = l.getElementAt(i);
 				if (cli.isSelected()) {
 					OrderLst ol = latelyLst.get(i);
-					CurtainShop cs = (CurtainShop) DBUtil.getClass(CurtainShop.class, "name", ol.getCurtainShop(), "eq");
+					CurtainShop cs = (CurtainShop) DBUtil.getClass(
+							CurtainShop.class, "name", ol.getCurtainShop(),
+							"eq");
 					DBUtil.update(ol);
 					ol.setOrderState(2);
-					UIutil.initLately(this, latelyjList, listAdapter, true, latelyLst);
+					UIutil.initLately(this, latelyjList, listAdapter, true,
+							latelyLst);
 					print(Global.EMPLOYEE, ol, cs);
 				}
 			}
@@ -585,9 +598,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	 */
 	private void printActionPerformed(ActionEvent evt) {
 
-		if (currentOrder.getGoodsLst().size() > 0 && currentOrder.getOrderState() != 1) {
+		if (currentOrder.getGoodsLst().size() > 0
+				&& currentOrder.getOrderState() != 1) {
+			currentOrder.setOrderState(1);
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			currentOrder.setDeliveryTime(new Date());
+			List<OrderGoods> lst = currentOrder.getGoodsLst();
+			for (int i = 0; i < lst.size(); i++) {
+				lst.get(i).setDate(new Date());
+			}
 			removePrintBtn();
 			UIutil.initLately(this, latelyjList, listAdapter, true, latelyLst);
 			print(Global.CUSTOMER, currentOrder, curtainShop);
@@ -646,19 +665,21 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void addActionPerformed(java.awt.event.ActionEvent evt) {
-		String[] rowValues = creatRow();
-		tableModel.addRow(rowValues);
-		// 判断id是否为空
-		if (currentOrder.getId() < 1) {
-			currentOrder.setId(UIutil.getMaxIdFromOrderLst());
+		if (serialNumber.getText().length()>1) {
+			String[] rowValues = creatRow();
+			tableModel.addRow(rowValues);
+			// 判断id是否为空
+			if (currentOrder.getId() < 1) {
+				currentOrder.setId(UIutil.getMaxIdFromOrderLst());
+			}
+			OrderGoods og = new OrderGoods();
+			updateOrderGoods(tableModel.getRowCount() - 1, og, currentOrder);
+			currentOrder.getGoodsLst().add(og);
+			
+			profit.setText(DataUtil.getProfitm(tableModel) + "");
+			total.setText(DataUtil.getTotalm(tableModel) + "");
+			addSubmit();
 		}
-		OrderGoods og = new OrderGoods();
-		updateOrderGoods(tableModel.getRowCount() - 1, og, currentOrder);
-		currentOrder.getGoodsLst().add(og);
-
-		profit.setText(DataUtil.getProfitm(tableModel) + "");
-		total.setText(DataUtil.getTotalm(tableModel) + "");
-		addSubmit();
 	}
 
 	private void modifyALActionPerformed(ActionEvent e) {
@@ -671,7 +692,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			String remark = freeGoods + goodChange + flowers;
 			tableModel.setValueAt(number.getText(), selectedRow, 3);
 			tableModel.setValueAt(remark, selectedRow, 4);
-			updateOrderGoods(selectedRow, currentOrder.getGoodsLst().get(selectedRow), currentOrder);
+			updateOrderGoods(selectedRow,
+					currentOrder.getGoodsLst().get(selectedRow), currentOrder);
 			profit.setText(DataUtil.getProfitm(tableModel) + "");
 			total.setText(DataUtil.getTotalm(tableModel) + "");
 			removeModifyBtnAndDeleteBtn();
@@ -682,7 +704,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		String serialNumber = this.serialNumber.getText().trim();
 		String sellingPrice = this.sellingPrice.getText().trim();
 		String number = this.number.getText().trim();
-		if (number.length() > 0 && serialNumber.length() > 0 && sellingPrice.length() > 0) {
+		if (number.length() > 0 && serialNumber.length() > 0
+				&& sellingPrice.length() > 0) {
 			double numberD = Double.parseDouble(number);
 			Goods g = UIutil.getGoodsFromName(serialNumber);
 			String freeGoods = freeGoodsBC.isSelected() ? "免费样品-" : "";
@@ -690,10 +713,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			String s = flowersComboBox.getSelectedItem().toString();
 			String flowers = "不对花".endsWith(s) ? "" : s;
 			String remark = freeGoods + goodChange + flowers;
-			String[] rowValues = { serialNumber, g.getPurchasePrice() + "", sellingPrice, DataUtil.formatDouble(numberD), remark };
+			String[] rowValues = { serialNumber, g.getPurchasePrice() + "",
+					sellingPrice, DataUtil.formatDouble(numberD), remark };
 			return rowValues;
 		} else {
-			JOptionPane.showMessageDialog(this, "请输入货物信息", "alert", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "请输入货物信息", "alert",
+					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 	}
@@ -705,24 +730,28 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		og.setOwner(curtainShop.getOwner());
 		og.setCurtainShop(curtainShop.getName());
 		og.setSerialNumber(tableModel.getValueAt(i, 0).toString());
-		og.setPurchasePrice(Double.parseDouble(tableModel.getValueAt(i, 1).toString()));
-		og.setSellingPrice(Double.parseDouble(tableModel.getValueAt(i, 2).toString()));
+		og.setPurchasePrice(Double.parseDouble(tableModel.getValueAt(i, 1)
+				.toString()));
+		og.setSellingPrice(Double.parseDouble(tableModel.getValueAt(i, 2)
+				.toString()));
 		og.setNumber(Double.parseDouble(tableModel.getValueAt(i, 3).toString()));
 		og.setRemark(tableModel.getValueAt(i, 4).toString());
 	}
 
 	private void orderFactory(int OrderState, OrderLst order) {
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
 	private void addLatelyLstToMain(int index) {
 		currentOrder = latelyLst.get(index);
-		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber", "eq", CurtainShopGoods.class, "curtainShop",
+		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber",
+				"eq", CurtainShopGoods.class, "curtainShop",
 				currentOrder.getCurtainShop(), "String");
 		UIutil.initCurtainShopGoodsLstFromName(this, goodsjList, goodsLst);
 		UIutil.tableAddAll(currentOrder.getGoodsLst(), tableModel);
-		curtainShop = (CurtainShop) DBUtil.getClass(CurtainShop.class, "name", currentOrder.getCurtainShop(), "eq");
+		curtainShop = (CurtainShop) DBUtil.getClass(CurtainShop.class, "name",
+				currentOrder.getCurtainShop(), "eq");
 		shopName.setText(currentOrder.getCurtainShop());
 		telephone.setText(curtainShop.getTelephone());
 		total.setText(currentOrder.getArrears() + "");
