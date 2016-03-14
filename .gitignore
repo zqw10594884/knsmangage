@@ -1,8 +1,2 @@
 *.class
-/bin
-bin/
-/bin/
-bin/com/inno/UI/setting/
-/gen
-/.metadata/
 *.log
