@@ -45,7 +45,6 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 	public MainAddWi() {
 		initComponents();
 		initListener();
-		getData();
 		initCurtainShop();
 		initGoods();
 		initTable();
@@ -335,17 +334,16 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 	}
 
 	private void initCurtainShop() {
-		String[] Lst = new String[curtainShopLst.size()];
-		for (int i = 0; i < curtainShopLst.size(); i++) {
-			Lst[i] = curtainShopLst.get(i).getName();
-		}
-		curtainShopjList = new JList(Lst);
-		curtainShopjList.addListSelectionListener(this);
-		curtainShopjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getLstClass("name", "", CurtainShop.class, "");
+		curtainShopjList = new JList();
+		UIutil.initCurtainShop(this, curtainShopjList, curtainShopLst);
+		UIutil.initCurtainShop(this, curtainShopjList, curtainShopLst);
 		scrollPane.setViewportView(curtainShopjList);
 	}
 
 	private void initGoods() {
+		goodsLst = (ArrayList<Goods>) DBUtil.getLstClass("serialNumber", "",
+				Goods.class, "");
 		String[] Lst = new String[goodsLst.size()];
 		for (int i = 0; i < goodsLst.size(); i++) {
 			Lst[i] = goodsLst.get(i).getSerialNumber();
@@ -393,16 +391,6 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		scrollPane_3.setViewportView(goodOwnerTable);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void getData() {
-		String hqlCurtainShop = "select new CurtainShop(cs.id,cs.name,cs.telephone,cs.address,cs.owner) from CurtainShop cs order by name";
-		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getClassLst(
-				hqlCurtainShop, "");
-
-		// String sql="from Goods";
-		String hqlGoods = "select new Goods(g.id,g.serialNumber,g.purchasePrice,g.factory,g.telephone,g.bankCard,g.remark) from Goods g order by serialNumber";
-		goodsLst = (ArrayList<Goods>) DBUtil.getClassLst(hqlGoods, "");
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
