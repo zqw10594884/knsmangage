@@ -26,6 +26,10 @@ import com.zqw.bean.CurtainShopGoods;
 import com.zqw.bean.Global;
 import com.zqw.bean.Goods;
 import com.zqw.util.DBUtil;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JScrollPane;
 
 /**
  * 
@@ -37,10 +41,6 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int curtainShopGoodIndex = -1;
-	private int curtainShopIndex;
-	private int state = 0;
-
 	/** Creates new form main */
 	public MainAdd() {
 		initComponents();
@@ -78,112 +78,10 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 		jScrollPane3.setViewportView(table);
 	}
 
-	protected void rowClicked() {
-		curtainShopGoodIndex = table.getSelectedRow();
-		// 初始化客户货物信息
-		CurtainShopGoods csg = curtainShopGoodLst.get(curtainShopGoodIndex);
-		curtainShopModify.setText(csg.getCurtainShop());
-		serialNumberModify.setText(csg.getSerialNumber());
-		serialNumberModify.setEditable(false);
-		sellingPriceModify.setText(csg.getSellingPrice() + "");
-		remarksModify.setText(csg.getRemarks());
-	}
-
-	private void initCurtainShop() {
-		String[] Lst = new String[curtainShopLst.size()];
-		for (int i = 0; i < curtainShopLst.size(); i++) {
-			Lst[i] = curtainShopLst.get(i).getName();
-		}
-		curtainShopjList = new JList(Lst);
-		curtainShopjList.addListSelectionListener(this);
-		curtainShopjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		jScrollPane1.setViewportView(curtainShopjList);
-	}
-
-	private void initGoods() {
-		String[] Lst = new String[goodsLst.size()];
-		for (int i = 0; i < goodsLst.size(); i++) {
-			Lst[i] = goodsLst.get(i).getSerialNumber();
-		}
-		goodjList = new JList(Lst);
-		goodjList.addListSelectionListener(this);
-		goodjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		jScrollPane2.setViewportView(goodjList);
-	}
-
-	@SuppressWarnings("unchecked")
-	private void getData() {
-		String hqlCurtainShop = "select new CurtainShop(cs.id,cs.name,cs.telephone,cs.address,cs.owner) from CurtainShop cs order by name";
-		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getClassLst(
-				hqlCurtainShop, "");
-
-		// String sql="from Goods";
-		String hqlGoods = "select new Goods(g.id,g.serialNumber,g.purchasePrice,g.factory,g.telephone,g.bankCard,g.remark) from Goods g order by serialNumber";
-		goodsLst = (ArrayList<Goods>) DBUtil.getClassLst(hqlGoods, "");
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getValueIsAdjusting()) {
-			if (curtainShopjList.getSelectedIndex() != curtainShopLstIndex) {
-				curtainShopIndex = curtainShopjList.getSelectedIndex();
-				curtainShopLstIndex = curtainShopIndex;
-				curtainShop = curtainShopLst.get(curtainShopIndex);
-				String sql = "select new CurtainShopGoods(g.id,g.serialNumber,g.sellingPrice,g.curtainShop,g.remarks) from CurtainShopGoods g where curtainShop = :name order by serialNumber";
-				curtainShopGoodLst = (List<CurtainShopGoods>) DBUtil
-						.getClassLst(sql, curtainShop.getName());
-				tableAddLine(curtainShopGoodLst);
-				// 加载修改 客户信息
-				curtainShopNameModify.setText(curtainShop.getName());
-				curtainShopTelModify.setText(curtainShop.getTelephone());
-				curtainShopOwner.setModel(new javax.swing.DefaultComboBoxModel(
-						new String[] { "张其伟", "刘会珍" }));
-				curtainShopOwner.setSelectedIndex(curtainShop.getOwner());
-
-			} else {// goodjList
-				int index = goodjList.getSelectedIndex();
-				goodsLstIndex = index;
-				goods = goodsLst.get(index);
-				purchasePrice.setText(goods.getPurchasePrice() + "");
-				purchasePrice.setEditable(false);
-				serialNumber.setText(goods.getSerialNumber());
-				serialNumber.setEditable(false);
-				factory.setText(goods.getFactory());
-				factory.setEditable(false);
-				telephone.setText(goods.getTelephone());
-				telephone.setEditable(false);
-				sellingPrice.setText("");
-				// 加载修改 货物信息
-				goodSerialNumberModify.setText(goods.getSerialNumber());
-				goodPurchasePriceModify.setText(goods.getPurchasePrice() + "");
-				goodRemarksModify.setText(goods.getRemark());
-			}
-		}
-	}
-
-	private void tableAddLine(List<CurtainShopGoods> Lst) {
-		for (int i = 0; i < tableModel.getRowCount();) {
-			tableModel.removeRow(0);
-		}
-		for (int i = 0; i < Lst.size(); i++) {
-			tableAddLine(Lst.get(i));
-		}
-
-	}
-
-	private void tableAddLine(CurtainShopGoods g) {
-		String[] rowValues = { g.getSerialNumber(), g.getSellingPrice() + "",
-				g.getNumber() + "", g.getRemarks() };
-		tableModel.addRow(rowValues); // 添加一行
-	}
-
 	// GEN-BEGIN:initComponents
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
-
+	
 		jPanel1 = new javax.swing.JPanel();
 		curtainShopBtnAdd = new javax.swing.JButton();
 		curtainShopBtnDel = new javax.swing.JButton();
@@ -196,8 +94,11 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 		goodjListBtnDel = new javax.swing.JButton();
 		jPanel3 = new javax.swing.JPanel();
 		delBtn = new javax.swing.JButton();
+		delBtn.setBounds(155, 280, 67, 23);
 		addBtn = new javax.swing.JButton();
+		addBtn.setBounds(70, 280, 67, 23);
 		jPanel4 = new javax.swing.JPanel();
+		jPanel4.setBounds(281, 0, 286, 124);
 		factory = new javax.swing.JTextField();
 		sellingPrice = new javax.swing.JTextField();
 		telephone = new javax.swing.JTextField();
@@ -209,7 +110,9 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 		jLabel5 = new javax.swing.JLabel();
 		jLabel6 = new javax.swing.JLabel();
 		modifyBtn = new javax.swing.JButton();
+		modifyBtn.setBounds(391, 241, 67, 23);
 		jPanel6 = new javax.swing.JPanel();
+		jPanel6.setBounds(281, 274, 289, 101);
 		curtainShopNameModify = new javax.swing.JTextField();
 		curtainShopTelModify = new javax.swing.JTextField();
 		jLabel11 = new javax.swing.JLabel();
@@ -217,6 +120,7 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 		jLabel13 = new javax.swing.JLabel();
 		curtainShopOwner = new javax.swing.JComboBox();
 		jPanel7 = new javax.swing.JPanel();
+		jPanel7.setBounds(281, 408, 294, 101);
 		goodSerialNumberModify = new javax.swing.JTextField();
 		jLabel14 = new javax.swing.JLabel();
 		goodPurchasePriceModify = new javax.swing.JTextField();
@@ -224,6 +128,7 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 		jLabel16 = new javax.swing.JLabel();
 		goodRemarksModify = new javax.swing.JTextField();
 		jPanel5 = new javax.swing.JPanel();
+		jPanel5.setBounds(281, 123, 286, 107);
 		serialNumberModify = new javax.swing.JTextField();
 		jLabel8 = new javax.swing.JLabel();
 		jLabel9 = new javax.swing.JLabel();
@@ -232,12 +137,15 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 		remarksModify = new javax.swing.JTextField();
 		curtainShopModify = new javax.swing.JLabel();
 		jScrollPane3 = new javax.swing.JScrollPane();
+		jScrollPane3.setBounds(10, 8, 258, 262);
 		table = new javax.swing.JTable();
 		curtainShopModifyBtn = new javax.swing.JButton();
+		curtainShopModifyBtn.setBounds(391, 381, 67, 23);
 		goodModifyBtn = new javax.swing.JButton();
-
+		goodModifyBtn.setBounds(391, 519, 67, 23);
+	
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
+	
 		curtainShopBtnAdd.setText("\u6dfb\u52a0");
 		curtainShopBtnAdd
 				.addActionListener(new java.awt.event.ActionListener() {
@@ -245,7 +153,7 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 						curtainShopBtnAddActionPerformed(evt);
 					}
 				});
-
+	
 		curtainShopBtnDel.setText("\u5220\u9664");
 		curtainShopBtnDel
 				.addActionListener(new java.awt.event.ActionListener() {
@@ -253,27 +161,27 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 						curtainShopBtnDelActionPerformed(evt);
 					}
 				});
-
+	
 		jLabel1.setFont(new java.awt.Font("微软雅黑", 0, 14));
 		jLabel1.setText("\u5e97  \u540d");
-
+	
 		jLabel2.setFont(new java.awt.Font("微软雅黑", 0, 14));
 		jLabel2.setText("\u8d27 \u7269");
-
+	
 		goodjListBtnAdd.setText("\u6dfb\u52a0");
 		goodjListBtnAdd.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				goodjListBtnAddActionPerformed(evt);
 			}
 		});
-
+	
 		goodjListBtnDel.setText("\u5220\u9664");
 		goodjListBtnDel.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				goodjListBtnDelActionPerformed(evt);
 			}
 		});
-
+	
 		javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(
 				jPanel2);
 		jPanel2.setLayout(jPanel2Layout);
@@ -341,7 +249,7 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 														.addComponent(
 																goodjListBtnDel))
 										.addContainerGap()));
-
+	
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(
 				jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
@@ -426,35 +334,35 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 								javax.swing.GroupLayout.DEFAULT_SIZE,
 								javax.swing.GroupLayout.DEFAULT_SIZE,
 								Short.MAX_VALUE));
-
+	
 		delBtn.setText("\u5220\u9664");
 		delBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				delBtnActionPerformed(evt);
 			}
 		});
-
+	
 		addBtn.setText("\u6dfb\u52a0");
 		addBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				addBtnActionPerformed(evt);
 			}
 		});
-
+	
 		jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
 						0, 0, 0)), "\u8d27\u7269\u6dfb\u52a0"));
-
+	
 		jLabel7.setText("\u7535 \u8bdd\uff1a");
-
+	
 		jLabel4.setText("\u8fdb \u4ef7\uff1a");
-
+	
 		jLabel3.setText("\u578b \u53f7\uff1a");
-
+	
 		jLabel5.setText("\u8d27 \u6e90\uff1a");
-
+	
 		jLabel6.setText("\u552e \u4ef7\uff1a");
-
+	
 		javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(
 				jPanel4);
 		jPanel4.setLayout(jPanel4Layout);
@@ -620,27 +528,27 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 																javax.swing.GroupLayout.DEFAULT_SIZE,
 																javax.swing.GroupLayout.PREFERRED_SIZE))
 										.addContainerGap(27, Short.MAX_VALUE)));
-
+	
 		modifyBtn.setText("\u4fee\u6539");
 		modifyBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				modifyBtnActionPerformed(evt);
 			}
 		});
-
+	
 		jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
 						0, 0, 0)), "\u5ba2\u6237\u4fe1\u606f\u4fee\u6539"));
-
+	
 		jLabel11.setText("\u7535 \u8bdd\uff1a");
-
+	
 		jLabel12.setText("\u59d3 \u540d\uff1a");
-
+	
 		jLabel13.setText("\u6240 \u5c5e\uff1a");
-
+	
 		curtainShopOwner.setModel(new javax.swing.DefaultComboBoxModel(
 				new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+	
 		javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(
 				jPanel6);
 		jPanel6.setLayout(jPanel6Layout);
@@ -735,17 +643,17 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 																javax.swing.GroupLayout.DEFAULT_SIZE,
 																javax.swing.GroupLayout.PREFERRED_SIZE))
 										.addContainerGap(8, Short.MAX_VALUE)));
-
+	
 		jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
 						0, 0, 0)), "\u8d27\u7269\u8d27\u7269\u4fee\u6539"));
-
+	
 		jLabel14.setText("\u578b \u53f7\uff1a");
-
+	
 		jLabel15.setText("\u8fdb \u4ef7\uff1a");
-
+	
 		jLabel16.setText("\u5907 \u6ce8\uff1a");
-
+	
 		javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(
 				jPanel7);
 		jPanel7.setLayout(jPanel7Layout);
@@ -847,157 +755,75 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 										.addContainerGap(
 												javax.swing.GroupLayout.DEFAULT_SIZE,
 												Short.MAX_VALUE)));
-
+	
 		jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(
 				javax.swing.BorderFactory.createLineBorder(new java.awt.Color(
 						0, 0, 0)), "\u5ba2\u6237\u8d27\u7269\u4fee\u6539"));
-
+	
 		jLabel8.setText("\u578b \u53f7\uff1a");
-
+	
 		jLabel9.setText("\u552e \u4ef7\uff1a");
-
+	
 		jLabel10.setText("\u5907\u6ce8\uff1a");
-
+	
 		remarksModify.setText(" ");
-
+	
 		curtainShopModify.setText(" ");
-
+	
 		javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(
 				jPanel5);
+		jPanel5Layout.setHorizontalGroup(
+			jPanel5Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel5Layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(jPanel5Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel5Layout.createSequentialGroup()
+							.addGroup(jPanel5Layout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(jPanel5Layout.createSequentialGroup()
+									.addComponent(jLabel8)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(serialNumberModify, GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
+								.addGroup(jPanel5Layout.createSequentialGroup()
+									.addComponent(jLabel9)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(sellingPriceModify, GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(curtainShopModify, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
+						.addGroup(jPanel5Layout.createSequentialGroup()
+							.addComponent(jLabel10)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(remarksModify, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		jPanel5Layout.setVerticalGroup(
+			jPanel5Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel5Layout.createSequentialGroup()
+					.addGroup(jPanel5Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel5Layout.createSequentialGroup()
+							.addGroup(jPanel5Layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel8)
+								.addComponent(serialNumberModify, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(jPanel5Layout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jLabel9)
+								.addComponent(sellingPriceModify, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(jPanel5Layout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(curtainShopModify, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel5Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jLabel10)
+						.addComponent(remarksModify, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
 		jPanel5.setLayout(jPanel5Layout);
-		jPanel5Layout
-				.setHorizontalGroup(jPanel5Layout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jPanel5Layout
-										.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(
-												jPanel5Layout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(
-																jPanel5Layout
-																		.createSequentialGroup()
-																		.addGroup(
-																				jPanel5Layout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING)
-																						.addGroup(
-																								jPanel5Layout
-																										.createSequentialGroup()
-																										.addComponent(
-																												jLabel8)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												serialNumberModify,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												122,
-																												Short.MAX_VALUE))
-																						.addGroup(
-																								javax.swing.GroupLayout.Alignment.TRAILING,
-																								jPanel5Layout
-																										.createSequentialGroup()
-																										.addComponent(
-																												jLabel9)
-																										.addPreferredGap(
-																												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																										.addComponent(
-																												sellingPriceModify,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												122,
-																												Short.MAX_VALUE)))
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(
-																				curtainShopModify,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				84,
-																				javax.swing.GroupLayout.PREFERRED_SIZE))
-														.addGroup(
-																jPanel5Layout
-																		.createSequentialGroup()
-																		.addComponent(
-																				jLabel10)
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(
-																				remarksModify,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				215,
-																				Short.MAX_VALUE)))
-										.addContainerGap()));
-		jPanel5Layout
-				.setVerticalGroup(jPanel5Layout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jPanel5Layout
-										.createSequentialGroup()
-										.addGroup(
-												jPanel5Layout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(
-																jPanel5Layout
-																		.createSequentialGroup()
-																		.addGroup(
-																				jPanel5Layout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.BASELINE)
-																						.addComponent(
-																								jLabel8)
-																						.addComponent(
-																								serialNumberModify,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.PREFERRED_SIZE))
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addGroup(
-																				jPanel5Layout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.BASELINE)
-																						.addComponent(
-																								jLabel9)
-																						.addComponent(
-																								sellingPriceModify,
-																								javax.swing.GroupLayout.PREFERRED_SIZE,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.PREFERRED_SIZE)))
-														.addGroup(
-																jPanel5Layout
-																		.createSequentialGroup()
-																		.addContainerGap()
-																		.addComponent(
-																				curtainShopModify,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				30,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)))
-										.addPreferredGap(
-												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addGroup(
-												jPanel5Layout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.BASELINE)
-														.addComponent(jLabel10)
-														.addComponent(
-																remarksModify,
-																javax.swing.GroupLayout.PREFERRED_SIZE,
-																javax.swing.GroupLayout.DEFAULT_SIZE,
-																javax.swing.GroupLayout.PREFERRED_SIZE))
-										.addContainerGap(
-												javax.swing.GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)));
-
+	
 		table.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 				{ null, null, null, null }, { null, null, null, null },
 				{ null, null, null, null }, { null, null, null, null } },
 				new String[] { "Title 1", "Title 2", "Title 3", "Title 4" }));
 		jScrollPane3.setViewportView(table);
-
+	
 		curtainShopModifyBtn.setText("\u4fee\u6539");
 		curtainShopModifyBtn
 				.addActionListener(new java.awt.event.ActionListener() {
@@ -1005,262 +831,167 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 						curtainShopModifyBtnActionPerformed(evt);
 					}
 				});
-
+	
 		goodModifyBtn.setText("\u4fee\u6539");
 		goodModifyBtn.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				goodModifyBtnActionPerformed(evt);
 			}
 		});
-
-		javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(
-				jPanel3);
-		jPanel3.setLayout(jPanel3Layout);
-		jPanel3Layout
-				.setHorizontalGroup(jPanel3Layout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jPanel3Layout
-										.createSequentialGroup()
-										.addGroup(
-												jPanel3Layout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(
-																jPanel3Layout
-																		.createSequentialGroup()
-																		.addContainerGap()
-																		.addGroup(
-																				jPanel3Layout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.LEADING,
-																								false)
-																						.addComponent(
-																								jScrollPane3,
-																								0,
-																								0,
-																								Short.MAX_VALUE)
-																						.addComponent(
-																								jPanel4,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								javax.swing.GroupLayout.DEFAULT_SIZE,
-																								Short.MAX_VALUE)))
-														.addGroup(
-																jPanel3Layout
-																		.createSequentialGroup()
-																		.addGap(73,
-																				73,
-																				73)
-																		.addComponent(
-																				addBtn)
-																		.addGap(18,
-																				18,
-																				18)
-																		.addComponent(
-																				delBtn)))
-										.addGroup(
-												jPanel3Layout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(
-																jPanel3Layout
-																		.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																		.addGroup(
-																				jPanel3Layout
-																						.createSequentialGroup()
-																						.addPreferredGap(
-																								javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																						.addGroup(
-																								jPanel3Layout
-																										.createParallelGroup(
-																												javax.swing.GroupLayout.Alignment.LEADING)
-																										.addGroup(
-																												jPanel3Layout
-																														.createParallelGroup(
-																																javax.swing.GroupLayout.Alignment.TRAILING)
-																														.addGroup(
-																																javax.swing.GroupLayout.Alignment.LEADING,
-																																jPanel3Layout
-																																		.createSequentialGroup()
-																																		.addGap(5,
-																																				5,
-																																				5)
-																																		.addComponent(
-																																				jPanel6,
-																																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																																				javax.swing.GroupLayout.PREFERRED_SIZE))
-																														.addGroup(
-																																jPanel3Layout
-																																		.createParallelGroup(
-																																				javax.swing.GroupLayout.Alignment.LEADING)
-																																		.addGroup(
-																																				jPanel3Layout
-																																						.createSequentialGroup()
-																																						.addGap(109,
-																																								109,
-																																								109)
-																																						.addComponent(
-																																								modifyBtn))
-																																		.addComponent(
-																																				jPanel5,
-																																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																																				javax.swing.GroupLayout.PREFERRED_SIZE)))
-																										.addComponent(
-																												jPanel7,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												javax.swing.GroupLayout.DEFAULT_SIZE,
-																												Short.MAX_VALUE))
-																						.addContainerGap())
-																		.addGroup(
-																				jPanel3Layout
-																						.createSequentialGroup()
-																						.addGap(122,
-																								122,
-																								122)
-																						.addComponent(
-																								curtainShopModifyBtn)
-																						.addContainerGap()))
-														.addGroup(
-																jPanel3Layout
-																		.createSequentialGroup()
-																		.addGap(127,
-																				127,
-																				127)
-																		.addComponent(
-																				goodModifyBtn)
-																		.addContainerGap()))));
-		jPanel3Layout
-				.setVerticalGroup(jPanel3Layout
-						.createParallelGroup(
-								javax.swing.GroupLayout.Alignment.LEADING)
-						.addGroup(
-								jPanel3Layout
-										.createSequentialGroup()
-										.addGroup(
-												jPanel3Layout
-														.createParallelGroup(
-																javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(
-																jPanel3Layout
-																		.createSequentialGroup()
-																		.addGap(13,
-																				13,
-																				13)
-																		.addComponent(
-																				jPanel4,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(
-																				jScrollPane3,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				333,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addGap(16,
-																				16,
-																				16)
-																		.addGroup(
-																				jPanel3Layout
-																						.createParallelGroup(
-																								javax.swing.GroupLayout.Alignment.BASELINE)
-																						.addComponent(
-																								addBtn)
-																						.addComponent(
-																								delBtn)))
-														.addGroup(
-																jPanel3Layout
-																		.createSequentialGroup()
-																		.addGap(22,
-																				22,
-																				22)
-																		.addComponent(
-																				jPanel5,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addGap(2,
-																				2,
-																				2)
-																		.addComponent(
-																				modifyBtn)
-																		.addGap(18,
-																				18,
-																				18)
-																		.addComponent(
-																				jPanel6,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				120,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-																		.addComponent(
-																				curtainShopModifyBtn)
-																		.addGap(12,
-																				12,
-																				12)
-																		.addComponent(
-																				jPanel7,
-																				javax.swing.GroupLayout.PREFERRED_SIZE,
-																				javax.swing.GroupLayout.DEFAULT_SIZE,
-																				javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(
-																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(
-																				goodModifyBtn)))
-										.addContainerGap(16, Short.MAX_VALUE)));
-
+	
 		jPanel5.getAccessibleContext().setAccessibleName(
 				"\u5ba2\u6237\u8d27\u7269\u4fee\u6539");
-
+	
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
 				getContentPane());
+		layout.setHorizontalGroup(
+			layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jPanel3, GroupLayout.PREFERRED_SIZE, 583, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(19, Short.MAX_VALUE))
+		);
+		layout.setVerticalGroup(
+			layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jPanel3, GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addContainerGap())))
+		);
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addComponent(jPanel1,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addComponent(jPanel3,
-										javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE,
-										javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addContainerGap()));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(
-														jPanel3,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addComponent(
-														jPanel1,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE))
-								.addContainerGap()));
-
+		jPanel3.setLayout(null);
+		jPanel3.add(jScrollPane3);
+		jPanel3.add(jPanel4);
+		jPanel3.add(addBtn);
+		jPanel3.add(delBtn);
+		jPanel3.add(jPanel6);
+		jPanel3.add(modifyBtn);
+		jPanel3.add(jPanel5);
+		jPanel3.add(jPanel7);
+		jPanel3.add(curtainShopModifyBtn);
+		jPanel3.add(goodModifyBtn);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 314, 258, 218);
+		jPanel3.add(scrollPane);
+		
+		goodOwnerjlist = new JList();
+		scrollPane.setViewportView(goodOwnerjlist);
+	
 		pack();
 	}// </editor-fold>
-		// GEN-END:initComponents
+
+	private void initCurtainShop() {
+		String[] Lst = new String[curtainShopLst.size()];
+		for (int i = 0; i < curtainShopLst.size(); i++) {
+			Lst[i] = curtainShopLst.get(i).getName();
+		}
+		curtainShopjList = new JList(Lst);
+		curtainShopjList.addListSelectionListener(this);
+		curtainShopjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	
+		jScrollPane1.setViewportView(curtainShopjList);
+	}
+
+	private void initGoods() {
+		String[] Lst = new String[goodsLst.size()];
+		for (int i = 0; i < goodsLst.size(); i++) {
+			Lst[i] = goodsLst.get(i).getSerialNumber();
+		}
+		goodjList = new JList(Lst);
+		goodjList.addListSelectionListener(this);
+		goodjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jScrollPane2.setViewportView(goodjList);
+	}
+
+	protected void rowClicked() {
+		curtainShopGoodIndex = table.getSelectedRow();
+		// 初始化客户货物信息
+		CurtainShopGoods csg = curtainShopGoodLst.get(curtainShopGoodIndex);
+		curtainShopModify.setText(csg.getCurtainShop());
+		serialNumberModify.setText(csg.getSerialNumber());
+		serialNumberModify.setEditable(false);
+		sellingPriceModify.setText(csg.getSellingPrice() + "");
+		remarksModify.setText(csg.getRemarks());
+	}
+
+	@SuppressWarnings("unchecked")
+	private void getData() {
+		String hqlCurtainShop = "select new CurtainShop(cs.id,cs.name,cs.telephone,cs.address,cs.owner) from CurtainShop cs order by name";
+		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getClassLst(
+				hqlCurtainShop, "");
+
+		// String sql="from Goods";
+		String hqlGoods = "select new Goods(g.id,g.serialNumber,g.purchasePrice,g.factory,g.telephone,g.bankCard,g.remark) from Goods g order by serialNumber";
+		goodsLst = (ArrayList<Goods>) DBUtil.getClassLst(hqlGoods, "");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getValueIsAdjusting()) {
+			if (curtainShopjList.getSelectedIndex() != curtainShopLstIndex) {
+				curtainShopIndex = curtainShopjList.getSelectedIndex();
+				curtainShopLstIndex = curtainShopIndex;
+				curtainShop = curtainShopLst.get(curtainShopIndex);
+				String sql = "select new CurtainShopGoods(g.id,g.serialNumber,g.sellingPrice,g.curtainShop,g.remarks) from CurtainShopGoods g where curtainShop = :name order by serialNumber";
+				curtainShopGoodLst = (List<CurtainShopGoods>) DBUtil
+						.getClassLst(sql, curtainShop.getName());
+				tableAddLine(curtainShopGoodLst);
+				// 加载修改 客户信息
+				curtainShopNameModify.setText(curtainShop.getName());
+				curtainShopTelModify.setText(curtainShop.getTelephone());
+				curtainShopOwner.setModel(new javax.swing.DefaultComboBoxModel(
+						new String[] { "张其伟", "刘会珍" }));
+				curtainShopOwner.setSelectedIndex(curtainShop.getOwner());
+
+			} else {// goodjList
+				int index = goodjList.getSelectedIndex();
+				goodsLstIndex = index;
+				goods = goodsLst.get(index);
+				purchasePrice.setText(goods.getPurchasePrice() + "");
+				purchasePrice.setEditable(false);
+				serialNumber.setText(goods.getSerialNumber());
+				serialNumber.setEditable(false);
+				factory.setText(goods.getFactory());
+				factory.setEditable(false);
+				telephone.setText(goods.getTelephone());
+				telephone.setEditable(false);
+				sellingPrice.setText("");
+				// 加载修改 货物信息
+				goodSerialNumberModify.setText(goods.getSerialNumber());
+				goodPurchasePriceModify.setText(goods.getPurchasePrice() + "");
+				goodRemarksModify.setText(goods.getRemark());
+				//加载同时拥有此货物的客户
+				List<CurtainShopGoods> Lst = (List<CurtainShopGoods>) DBUtil.getLstClass("curtainShop", "eq", CurtainShopGoods.class, "serialNumber", goods.getSerialNumber(), "String");
+				for (int i = 0; i < Lst.size(); i++) {
+					String curtainShop =  Lst.get(i).getCurtainShop();
+					double sellingPrice =  Lst.get(i).getSellingPrice();
+				}
+			}
+		}
+	}
+
+	private void tableAddLine(List<CurtainShopGoods> Lst) {
+		for (int i = 0; i < tableModel.getRowCount();) {
+			tableModel.removeRow(0);
+		}
+		for (int i = 0; i < Lst.size(); i++) {
+			tableAddLine(Lst.get(i));
+		}
+
+	}
+
+	private void tableAddLine(CurtainShopGoods g) {
+		String[] rowValues = { g.getSerialNumber(), g.getSellingPrice() + "",
+				g.getNumber() + "", g.getRemarks() };
+		tableModel.addRow(rowValues); // 添加一行
+	}
 
 	private void goodModifyBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		String serialNumber = goodSerialNumberModify.getText().trim();
@@ -1411,21 +1142,45 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 	private javax.swing.JButton addBtn;
 	private javax.swing.JButton curtainShopBtnAdd;
 	private javax.swing.JButton curtainShopBtnDel;
-	private javax.swing.JLabel curtainShopModify;
+	private javax.swing.JButton goodjListBtnAdd;
+	private javax.swing.JButton goodjListBtnDel;
+	private javax.swing.JButton delBtn;
+	private javax.swing.JButton goodModifyBtn;
 	private javax.swing.JButton curtainShopModifyBtn;
+	private javax.swing.JButton modifyBtn;
 	private javax.swing.JTextField curtainShopNameModify;
 	private javax.swing.JComboBox curtainShopOwner;
 	private javax.swing.JTextField curtainShopTelModify;
-	private javax.swing.JList curtainShopjList;
-	private javax.swing.JButton delBtn;
 	private javax.swing.JTextField factory;
-	private javax.swing.JButton goodModifyBtn;
 	private javax.swing.JTextField goodPurchasePriceModify;
 	private javax.swing.JTextField goodRemarksModify;
 	private javax.swing.JTextField goodSerialNumberModify;
+	private javax.swing.JTextField purchasePrice;
+	private javax.swing.JTextField remarksModify;
+	private javax.swing.JTextField sellingPrice;
+	private javax.swing.JTextField sellingPriceModify;
+	private javax.swing.JTextField serialNumber;
+	private javax.swing.JTextField serialNumberModify;
+	private javax.swing.JTextField telephone;
+	private int goodsLstIndex = -1;
+	private int curtainShopLstIndex = -1;
+	private int curtainShopGoodIndex = -1;
+	private int curtainShopIndex;
+	private int state = 0;
+	private CurtainShop curtainShop = null;
+	private Goods goods = null;
+	// End of variables declaration//GEN-END:variables
+	private ArrayList<CurtainShop> curtainShopLst = new ArrayList<CurtainShop>();
+	private ArrayList<Goods> goodsLst = new ArrayList<Goods>();
+	private List<CurtainShopGoods> curtainShopGoodLst = null;
+	private javax.swing.JList curtainShopjList;
 	private javax.swing.JList goodjList;
-	private javax.swing.JButton goodjListBtnAdd;
-	private javax.swing.JButton goodjListBtnDel;
+	private javax.swing.JTable table;
+	private DefaultTableModel tableModel;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JScrollPane jScrollPane2;
+	private javax.swing.JScrollPane jScrollPane3;
+	private javax.swing.JLabel curtainShopModify;
 	private javax.swing.JLabel jLabel1;
 	private javax.swing.JLabel jLabel10;
 	private javax.swing.JLabel jLabel11;
@@ -1449,26 +1204,5 @@ public class MainAdd extends JDialog implements ListSelectionListener {
 	private javax.swing.JPanel jPanel5;
 	private javax.swing.JPanel jPanel6;
 	private javax.swing.JPanel jPanel7;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JScrollPane jScrollPane2;
-	private javax.swing.JScrollPane jScrollPane3;
-	private javax.swing.JButton modifyBtn;
-	private javax.swing.JTextField purchasePrice;
-	private javax.swing.JTextField remarksModify;
-	private javax.swing.JTextField sellingPrice;
-	private javax.swing.JTextField sellingPriceModify;
-	private javax.swing.JTextField serialNumber;
-	private javax.swing.JTextField serialNumberModify;
-	private javax.swing.JTable table;
-	private javax.swing.JTextField telephone;
-	// End of variables declaration//GEN-END:variables
-	private ArrayList<CurtainShop> curtainShopLst = new ArrayList<CurtainShop>();
-	private ArrayList<Goods> goodsLst = new ArrayList<Goods>();
-	private int curtainShopLstIndex = -1;
-	private int goodsLstIndex = -1;
-	private CurtainShop curtainShop = null;
-	private Goods goods = null;
-	private List<CurtainShopGoods> curtainShopGoodLst = null;
-	private DefaultTableModel tableModel;
-
+	private JList goodOwnerjlist;
 }

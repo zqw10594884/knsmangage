@@ -167,10 +167,13 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initData() {
 		curtainShopjList = new JList<String>();
 		scrollPane_1.setViewportView(curtainShopjList);
-		curtainShopLst = UIutil.initCurtainShop(this, curtainShopjList);
+		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getLstClass("name",
+				"", CurtainShop.class, "");
+		UIutil.initCurtainShop(this, curtainShopjList, curtainShopLst);
 
 		goodsjList = new JList<String>();
 		scrollPane_2.setViewportView(goodsjList);
@@ -201,8 +204,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		latelyLst = UIutil.initLately(this, latelyjList, listAdapter, true,
-				null);
+		latelyLst = (ArrayList<OrderLst>) UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+				null,1);
 		scrollPane_3.setViewportView(latelyjList);
 	}
 
@@ -560,7 +563,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			currentOrder.setSubmitTime(new Date());
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			latelyLst.add(currentOrder);
-			UIutil.initLately(this, latelyjList, listAdapter, true, latelyLst);
+			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true, latelyLst,1);
 			removeSubmit();
 			DBUtil.insert(currentOrder);
 		} else {
@@ -583,8 +586,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 							"eq");
 					DBUtil.update(ol);
 					ol.setOrderState(2);
-					UIutil.initLately(this, latelyjList, listAdapter, true,
-							latelyLst);
+					UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+							latelyLst,1);
 					print(Global.EMPLOYEE, ol, cs);
 				}
 			}
@@ -608,7 +611,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				lst.get(i).setDate(new Date());
 			}
 			removePrintBtn();
-			UIutil.initLately(this, latelyjList, listAdapter, true, latelyLst);
+			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true, latelyLst,1);
 			print(Global.CUSTOMER, currentOrder, curtainShop);
 			print(Global.OWN, currentOrder, curtainShop);
 			DBUtil.update(currentOrder);
@@ -665,7 +668,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void addActionPerformed(java.awt.event.ActionEvent evt) {
-		if (serialNumber.getText().length()>1) {
+		if (serialNumber.getText().length() > 1) {
 			String[] rowValues = creatRow();
 			tableModel.addRow(rowValues);
 			// 判断id是否为空
@@ -675,7 +678,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			OrderGoods og = new OrderGoods();
 			updateOrderGoods(tableModel.getRowCount() - 1, og, currentOrder);
 			currentOrder.getGoodsLst().add(og);
-			
+
 			profit.setText(DataUtil.getProfitm(tableModel) + "");
 			total.setText(DataUtil.getTotalm(tableModel) + "");
 			addSubmit();
@@ -736,10 +739,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				.toString()));
 		og.setNumber(Double.parseDouble(tableModel.getValueAt(i, 3).toString()));
 		og.setRemark(tableModel.getValueAt(i, 4).toString());
-	}
-
-	private void orderFactory(int OrderState, OrderLst order) {
-
 	}
 
 	@SuppressWarnings("unchecked")

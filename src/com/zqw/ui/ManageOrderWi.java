@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -22,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -64,7 +66,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	private List<OrderLst> curtainShopOrderLst = null;
 	private List<OrderGoods> curtainShopOrderGoodsLst = null;
 	private List<OrderGoods> curtainShopOrderGoodsAllLst = null;
-	private ArrayList<OrderLst> curtainShopOrderUncheckLst = null;
+	private List<OrderLst> curtainShopOrderUncheckLst = null;
 	private List<CurtainShopGoods> goodsLst;
 	private OrderLst currentOrderLst = null;
 	private KnsJFreeChart kjc = null;
@@ -90,6 +92,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	private JLabel orderProfit;
 	private JLabel orderPay;
 	private MouseAdapter listAdapter;
+	private int orderOrUncheckOrder = -1;
 
 	/**
 	 * Launch the application.
@@ -112,58 +115,11 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	 */
 	public ManageOrderWi() {
 		initComponents();
-		initCurtainShopLst();
+		initCurtainShopLst(null, null);
 		initTable();
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initCurtainShopLst() {
-		curtainShopLst = UIutil.initCurtainShop(this, curtainShopjList);
-		// 寻找有欠款的店铺
-		ArrayList<Integer> colLst = new ArrayList<Integer>();
-		List<OrderLst> lst = (List<OrderLst>) DBUtil.getLstClass("", "eq",
-				OrderLst.class, "orderState", 1 + "", "int");
-		ArrayList<String> arrearsedCurtainShop = new ArrayList<String>();
-		for (int i = 0; i < lst.size(); i++) {
-			arrearsedCurtainShop.add(lst.get(i).getCurtainShop());
-		}
-		for (int i = 0; i < curtainShopLst.size(); i++) {
-			if (arrearsedCurtainShop.contains(curtainShopLst.get(i).getName())) {
-				colLst.add(i);
-			}
-		}
-		// 把有欠款的设置为红色
-		int[] col = new int[colLst.size()];
-		for (int i = 0; i < col.length; i++) {
-			col[i] = colLst.get(i);
-		}
-		curtainShopjList.setCellRenderer(new MyRenderer(col, Color.red));// 设置为红色
-	}
-
-	private void initTable() {
-		String[] columnNames = { "编号", "进价", "卖价", "数量", "备注" }; // 列名
-		String[][] tableVales = {}; // 数据
-		tableModel = new DefaultTableModel(tableVales, columnNames);
-		orderTable.setModel(tableModel);
-		TableColumn col0 = orderTable.getColumnModel().getColumn(0);
-		col0.setPreferredWidth(100);
-		TableColumn col1 = orderTable.getColumnModel().getColumn(1);
-		col1.setPreferredWidth(50);
-		TableColumn col2 = orderTable.getColumnModel().getColumn(2);
-		col2.setPreferredWidth(50);
-		TableColumn col3 = orderTable.getColumnModel().getColumn(3);
-		col3.setPreferredWidth(50);
-		TableColumn col4 = orderTable.getColumnModel().getColumn(4);
-		col4.setPreferredWidth(150);
-	}
-
-	private void initCurtainShopOrderLst() {
-		if (curtainShopOrderLst != null && curtainShopOrderLst.size() > 0) {
-			UIutil.initCurtainShopOrder(this, curtainShopOrderjList,
-					curtainShopOrderLst);
-		}
-	}
-
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getValueIsAdjusting()) {// curtainShopjList
@@ -199,6 +155,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 				}
 			} else if (e.getSource().equals(curtainShopOrderjList)) {// orderjList
 				int index = curtainShopOrderjList.getSelectedIndex();
+				orderOrUncheckOrder = 0;
 				if (index != -1) {
 					currentOrderLst = curtainShopOrderLst.get(index);
 					curtainShopOrderGoodsLst = currentOrderLst.getGoodsLst();
@@ -230,6 +187,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 				}
 			} else if (e.getSource().equals(uncheckOrderjLst)) {
 				int index = uncheckOrderjLst.getSelectedIndex();
+				orderOrUncheckOrder = 1;
 				if (index != -1) {
 					currentOrderLst = curtainShopOrderUncheckLst.get(index);
 
@@ -238,11 +196,12 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 					this.shopName.setEditable(false);
 					this.telephone.setText("");
 					this.telephone.setEditable(false);
-					this.orderTotalArrears.setText(UIutil
-							.getCurtainShopArrears(
-									currentOrderLst.getCurtainShop(),
-									curtainShopOrderLst)
-							+ "");
+					//// curtainShopOrderLst 为null
+//					this.orderTotalArrears.setText(UIutil
+//							.getCurtainShopArrears(
+//									currentOrderLst.getCurtainShop(),
+//									curtainShopOrderLst)
+//							+ "");
 					this.orderTotalArrears.setEditable(false);
 
 					curtainShopOrderGoodsLst = UIutil
@@ -273,102 +232,76 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		}
 	}
 
-	private void emptyOrder() {
-		this.orderId.setText("");
-		this.orderId.setEditable(false);
-		this.orderDate.setText("");
-		this.orderDate.setEditable(false);
-		this.orderArrears.setText("");
-		this.orderArrears.setEditable(false);
-		// 清空订单表格
-		for (int i = 0; i < tableModel.getRowCount();) {
-			tableModel.removeRow(0);
+	@SuppressWarnings("unchecked")
+	private void initCurtainShopLst(ArrayList<CurtainShop> csl,
+			List<OrderLst> arrearsLst) {
+		if (csl == null) {
+			csl = (ArrayList<CurtainShop>) DBUtil.getLstClass("name", "",
+					CurtainShop.class, "");
+			curtainShopLst = UIutil.initCurtainShop(this, curtainShopjList, csl);
 		}
-	}
-
-	private void customerSalesStatistics() {
-		goodsLst = UIutil.getCurtainShopGoodsLstFromName(curtainShop.getName());
-		ArrayList<String[]> datasetLstTest = new ArrayList<String[]>();
-		if (curtainShopOrderGoodsAllLst.size() > 0) {
-			int counter = 0;
-			for (int i = 0; i < goodsLst.size(); i++) {
-				String[] s = new String[3];
-				s[1] = 3 + "";
-				s[2] = goodsLst.get(i).getSerialNumber();
-				int totalNumber = 0;
-				while (curtainShopOrderGoodsAllLst.get(counter)
-						.getSerialNumber().equals(s[2])) {
-					totalNumber += curtainShopOrderGoodsAllLst.get(counter)
-							.getNumber();
-					counter++;
-					if (counter == curtainShopOrderGoodsAllLst.size()) {
-						counter = 0;
-						break;
-					} else {
-
-					}
-				}
-				s[0] = totalNumber + "";
-				datasetLstTest.add(s);
+		// 寻找有欠款的店铺
+		if (arrearsLst == null) {
+			arrearsLst = (List<OrderLst>) DBUtil.getLstClass("", "eq",
+					OrderLst.class, "orderState", 1 + "", "int");
+		}
+		ArrayList<Integer> colLst = new ArrayList<Integer>();
+		ArrayList<String> arrearsedCurtainShop = new ArrayList<String>();
+		for (int i = 0; i < arrearsLst.size(); i++) {
+			arrearsedCurtainShop.add(arrearsLst.get(i).getCurtainShop());
+		}
+		for (int i = 0; i < curtainShopLst.size(); i++) {
+			if (arrearsedCurtainShop.contains(curtainShopLst.get(i).getName())) {
+				colLst.add(i);
 			}
 		}
-		kjc = new KnsJFreeChart();
-		kjc.setDatasetLst(datasetLstTest);
-		JFreeChart chart1 = kjc.createChart(kjc.createDataset());
-		ChartPanel cp = new ChartPanel(chart1);
-		cp.setPreferredSize(new Dimension(goodsLst.size() * 30 + 100, 300));
-		cp.setMouseZoomable(false);
-		tablePanel.removeAll();
-		scrollPane = new JScrollPane(cp);
-		scrollPane.setBounds(10, 10, 600, 281);
-		tablePanel.setVisible(true);
-		tablePanel.add(scrollPane);
-		tablePanel.updateUI();
+		// 把有欠款的设置为红色
+		int[] col = new int[colLst.size()];
+		for (int i = 0; i < col.length; i++) {
+			col[i] = colLst.get(i);
+		}
+		curtainShopjList.setCellRenderer(new MyRenderer(col, Color.red));// 设置为红色
 	}
 
-	private void orderCheckoutAction() {// 结账
-		if (currentOrderLst != null && orderArrears.getText().length() > 0
-				&& orderTotalArrears.getText().length() > 0) {
-			int Total = Integer.parseInt(orderTotalArrears.getText().trim());
-			int num = Integer.parseInt(orderArrears.getText().trim());
-			orderTotalArrears.setText((Total - num) + "");// 刷新总欠款
-			orderArrears.setText(0 + "");// 欠款置0
-			currentOrderLst.setArrears(0);
-			currentOrderLst.setOrderState(0);//
-			UIutil.updateOrderLstArrears(currentOrderLst, "0");
-			UIutil.initLately(this, uncheckOrderjLst, listAdapter, false,
-					curtainShopOrderUncheckLst);
-			initCurtainShopLst();
-			initCurtainShopOrderLst();
-			orderCheckoutBtn.setEnabled(false);
-			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
-			orderDeleteBtn.setEnabled(false);
-			orderDeleteBtn.removeActionListener(orderDeleteAl);
-		} else {
-
+	private void initCurtainShopOrderLst() {
+		DefaultListModel<String> lm = new DefaultListModel<String>();
+		// 寻找有欠款的订单
+		ArrayList<Integer> colLst = new ArrayList<Integer>();
+		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
+			OrderLst ol = curtainShopOrderLst.get(i);
+			lm.addElement(ol.getCurtainShop() + ol.getDeliveryTime());
+			if (ol.getOrderState() > 0) {
+				colLst.add(i);
+			}
 		}
+		// 把有欠款的设置为红色
+		int[] col = new int[colLst.size()];
+		for (int i = 0; i < col.length; i++) {
+			col[i] = colLst.get(i);
+		}
+		curtainShopOrderjList.setCellRenderer(new MyRenderer(col, Color.red));
+		curtainShopOrderjList.setModel(lm);
+		curtainShopOrderjList.removeListSelectionListener(this);
+		curtainShopOrderjList.addListSelectionListener(this);
+		curtainShopOrderjList
+		.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 
-	private void orderDeleteAction() {
-		// TODO Auto-generated method stub
-		int index = curtainShopOrderjList.getSelectedIndex();
-		if (index > -1) {
-			OrderLst ol = curtainShopOrderLst.get(index);
-			DBUtil.del(ol);
-			curtainShopOrderLst = UIutil
-					.getCurtainShopOrderLstFromName(curtainShop.getName());
-			initCurtainShopLst();
-			initCurtainShopOrderLst();
-			orderCheckoutBtn.setEnabled(false);
-			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
-			orderDeleteBtn.setEnabled(false);
-			orderDeleteBtn.removeActionListener(orderDeleteAl);
-			emptyOrder();
-			UIutil.delFromCurtainShopGoods();
-		} else {
-
-		}
-
+	private void initTable() {
+		String[] columnNames = { "编号", "进价", "卖价", "数量", "备注" }; // 列名
+		String[][] tableVales = {}; // 数据
+		tableModel = new DefaultTableModel(tableVales, columnNames);
+		orderTable.setModel(tableModel);
+		TableColumn col0 = orderTable.getColumnModel().getColumn(0);
+		col0.setPreferredWidth(100);
+		TableColumn col1 = orderTable.getColumnModel().getColumn(1);
+		col1.setPreferredWidth(50);
+		TableColumn col2 = orderTable.getColumnModel().getColumn(2);
+		col2.setPreferredWidth(50);
+		TableColumn col3 = orderTable.getColumnModel().getColumn(3);
+		col3.setPreferredWidth(50);
+		TableColumn col4 = orderTable.getColumnModel().getColumn(4);
+		col4.setPreferredWidth(150);
 	}
 
 	private void initComponents() {
@@ -614,13 +547,127 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		curtainShopOrderUncheckLst = UIutil.initLately(this, uncheckOrderjLst,
-				listAdapter, false, null);
+		curtainShopOrderUncheckLst = UIutil.initLatelyJlist(this,
+				uncheckOrderjLst, listAdapter, false, null, 2);
 		scrollPane_4.setViewportView(uncheckOrderjLst);
 
 		JLabel lblZui = new JLabel("未结账订单");
 		lblZui.setFont(new Font("宋体", Font.BOLD, 14));
 		lblZui.setBounds(1034, 14, 84, 21);
 		contentPane.add(lblZui);
+	}
+
+	private void emptyOrder() {
+		this.orderId.setText("");
+		this.orderId.setEditable(false);
+		this.orderDate.setText("");
+		this.orderDate.setEditable(false);
+		this.orderArrears.setText("");
+		this.orderArrears.setEditable(false);
+		// 清空订单表格
+		for (int i = 0; i < tableModel.getRowCount();) {
+			tableModel.removeRow(0);
+		}
+	}
+
+	private void customerSalesStatistics() {
+		goodsLst = UIutil.getCurtainShopGoodsLstFromName(curtainShop.getName());
+		ArrayList<String[]> datasetLstTest = new ArrayList<String[]>();
+		if (curtainShopOrderGoodsAllLst.size() > 0) {
+			int counter = 0;
+			for (int i = 0; i < goodsLst.size(); i++) {
+				String[] s = new String[3];
+				s[1] = 3 + "";
+				s[2] = goodsLst.get(i).getSerialNumber();
+				int totalNumber = 0;
+				while (curtainShopOrderGoodsAllLst.get(counter)
+						.getSerialNumber().equals(s[2])) {
+					totalNumber += curtainShopOrderGoodsAllLst.get(counter)
+							.getNumber();
+					counter++;
+					if (counter == curtainShopOrderGoodsAllLst.size()) {
+						counter = 0;
+						break;
+					} else {
+
+					}
+				}
+				s[0] = totalNumber + "";
+				datasetLstTest.add(s);
+			}
+		}
+		kjc = new KnsJFreeChart();
+		kjc.setDatasetLst(datasetLstTest);
+		JFreeChart chart1 = kjc.createChart(kjc.createDataset());
+		ChartPanel cp = new ChartPanel(chart1);
+		cp.setPreferredSize(new Dimension(goodsLst.size() * 30 + 100, 300));
+		cp.setMouseZoomable(false);
+		tablePanel.removeAll();
+		scrollPane = new JScrollPane(cp);
+		scrollPane.setBounds(10, 10, 600, 281);
+		tablePanel.setVisible(true);
+		tablePanel.add(scrollPane);
+		tablePanel.updateUI();
+	}
+
+	private void orderCheckoutAction() {// 结账
+		if (currentOrderLst != null && orderArrears.getText().length() > 0
+				&& orderTotalArrears.getText().length() > 0) {
+			int Total = Integer.parseInt(orderTotalArrears.getText().trim());
+			int num = Integer.parseInt(orderArrears.getText().trim());
+			orderTotalArrears.setText((Total - num) + "");// 刷新总欠款
+			orderArrears.setText(0 + "");// 欠款置0
+			currentOrderLst.setArrears(0);
+			currentOrderLst.setOrderState(0);
+			DBUtil.update(currentOrderLst);
+			if (orderOrUncheckOrder == 0) {
+				updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
+			} else {
+				updateUncheckList(curtainShopOrderLst, currentOrderLst);
+			}
+			UIutil.initLatelyJlist(this, uncheckOrderjLst, listAdapter, false,
+					curtainShopOrderUncheckLst, 2);
+			initCurtainShopOrderLst();
+			initCurtainShopLst(curtainShopLst, curtainShopOrderUncheckLst);
+			orderCheckoutBtn.setEnabled(false);
+			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
+			orderDeleteBtn.setEnabled(false);
+			orderDeleteBtn.removeActionListener(orderDeleteAl);
+		} else {
+
+		}
+	}
+
+	private void updateUncheckList(List<OrderLst> olLst, OrderLst ol) {
+		for (int i = 0; i < olLst.size(); i++) {
+			if (olLst.get(i).getId() == ol.getId()) {
+				olLst.set(i, ol);
+			}
+		}
+	}
+
+	private void orderDeleteAction() {
+		if (currentOrderLst != null) {
+			DBUtil.del(currentOrderLst);
+			if (orderOrUncheckOrder == 0) {
+				updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
+			} else {
+				updateUncheckList(curtainShopOrderLst, currentOrderLst);
+			}
+			curtainShopOrderLst = UIutil
+					.getCurtainShopOrderLstFromName(curtainShop.getName());
+			initCurtainShopLst(curtainShopLst, curtainShopOrderUncheckLst);
+			initCurtainShopOrderLst();
+			
+			orderCheckoutBtn.setEnabled(false);
+			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
+			orderDeleteBtn.setEnabled(false);
+			orderDeleteBtn.removeActionListener(orderDeleteAl);
+			emptyOrder();
+			UIutil.delFromCurtainShopGoods();
+		} else {
+
+		}
+
 	}
 }

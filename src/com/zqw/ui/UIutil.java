@@ -33,40 +33,49 @@ public class UIutil {
 	static String hqlOrderGoods_From_OrderId = "select new OrderGoods(g.serialNumber,g.sellingPrice,g.purchasePrice,g.number) from OrderGoods g where orderId = :name";
 	static String sqlDel_ordergoods_is_null = "DELETE  FROM  _ordergoods  WHERE  Order_id is null";
 
-	public static ArrayList<CurtainShop> initCurtainShop(ListSelectionListener UI, JList<String> curtainShopjList) {
-		// TODO Auto-generated method stub
-		@SuppressWarnings("unchecked")
-		ArrayList<CurtainShop> curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getLstClass("name","",CurtainShop.class, "");
-		DefaultListModel<String> lm = new DefaultListModel<String>();
+	public static ArrayList<CurtainShop> initCurtainShop(
+			ListSelectionListener UI, JList<String> curtainShopjList,
+			ArrayList<CurtainShop> curtainShopLst) {
+
+		ArrayList<String> item = new ArrayList<String>();
 		for (int i = 0; i < curtainShopLst.size(); i++) {
-			lm.addElement(curtainShopLst.get(i).getName());
+			item.add(curtainShopLst.get(i).getName());
 		}
-		curtainShopjList.setModel(lm);
-		curtainShopjList.removeListSelectionListener(UI);
-		curtainShopjList.addListSelectionListener(UI);
-		curtainShopjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		initJlist(UI, curtainShopjList, item);
 		return curtainShopLst;
 	}
 
-	public static List<CurtainShopGoods> getCurtainShopGoodsLstFromName(String name) {
-		List<CurtainShopGoods> goodsLst = (List<CurtainShopGoods>) DBUtil.getClassLst(hqlCurtainShopGoods_From_Name, name);
+	public static void initCurtainShopGoodsLstFromName(
+			ListSelectionListener mainWi, JList<String> goodsjList,
+			List<CurtainShopGoods> goodsLst) {
+		ArrayList<String> item = new ArrayList<String>();
+		for (int i = 0; i < goodsLst.size(); i++) {
+			item.add(goodsLst.get(i).getSerialNumber());
+		}
+		initJlist(mainWi, goodsjList, item);
+	}
+
+	public static void initJlist(ListSelectionListener UI, JList<String> jList,
+			ArrayList<String> item) {
+		DefaultListModel<String> lm = new DefaultListModel<String>();
+		for (int i = 0; i < item.size(); i++) {
+			lm.addElement(item.get(i));
+		}
+		jList.setModel(lm);
+		jList.removeListSelectionListener(UI);
+		jList.addListSelectionListener(UI);
+		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	}
+
+	public static List<CurtainShopGoods> getCurtainShopGoodsLstFromName(
+			String name) {
+		List<CurtainShopGoods> goodsLst = (List<CurtainShopGoods>) DBUtil
+				.getClassLst(hqlCurtainShopGoods_From_Name, name);
 		return goodsLst;
 	}
 
 	public static void delFromCurtainShopGoods() {
 		DBUtil.delBySql(sqlDel_ordergoods_is_null);
-	}
-
-	public static JList<String> initCurtainShopGoodsLstFromName(ListSelectionListener UI, JList<String> goodsjList,
-			List<CurtainShopGoods> goodsLst) {
-		DefaultListModel<String> lm = new DefaultListModel<String>();
-		for (int i = 0; i < goodsLst.size(); i++) {
-			lm.addElement(goodsLst.get(i).getSerialNumber());
-		}
-		goodsjList.setModel(lm);
-		goodsjList.addListSelectionListener(UI);
-		goodsjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		return goodsjList;
 	}
 
 	public static Goods getGoodsFromName(String serialNumber) {
@@ -82,10 +91,12 @@ public class UIutil {
 	}
 
 	public static List<OrderLst> getCurtainShopOrderLstFromName(String name) {
-		return (List<OrderLst>) DBUtil.getClassLst(hqlCurtainShopOrderLst_From_Name, name);
+		return (List<OrderLst>) DBUtil.getClassLst(
+				hqlCurtainShopOrderLst_From_Name, name);
 	}
 
-	public static int getCurtainShopArrears(String name,List<OrderLst> curtainShopOrderLst) {
+	public static int getCurtainShopArrears(String name,
+			List<OrderLst> curtainShopOrderLst) {
 		int arrears = 0;
 		for (int j = 0; j < curtainShopOrderLst.size(); j++) {
 			OrderLst csol = curtainShopOrderLst.get(j);
@@ -97,35 +108,15 @@ public class UIutil {
 	}
 
 	public static List<OrderGoods> getOrderGoodsFromCurtainShopName(String name) {
-		return (List<OrderGoods>) DBUtil.getClassLst(hqlOrderGoods_From_CurtainShopName, name);
+		return (List<OrderGoods>) DBUtil.getClassLst(
+				hqlOrderGoods_From_CurtainShopName, name);
 	}
 
-	public static void initCurtainShopOrder(ListSelectionListener UI, JList<String> curtainShopOrderjList,
-			List<OrderLst> curtainShopOrderLst) {
-		DefaultListModel<String> lm = new DefaultListModel<String>();
-		// 寻找有欠款的订单
-		ArrayList<Integer> colLst = new ArrayList<Integer>();
-		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
-			OrderLst ol = curtainShopOrderLst.get(i);
-			lm.addElement(ol.getCurtainShop() + ol.getDeliveryTime());
-			if (ol.getArrears() > 0) {
-				colLst.add(i);
-			}
-		}
-		// 把有欠款的设置为红色
-		int[] col = new int[colLst.size()];
-		for (int i = 0; i < col.length; i++) {
-			col[i] = colLst.get(i);
-		}
-		curtainShopOrderjList.setCellRenderer(new MyRenderer(col, Color.red));
-		curtainShopOrderjList.setModel(lm);
-		curtainShopOrderjList.removeListSelectionListener(UI);
-		curtainShopOrderjList.addListSelectionListener(UI);
-		curtainShopOrderjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	}
+	
 
 	public static List<OrderGoods> getOrderGoodsFromOrderId(int id) {
-		return (List<OrderGoods>) DBUtil.getClassLst(hqlOrderGoods_From_OrderId, id + "");
+		return (List<OrderGoods>) DBUtil.getClassLst(
+				hqlOrderGoods_From_OrderId, id + "");
 	}
 
 	public static void updateOrderLstArrears(OrderLst ol, String string) {
@@ -134,20 +125,35 @@ public class UIutil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ArrayList<OrderLst> initLately(ListSelectionListener UI, JList latelyjList, MouseAdapter listAdapter, boolean checkbox,
-			ArrayList<OrderLst> orderLst) {
+	/**
+	 * 
+	 * @param UI
+	 * @param latelyjList
+	 * @param listAdapter
+	 * @param checkbox
+	 * @param orderLst
+	 * @param initClass MainWi = 1, ManageOrderWi = 2.
+	 * @return
+	 */
+	public static List<OrderLst> initLatelyJlist(ListSelectionListener UI,
+			JList latelyjList, MouseAdapter listAdapter, boolean checkbox,
+			List<OrderLst> orderLst,int initClass) {
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		DefaultListModel<String> model = new DefaultListModel<String>();
-		ArrayList<OrderLst> curtainShopOrderLst;
 		if (orderLst == null) {
-			curtainShopOrderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("","gt",OrderLst.class, "orderState", "0","int");
-		} else {
-			curtainShopOrderLst = orderLst;
-		}
-		for (int i = 0; i < curtainShopOrderLst.size(); i++) {// 遍历并插入历史订单
-			OrderLst ol = curtainShopOrderLst.get(i);
-			checkboxModel.add(i, new CheckListItem(ol.getCurtainShop() + ol.getSimpleDate() + "(" + ol.getOrderStateToString() + ")",
-					false));
+			if (initClass == 1) {
+				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("",
+						"gt", OrderLst.class, "orderState", "0", "int");
+			}else if (initClass == 2) {
+				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("",
+						"eq", OrderLst.class, "orderState", "1", "int");
+			}
+		} 
+		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入历史订单
+			OrderLst ol = orderLst.get(i);
+			checkboxModel.add(i,
+					new CheckListItem(ol.getCurtainShop() + ol.getSimpleDate()
+							+ "(" + ol.getOrderStateToString() + ")", false));
 			model.add(i, ol.getCurtainShop() + ol.getSimpleDate());
 		}
 		if (checkbox) {
@@ -163,14 +169,16 @@ public class UIutil {
 		latelyjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		latelyjList.setSelectionBackground(new Color(177, 232, 58));// 186,212,239,177,232,58
 		latelyjList.setSelectionForeground(Color.black);
-		return curtainShopOrderLst;
+		return orderLst;
 	}
 
 	public static List<OrderLst> isCurtainShopHaveArrears() {
-		return (List<OrderLst>) DBUtil.getClassLst(hqlCurtainShop_From_Name_Have_Arrears, 1);
+		return (List<OrderLst>) DBUtil.getClassLst(
+				hqlCurtainShop_From_Name_Have_Arrears, 1);
 	}
 
-	public static void tableAddAll(List<OrderGoods> Lst, DefaultTableModel tableModel) {
+	public static void tableAddAll(List<OrderGoods> Lst,
+			DefaultTableModel tableModel) {
 		for (int i = 0; i < tableModel.getRowCount();) {
 			tableModel.removeRow(0);
 		}
@@ -180,7 +188,8 @@ public class UIutil {
 	}
 
 	public static void tableAddLine(OrderGoods g, DefaultTableModel tableModel) {
-		String[] rowValues = { g.getSerialNumber(), g.getPurchasePrice() + "", g.getSellingPrice() + "", g.getNumber() + "", g.getRemark() };
+		String[] rowValues = { g.getSerialNumber(), g.getPurchasePrice() + "",
+				g.getSellingPrice() + "", g.getNumber() + "", g.getRemark() };
 		tableModel.addRow(rowValues); // 添加一行
 	}
 
