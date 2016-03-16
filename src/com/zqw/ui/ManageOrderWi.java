@@ -571,7 +571,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void customerSalesStatistics() {
-		goodsLst = UIutil.getCurtainShopGoodsLstFromName(curtainShop.getName());
+		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber", "eq", CurtainShopGoods.class, "curtainShop",curtainShop.getName(),"String");
 		ArrayList<String[]> datasetLstTest = new ArrayList<String[]>();
 		if (curtainShopOrderGoodsAllLst.size() > 0) {
 			int counter = 0;

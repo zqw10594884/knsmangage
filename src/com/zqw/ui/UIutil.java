@@ -67,13 +67,6 @@ public class UIutil {
 		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 
-	public static List<CurtainShopGoods> getCurtainShopGoodsLstFromName(
-			String name) {
-		List<CurtainShopGoods> goodsLst = (List<CurtainShopGoods>) DBUtil
-				.getClassLst(hqlCurtainShopGoods_From_Name, name);
-		return goodsLst;
-	}
-
 	public static void delFromCurtainShopGoods() {
 		DBUtil.delBySql(sqlDel_ordergoods_is_null);
 	}

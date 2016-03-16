@@ -49,10 +49,11 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		initGoods();
 		initTable();
 	}
+
 	public int getReturnStatus() {
 		return state;
 	}
-	
+
 	private void initListener() {
 		curtainShopBtnAdd
 				.addActionListener(new java.awt.event.ActionListener() {
@@ -334,9 +335,9 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 	}
 
 	private void initCurtainShop() {
-		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getLstClass("name", "", CurtainShop.class, "");
+		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getLstClass("name",
+				"", CurtainShop.class, "");
 		curtainShopjList = new JList();
-		UIutil.initCurtainShop(this, curtainShopjList, curtainShopLst);
 		UIutil.initCurtainShop(this, curtainShopjList, curtainShopLst);
 		scrollPane.setViewportView(curtainShopjList);
 	}
@@ -390,7 +391,6 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		setTableColumn(goodOwnerTable, 0, 160);
 		scrollPane_3.setViewportView(goodOwnerTable);
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
