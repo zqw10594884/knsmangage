@@ -61,7 +61,7 @@ public class loginWi extends JFrame {
 				if (radioButton.getName() == "manage" && radioButton.isSelected()) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							MainAdd mainAdd = new MainAdd();
+							MainAddWi mainAdd = new MainAddWi();
 							mainAdd.setVisible(true);
 							mainAdd.setLocationRelativeTo(null);
 						}

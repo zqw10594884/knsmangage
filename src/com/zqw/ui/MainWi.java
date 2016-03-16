@@ -446,7 +446,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 		flowersComboBox = new JComboBox<String>();
 		flowersComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
-				"不对花", "就近", "强制多", "强制少" }));
+				"不对花", "对花", "多对", "强对" }));
 		flowersComboBox.setFont(new Font("宋体", Font.PLAIN, 13));
 		flowersComboBox.setBounds(452, 80, 66, 21);
 		contentPane.add(flowersComboBox);
@@ -541,7 +541,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void refreshActionPerformed(java.awt.event.ActionEvent evt) {
-		MainAdd mainAdd = new MainAdd();
+		MainAddWi mainAdd = new MainAddWi();
 		mainAdd.setModal(true);
 		mainAdd.setVisible(true);
 		int state = mainAdd.getReturnStatus();
