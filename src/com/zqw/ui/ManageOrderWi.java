@@ -129,8 +129,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 					curtainShopIndex = curtainShopjList.getSelectedIndex();
 					curtainShopLstIndex = curtainShopIndex;
 					curtainShop = curtainShopLst.get(curtainShopIndex);
-					curtainShopOrderLst = (List<OrderLst>) DBUtil.getLstClass(
-							"", "eq", OrderLst.class, "curtainShop",
+					curtainShopOrderLst = (List<OrderLst>) DBUtil.getLstClass("", "eq", OrderLst.class, "curtainShop",
 							curtainShop.getName(), "String");
 					initCurtainShopOrderLst();
 					// 客户信息
@@ -138,18 +137,13 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 					this.shopName.setEditable(false);
 					this.telephone.setText(curtainShop.getTelephone());
 					this.telephone.setEditable(false);
-					this.orderTotalArrears.setText(UIutil
-							.getCurtainShopArrears(curtainShop.getName(),
-									curtainShopOrderLst)
-							+ "");
+					this.orderTotalArrears.setText(UIutil.getCurtainShopArrears(curtainShop.getName(), curtainShopOrderLst) + "");
 					this.orderTotalArrears.setEditable(false);
 					// 清空订单信息
 					emptyOrder();
 					// 客户统计图表
-					curtainShopOrderGoodsAllLst = (List<OrderGoods>) DBUtil
-							.getLstClass("", "eq", OrderGoods.class,
-									"curtainShop", curtainShop.getName(),
-									"String");
+					curtainShopOrderGoodsAllLst = (List<OrderGoods>) DBUtil.getLstClass("", "eq", OrderGoods.class, "curtainShop",
+							curtainShop.getName(), "String");
 					customerSalesStatistics();
 
 				}
@@ -173,40 +167,26 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 					// 订单信息
 					this.orderId.setText(currentOrderLst.getId() + "");
 					this.orderId.setEditable(false);
-					this.orderDate.setText(currentOrderLst.getDeliveryTime()
-							.toString());
+					this.orderDate.setText(currentOrderLst.getDeliveryTime().toString());
 					this.orderDate.setEditable(false);
-					this.orderArrears
-							.setText(currentOrderLst.getArrears() + "");
+					this.orderArrears.setText(currentOrderLst.getArrears() + "");
 					this.orderArrears.setEditable(false);
 					UIutil.tableAddAll(curtainShopOrderGoodsLst, tableModel);
-					total.setText(DataUtil.getTotal(curtainShopOrderGoodsLst)
-							+ "");
-					orderProfit.setText(DataUtil
-							.getProfit(curtainShopOrderGoodsLst) + "");
+					total.setText(DataUtil.getTotal(curtainShopOrderGoodsLst) + "");
+					orderProfit.setText(DataUtil.getProfit(curtainShopOrderGoodsLst) + "");
 				}
 			} else if (e.getSource().equals(uncheckOrderjLst)) {
 				int index = uncheckOrderjLst.getSelectedIndex();
 				orderOrUncheckOrder = 1;
 				if (index != -1) {
 					currentOrderLst = curtainShopOrderUncheckLst.get(index);
-
 					// 客户信息
 					this.shopName.setText(currentOrderLst.getCurtainShop());
 					this.shopName.setEditable(false);
 					this.telephone.setText("");
 					this.telephone.setEditable(false);
-					//// curtainShopOrderLst 为null
-//					this.orderTotalArrears.setText(UIutil
-//							.getCurtainShopArrears(
-//									currentOrderLst.getCurtainShop(),
-//									curtainShopOrderLst)
-//							+ "");
 					this.orderTotalArrears.setEditable(false);
-
-					curtainShopOrderGoodsLst = UIutil
-							.getOrderGoodsFromOrderId(currentOrderLst.getId());
-
+					curtainShopOrderGoodsLst = UIutil.getOrderGoodsFromOrderId(currentOrderLst.getId());
 					// 按钮状态控制
 					if (orderCheckoutBtn.getActionListeners().length == 0) {
 						orderCheckoutBtn.setEnabled(true);
@@ -220,11 +200,9 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 					// 订单信息
 					this.orderId.setText(currentOrderLst.getId() + "");
 					this.orderId.setEditable(false);
-					this.orderDate.setText(currentOrderLst.getDeliveryTime()
-							.toString());
+					this.orderDate.setText(currentOrderLst.getDeliveryTime().toString());
 					this.orderDate.setEditable(false);
-					this.orderArrears
-							.setText(currentOrderLst.getArrears() + "");
+					this.orderArrears.setText(currentOrderLst.getArrears() + "");
 					this.orderArrears.setEditable(false);
 					UIutil.tableAddAll(curtainShopOrderGoodsLst, tableModel);
 				}
@@ -233,58 +211,19 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initCurtainShopLst(ArrayList<CurtainShop> csl,
-			List<OrderLst> arrearsLst) {
+	private void initCurtainShopLst(ArrayList<CurtainShop> csl, List<OrderLst> arrearsLst) {
 		if (csl == null) {
-			csl = (ArrayList<CurtainShop>) DBUtil.getLstClass("name", "",
-					CurtainShop.class, "");
+			csl = (ArrayList<CurtainShop>) DBUtil.getLstClass("name", "", CurtainShop.class, "");
 			curtainShopLst = UIutil.initCurtainShop(this, curtainShopjList, csl);
 		}
-		// 寻找有欠款的店铺
-		if (arrearsLst == null) {
-			arrearsLst = (List<OrderLst>) DBUtil.getLstClass("", "eq",
-					OrderLst.class, "orderState", 1 + "", "int");
-		}
-		ArrayList<Integer> colLst = new ArrayList<Integer>();
-		ArrayList<String> arrearsedCurtainShop = new ArrayList<String>();
-		for (int i = 0; i < arrearsLst.size(); i++) {
-			arrearsedCurtainShop.add(arrearsLst.get(i).getCurtainShop());
-		}
-		for (int i = 0; i < curtainShopLst.size(); i++) {
-			if (arrearsedCurtainShop.contains(curtainShopLst.get(i).getName())) {
-				colLst.add(i);
-			}
-		}
-		// 把有欠款的设置为红色
-		int[] col = new int[colLst.size()];
-		for (int i = 0; i < col.length; i++) {
-			col[i] = colLst.get(i);
-		}
-		curtainShopjList.setCellRenderer(new MyRenderer(col, Color.red));// 设置为红色
 	}
 
 	private void initCurtainShopOrderLst() {
 		DefaultListModel<String> lm = new DefaultListModel<String>();
-		// 寻找有欠款的订单
-		ArrayList<Integer> colLst = new ArrayList<Integer>();
-		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
-			OrderLst ol = curtainShopOrderLst.get(i);
-			lm.addElement(ol.getCurtainShop() + ol.getDeliveryTime());
-			if (ol.getOrderState() > 0) {
-				colLst.add(i);
-			}
-		}
-		// 把有欠款的设置为红色
-		int[] col = new int[colLst.size()];
-		for (int i = 0; i < col.length; i++) {
-			col[i] = colLst.get(i);
-		}
-		curtainShopOrderjList.setCellRenderer(new MyRenderer(col, Color.red));
 		curtainShopOrderjList.setModel(lm);
 		curtainShopOrderjList.removeListSelectionListener(this);
 		curtainShopOrderjList.addListSelectionListener(this);
-		curtainShopOrderjList
-		.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		curtainShopOrderjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 
 	private void initTable() {
@@ -313,8 +252,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "\u5BA2\u6237\u4FE1\u606F",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(null, "\u5BA2\u6237\u4FE1\u606F", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.setBounds(354, 10, 620, 57);
 		contentPane.add(panel);
 		panel.setLayout(null);
@@ -351,8 +289,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		orderTotalArrears.setColumns(10);
 
 		orderPanel = new JPanel();
-		orderPanel.setBorder(new TitledBorder(null, "\u8BA2\u5355\u4FE1\u606F",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		orderPanel.setBorder(new TitledBorder(null, "\u8BA2\u5355\u4FE1\u606F", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		orderPanel.setBounds(354, 70, 620, 256);
 		contentPane.add(orderPanel);
 		orderPanel.setLayout(null);
@@ -463,9 +400,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 				Date begin = beginTime.getDate();
 				Date last = lastTime.getDate();
 				String sql1 = "select new OrderGoods(g.serialNumber,g.sellingPrice,g.purchasePrice,g.number) from OrderGoods g where curtainShop =:name0 and g.date >=:name1 and g.date <=:name2 order by g.serialNumber";
-				curtainShopOrderGoodsAllLst = (List<OrderGoods>) DBUtil
-						.getClassLst(sql1, curtainShop.getName() + "", begin,
-								last);
+				curtainShopOrderGoodsAllLst = (List<OrderGoods>) DBUtil.getClassLst(sql1, curtainShop.getName() + "", begin, last);
 				customerSalesStatistics();
 			}
 		};
@@ -517,8 +452,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		contentPane.add(profit);
 
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "客户", "所有",
-				"自己", "家里" }));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] { "客户", "所有", "自己", "家里" }));
 		comboBox.setBounds(787, 342, 73, 21);
 		contentPane.add(comboBox);
 
@@ -529,8 +463,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		uncheckOrderjLst = new JList<CheckListItem>();
 		listAdapter = new MouseAdapter() {
 			public void mouseClicked(MouseEvent event) {
-				JList<CheckListItem> list = (JList<CheckListItem>) event
-						.getSource();
+				JList<CheckListItem> list = (JList<CheckListItem>) event.getSource();
 				// Get index of item clicked
 				// 获得用户点击项的索引
 				int index = list.locationToIndex(event.getPoint());
@@ -547,8 +480,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		curtainShopOrderUncheckLst = UIutil.initLatelyJlist(this,
-				uncheckOrderjLst, listAdapter, false, null, 2);
+		curtainShopOrderUncheckLst = UIutil.initLatelyJlist(this, uncheckOrderjLst, listAdapter, false, null, 2);
 		scrollPane_4.setViewportView(uncheckOrderjLst);
 
 		JLabel lblZui = new JLabel("未结账订单");
@@ -571,7 +503,8 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void customerSalesStatistics() {
-		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber", "eq", CurtainShopGoods.class, "curtainShop",curtainShop.getName(),"String");
+		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber", "eq", CurtainShopGoods.class, "curtainShop",
+				curtainShop.getName(), "String");
 		ArrayList<String[]> datasetLstTest = new ArrayList<String[]>();
 		if (curtainShopOrderGoodsAllLst.size() > 0) {
 			int counter = 0;
@@ -580,10 +513,8 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 				s[1] = 3 + "";
 				s[2] = goodsLst.get(i).getSerialNumber();
 				int totalNumber = 0;
-				while (curtainShopOrderGoodsAllLst.get(counter)
-						.getSerialNumber().equals(s[2])) {
-					totalNumber += curtainShopOrderGoodsAllLst.get(counter)
-							.getNumber();
+				while (curtainShopOrderGoodsAllLst.get(counter).getSerialNumber().equals(s[2])) {
+					totalNumber += curtainShopOrderGoodsAllLst.get(counter).getNumber();
 					counter++;
 					if (counter == curtainShopOrderGoodsAllLst.size()) {
 						counter = 0;
@@ -611,24 +542,15 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void orderCheckoutAction() {// 结账
-		if (currentOrderLst != null && orderArrears.getText().length() > 0
-				&& orderTotalArrears.getText().length() > 0) {
-			int Total = Integer.parseInt(orderTotalArrears.getText().trim());
-			int num = Integer.parseInt(orderArrears.getText().trim());
-			orderTotalArrears.setText((Total - num) + "");// 刷新总欠款
+		if (currentOrderLst != null) {
 			orderArrears.setText(0 + "");// 欠款置0
 			currentOrderLst.setArrears(0);
 			currentOrderLst.setOrderState(0);
+			curtainShopOrderUncheckLst.remove(currentOrderLst);
 			DBUtil.update(currentOrderLst);
-			if (orderOrUncheckOrder == 0) {
-				updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
-			} else {
-				updateUncheckList(curtainShopOrderLst, currentOrderLst);
-			}
-			UIutil.initLatelyJlist(this, uncheckOrderjLst, listAdapter, false,
-					curtainShopOrderUncheckLst, 2);
-			initCurtainShopOrderLst();
-			initCurtainShopLst(curtainShopLst, curtainShopOrderUncheckLst);
+			updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
+			UIutil.initLatelyJlist(this, uncheckOrderjLst, listAdapter, false, curtainShopOrderUncheckLst, 2);
+			
 			orderCheckoutBtn.setEnabled(false);
 			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
 			orderDeleteBtn.setEnabled(false);
@@ -648,17 +570,10 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 
 	private void orderDeleteAction() {
 		if (currentOrderLst != null) {
+			curtainShopOrderUncheckLst.remove(currentOrderLst);
+			updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
+			UIutil.initLatelyJlist(this, uncheckOrderjLst, listAdapter, false, curtainShopOrderUncheckLst, 2);
 			DBUtil.del(currentOrderLst);
-			if (orderOrUncheckOrder == 0) {
-				updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
-			} else {
-				updateUncheckList(curtainShopOrderLst, currentOrderLst);
-			}
-			curtainShopOrderLst = UIutil
-					.getCurtainShopOrderLstFromName(curtainShop.getName());
-			initCurtainShopLst(curtainShopLst, curtainShopOrderUncheckLst);
-			initCurtainShopOrderLst();
-			
 			orderCheckoutBtn.setEnabled(false);
 			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
 			orderDeleteBtn.setEnabled(false);
@@ -666,7 +581,6 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			emptyOrder();
 			UIutil.delFromCurtainShopGoods();
 		} else {
-
 		}
 
 	}
