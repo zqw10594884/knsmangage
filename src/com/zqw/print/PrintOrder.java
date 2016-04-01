@@ -53,7 +53,8 @@ public class PrintOrder implements Printable {
 	 *            （页面大小以点为计量单位，1点为1英才的1/72，1英寸为25.4毫米。A4纸大致为595×842点）
 	 * @param pageIndex指明页号
 	 **/
-	public int print(Graphics gra, PageFormat pf, int pageIndex) throws PrinterException {
+	public int print(Graphics gra, PageFormat pf, int pageIndex)
+			throws PrinterException {
 		Component c = null;
 		// 转换成Graphics2D
 		Graphics2D g2 = (Graphics2D) gra;
@@ -82,7 +83,13 @@ public class PrintOrder implements Printable {
 			} else if (parameter == Global.CUSTOMER) {
 				g2.drawString("凯妮丝红日窗帘批发", x + 100, y - 50);
 			} else if (parameter == Global.OWN) {
-				g2.drawString("底单", x + 200, y - 50);
+				String s = "底单__";
+				if (curtainShop.getOwner() == 0) {
+					s+="张";
+				} else {
+					s+="刘";
+				}
+				g2.drawString(s, x + 200, y - 50);
 			}
 			g2.setFont(font);
 			Date nowTime = new Date();
@@ -90,8 +97,9 @@ public class PrintOrder implements Printable {
 			g2.drawString(time.format(nowTime), x, y - 50);
 			g2.drawString("订单编号：" + order.getId(), x, y - 13);
 			g2.drawString("地址：" + curtainShop.getName(), x + 150, y - 13);
-			if (parameter!=Global.EMPLOYEE) {
-				g2.drawString("电话：" + curtainShop.getTelephone(), x + 340, y - 13);
+			if (parameter != Global.EMPLOYEE) {
+				g2.drawString("电话：" + curtainShop.getTelephone(), x + 340,
+						y - 13);
 			}
 			// 表格
 			g2.setFont(font);
@@ -113,7 +121,8 @@ public class PrintOrder implements Printable {
 					subtotal += g.getNumber() * g.getSellingPrice();
 					String serialNumber = g.getSerialNumber();
 					// 布，沙，花边成本计算。
-					if (serialNumber.contains("A-") || serialNumber.contains("B-")) {
+					if (serialNumber.contains("A-")
+							|| serialNumber.contains("B-")) {
 						cloth += g.getNumber() * g.getPurchasePrice();
 					} else if (serialNumber.contains("C-花边")) {
 						lace += g.getNumber() * g.getPurchasePrice();
@@ -125,11 +134,14 @@ public class PrintOrder implements Printable {
 				// 画行
 				String[] data = null;
 				if (parameter == Global.EMPLOYEE) {
-					String[] temp = { g.getSerialNumber(), g.getNumber() + "", "", "", g.getRemark()};
+					String[] temp = { g.getSerialNumber(), g.getNumber() + "",
+							"", "", g.getRemark() };
 					data = temp;
 				} else {
-					String[] temp = { g.getSerialNumber(), g.getNumber() + "", g.getSellingPrice() + "",
-							(int) (g.getNumber() * g.getSellingPrice()) + "", g.getRemark() };
+					String[] temp = { g.getSerialNumber(), g.getNumber() + "",
+							g.getSellingPrice() + "",
+							(int) (g.getNumber() * g.getSellingPrice()) + "",
+							g.getRemark() };
 					data = temp;
 				}
 				y = drawLine(g2, y, x, w, col, data);
@@ -138,7 +150,8 @@ public class PrintOrder implements Printable {
 			if (parameter == Global.OWN) {
 				int profit = DataUtil.getProfit(order);
 				if (curtainShop.getOwner() == 0) {
-					other = "利润" + profit + "付" + ((int) cloth + (int) lace) + "辅料成本" + materials;
+					other = "利润" + profit + "付" + ((int) cloth + (int) lace)
+							+ "辅料成本" + materials;
 				} else {
 					other = "利润" + profit + "辅料成本" + materials;
 				}
@@ -163,7 +176,8 @@ public class PrintOrder implements Printable {
 
 	}
 
-	private int drawLine(Graphics2D g2, int y, int x, int w, int[] col, String[] str) {
+	private int drawLine(Graphics2D g2, int y, int x, int w, int[] col,
+			String[] str) {
 		// TODO Auto-generated method stub
 		int tempW = 0;
 		g2.drawLine(x, y, x + w, y);

@@ -615,6 +615,5 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			UIutil.delFromCurtainShopGoods();
 		} else {
 		}
-
 	}
 }
