@@ -13,6 +13,7 @@ import java.awt.print.Paper;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import com.zqw.print.PrintOrder;
 import com.zqw.print.PrintPandect;
 import com.zqw.util.DBUtil;
 import com.zqw.util.DataUtil;
+import com.zqw.util.SortChineseName;
 
 public class MainWi extends JFrame implements ListSelectionListener {
 
@@ -636,6 +638,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				pandectList.add(latelyLst.get(i));
 			}
 		}
+		Collections.sort(pandectList, new SortChineseName());
 		// print
 		Book book = new Book();
 		PageFormat pf = new PageFormat();
