@@ -18,6 +18,7 @@ import com.zqw.bean.Goods;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
 import com.zqw.listener.CheckListRenderer;
+import com.zqw.listener.MyListRenderer;
 import com.zqw.util.DBUtil;
 
 public class UIutil {
@@ -34,7 +35,7 @@ public class UIutil {
 	static String sqlDel_ordergoods_is_null = "DELETE  FROM  _ordergoods  WHERE  Order_id is null";
 
 	public static ArrayList<CurtainShop> initCurtainShop(
-			ListSelectionListener UI, JList<String> curtainShopjList,
+			ListSelectionListener UI, JList<CheckListItem> curtainShopjList,
 			ArrayList<CurtainShop> curtainShopLst) {
 
 		ArrayList<String> item = new ArrayList<String>();
@@ -46,7 +47,7 @@ public class UIutil {
 	}
 
 	public static void initCurtainShopGoodsLstFromName(
-			ListSelectionListener mainWi, JList<String> goodsjList,
+			ListSelectionListener mainWi, JList<CheckListItem> goodsjList,
 			List<CurtainShopGoods> goodsLst) {
 		ArrayList<String> item = new ArrayList<String>();
 		for (int i = 0; i < goodsLst.size(); i++) {
@@ -55,13 +56,16 @@ public class UIutil {
 		initJlist(mainWi, goodsjList, item);
 	}
 
-	public static void initJlist(ListSelectionListener UI, JList<String> jList,
-			ArrayList<String> item) {
-		DefaultListModel<String> lm = new DefaultListModel<String>();
+	public static void initJlist(ListSelectionListener UI,
+			JList<CheckListItem> jList, ArrayList<String> item) {
+		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		for (int i = 0; i < item.size(); i++) {
-			lm.addElement(item.get(i));
+			CheckListItem cli = new CheckListItem(item.get(i));
+			cli.setSelectedBox(false);
+			checkboxModel.add(i, cli);
 		}
-		jList.setModel(lm);
+		jList.setModel(checkboxModel);
+		jList.setCellRenderer(new MyListRenderer());
 		jList.removeListSelectionListener(UI);
 		jList.addListSelectionListener(UI);
 		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -142,11 +146,16 @@ public class UIutil {
 		}
 		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入历史订单
 			OrderLst ol = orderLst.get(i);
-			checkboxModel.add(
-					i,
-					new CheckListItem("(" + ol.getOrderStateToString() + ")"
-							+ "  " + ol.getSimpleDate() + "  "
-							+ ol.getCurtainShop(), false));
+			CheckListItem cli = new CheckListItem("("
+					+ ol.getOrderStateToString() + ")" + "  "
+					+ ol.getSimpleDate() + "  " + ol.getCurtainShop(), false,true);
+			if (ol.getOrderState() == 3) {
+				cli.setC(Color.red);
+			} else if (ol.getOrderState() == 2) {
+				cli.setC(Color.blue);
+			}
+			checkboxModel.add(i, cli);
+			// 结账界面历史订单
 			model.add(i, ol.getCurtainShop() + ol.getSimpleDate());
 		}
 		if (checkbox) {

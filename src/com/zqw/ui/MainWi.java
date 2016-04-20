@@ -86,8 +86,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private CurtainShop curtainShop = null;
 	private int curtainShopLstIndex = -1;
 	private int latelyLstindex = -1;
-	private JList<String> curtainShopjList;
-	private JList<String> goodsjList;
+	private JList<CheckListItem> curtainShopjList;
+	private JList<CheckListItem> goodsjList;
 	private JList<CheckListItem> latelyjList;
 	private List<CurtainShopGoods> goodsLst = new ArrayList<CurtainShopGoods>();
 	private ArrayList<CurtainShop> curtainShopLst = new ArrayList<CurtainShop>();
@@ -171,13 +171,13 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 	@SuppressWarnings("unchecked")
 	private void initData() {
-		curtainShopjList = new JList<String>();
+		curtainShopjList = new JList<CheckListItem>();
 		scrollPane_1.setViewportView(curtainShopjList);
 		curtainShopLst = (ArrayList<CurtainShop>) DBUtil.getLstClass("name",
 				"", CurtainShop.class, "");
 		UIutil.initCurtainShop(this, curtainShopjList, curtainShopLst);
 
-		goodsjList = new JList<String>();
+		goodsjList = new JList<CheckListItem>();
 		scrollPane_2.setViewportView(goodsjList);
 
 		latelyjList = new JList<>();

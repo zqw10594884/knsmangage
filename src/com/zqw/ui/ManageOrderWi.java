@@ -83,8 +83,8 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	private ActionListener orderCheckoutAl;
 	private JScrollPane scrollPane_1;
 	private JScrollPane scrollPane_2;
-	private JList<String> curtainShopjList;
-	private JList<String> curtainShopOrderjList;
+	private JList<CheckListItem> curtainShopjList;
+	private JList<CheckListItem> curtainShopOrderjList;
 	private JScrollPane scrollPane_3;
 	private JTable orderTable;
 	private JList<CheckListItem> uncheckOrderjLst;
@@ -458,14 +458,14 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		scrollPane_1.setBounds(10, 42, 131, 630);
 		contentPane.add(scrollPane_1);
 
-		curtainShopjList = new JList<String>();
+		curtainShopjList = new JList<CheckListItem>();
 		scrollPane_1.setViewportView(curtainShopjList);
 
 		scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(151, 42, 193, 630);
 		contentPane.add(scrollPane_2);
 
-		curtainShopOrderjList = new JList<String>();
+		curtainShopOrderjList = new JList<CheckListItem>();
 		scrollPane_2.setViewportView(curtainShopOrderjList);
 
 		JLabel label_6 = new JLabel("利润：");
