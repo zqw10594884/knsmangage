@@ -253,7 +253,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 	private void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1014, 647);
+		setBounds(100, 100, 1089, 647);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -392,7 +392,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		contentPane.add(scrollPane_2);
 
 		scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(772, 27, 221, 539);
+		scrollPane_3.setBounds(772, 27, 291, 539);
 		contentPane.add(scrollPane_3);
 
 		JLabel jlabel = new JLabel("客户");
@@ -407,7 +407,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 		JLabel jlabel_2 = new JLabel("历史订单");
 		jlabel_2.setFont(new Font("宋体", Font.PLAIN, 14));
-		jlabel_2.setBounds(852, 6, 70, 15);
+		jlabel_2.setBounds(901, 10, 70, 15);
 		contentPane.add(jlabel_2);
 
 		JButton pandectPrintBtn = new JButton("目录打印");
@@ -417,7 +417,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				pandectActionPerformed(e);
 			}
 		});
-		pandectPrintBtn.setBounds(791, 576, 94, 23);
+		pandectPrintBtn.setBounds(782, 576, 94, 23);
 		contentPane.add(pandectPrintBtn);
 
 		JButton untreatedPrintBtn = new JButton("备货打印");
@@ -427,7 +427,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		untreatedPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		untreatedPrintBtn.setBounds(895, 576, 93, 23);
+		untreatedPrintBtn.setBounds(878, 576, 93, 23);
 		contentPane.add(untreatedPrintBtn);
 
 		submitOrderBtn = new JButton("提交");

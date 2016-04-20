@@ -105,8 +105,6 @@ public class UIutil {
 				hqlOrderGoods_From_CurtainShopName, name);
 	}
 
-	
-
 	public static List<OrderGoods> getOrderGoodsFromOrderId(int id) {
 		return (List<OrderGoods>) DBUtil.getClassLst(
 				hqlOrderGoods_From_OrderId, id + "");
@@ -130,23 +128,25 @@ public class UIutil {
 	 */
 	public static List<OrderLst> initLatelyJlist(ListSelectionListener UI,
 			JList latelyjList, MouseAdapter listAdapter, boolean checkbox,
-			List<OrderLst> orderLst,int initClass) {
+			List<OrderLst> orderLst, int initClass) {
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		if (orderLst == null) {
 			if (initClass == 1) {
-				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("",
-						"gt", OrderLst.class, "orderState", "0", "int");
-			}else if (initClass == 2) {
-				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("",
-						"eq", OrderLst.class, "orderState", "1", "int");
+				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "gt",
+						OrderLst.class, "orderState", "0", "int");
+			} else if (initClass == 2) {
+				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "eq",
+						OrderLst.class, "orderState", "1", "int");
 			}
-		} 
+		}
 		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入历史订单
 			OrderLst ol = orderLst.get(i);
-			checkboxModel.add(i,
-					new CheckListItem(ol.getCurtainShop() + ol.getSimpleDate()
-							+ "(" + ol.getOrderStateToString() + ")", false));
+			checkboxModel.add(
+					i,
+					new CheckListItem(ol.getSimpleDate() + "  " + "("
+							+ ol.getOrderStateToString() + ")"
+							+"  "+ ol.getCurtainShop(), false));
 			model.add(i, ol.getCurtainShop() + ol.getSimpleDate());
 		}
 		if (checkbox) {
