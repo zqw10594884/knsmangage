@@ -144,9 +144,9 @@ public class UIutil {
 			OrderLst ol = orderLst.get(i);
 			checkboxModel.add(
 					i,
-					new CheckListItem(ol.getSimpleDate() + "  " + "("
-							+ ol.getOrderStateToString() + ")"
-							+"  "+ ol.getCurtainShop(), false));
+					new CheckListItem("(" + ol.getOrderStateToString() + ")"
+							+ "  " + ol.getSimpleDate() + "  "
+							+ ol.getCurtainShop(), false));
 			model.add(i, ol.getCurtainShop() + ol.getSimpleDate());
 		}
 		if (checkbox) {
@@ -161,7 +161,7 @@ public class UIutil {
 		}
 		latelyjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		latelyjList.setSelectionBackground(new Color(177, 232, 58));// 186,212,239,177,232,58
-		latelyjList.setSelectionForeground(Color.black);
+		latelyjList.setSelectionForeground(Color.red);
 		return orderLst;
 	}
 
