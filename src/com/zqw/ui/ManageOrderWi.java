@@ -40,6 +40,7 @@ import com.zqw.bean.CurtainShop;
 import com.zqw.bean.CurtainShopGoods;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
+import com.zqw.listener.MyListRenderer;
 import com.zqw.util.DBUtil;
 import com.zqw.util.DataUtil;
 
@@ -235,12 +236,15 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void initCurtainShopOrderLst() {
-		DefaultListModel<String> lm = new DefaultListModel<String>();
+		
+		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
 			OrderLst ol = curtainShopOrderLst.get(i);
-			lm.addElement(ol.getCurtainShop() + ol.getDeliveryTime());
+			CheckListItem cli = new CheckListItem(ol.getDeliveryTime() + ol.getCurtainShop());
+			checkboxModel.add(i, cli);
 		}
-		curtainShopOrderjList.setModel(lm);
+		curtainShopOrderjList.setModel(checkboxModel);
+		curtainShopOrderjList.setCellRenderer(new MyListRenderer());
 		curtainShopOrderjList.removeListSelectionListener(this);
 		curtainShopOrderjList.addListSelectionListener(this);
 		curtainShopOrderjList

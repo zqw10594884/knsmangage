@@ -5,7 +5,6 @@ import java.awt.Color;
 public class CheckListItem {
 	private String label;
 	private boolean isSelected = false;
-	private boolean isSelectedBox = false;
 	private Color c = Color.black;
 
 	public CheckListItem() {
@@ -26,13 +25,6 @@ public class CheckListItem {
 	}
 
 	
-	public CheckListItem(String label, boolean isSelected,
-			boolean isSelectedBox) {
-		super();
-		this.label = label;
-		this.isSelected = isSelected;
-		this.isSelectedBox = isSelectedBox;
-	}
 
 	public CheckListItem(String label) {
 		this.label = label;
@@ -58,12 +50,5 @@ public class CheckListItem {
 		this.c = c;
 	}
 
-	public boolean isSelectedBox() {
-		return isSelectedBox;
-	}
-
-	public void setSelectedBox(boolean isSelectedBox) {
-		this.isSelectedBox = isSelectedBox;
-	}
 
 }

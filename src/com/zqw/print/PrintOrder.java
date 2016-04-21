@@ -72,7 +72,7 @@ public class PrintOrder implements Printable {
 		switch (pageIndex) {
 		case 0:
 			Font fontTitle = new Font("新宋体", Font.PLAIN, 30);
-			// Font fontTitle1 = new Font("新宋体", Font.PLAIN, 20);
+			Font fontTitle1 = new Font("新宋体", Font.PLAIN, 20);
 			Font font = new Font("新宋体", Font.PLAIN, 15);
 			Stroke stroke = new BasicStroke(1.5f);// 设置线宽为3.0
 
@@ -85,9 +85,9 @@ public class PrintOrder implements Printable {
 			} else if (parameter == Global.OWN) {
 				String s = "底单__";
 				if (curtainShop.getOwner() == 0) {
-					s+="张";
+					s += "张";
 				} else {
-					s+="刘";
+					s += "刘";
 				}
 				g2.drawString(s, x + 200, y - 50);
 			}
@@ -169,6 +169,13 @@ public class PrintOrder implements Printable {
 			g2.drawString(order.getId() + "", x - 20, 800);
 			y += rowH;
 			g2.drawString("确认货物无误后签字_____________", x + 200, y - 15);
+			if (y < 680 && parameter == Global.CUSTOMER) {
+				g2.setFont(fontTitle1);
+				g2.drawString(curtainShop.getName(), x + 280, 700);
+				g2.drawString("电话:  " + curtainShop.getTelephone(), x + 280,
+						740);
+				g2.drawString("代收:  " + subtotal + "元整", x + 280, 780);
+			}
 			return PAGE_EXISTS;
 		default:
 			return NO_SUCH_PAGE;

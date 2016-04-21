@@ -61,7 +61,6 @@ public class UIutil {
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		for (int i = 0; i < item.size(); i++) {
 			CheckListItem cli = new CheckListItem(item.get(i));
-			cli.setSelectedBox(false);
 			checkboxModel.add(i, cli);
 		}
 		jList.setModel(checkboxModel);
@@ -148,7 +147,7 @@ public class UIutil {
 			OrderLst ol = orderLst.get(i);
 			CheckListItem cli = new CheckListItem("("
 					+ ol.getOrderStateToString() + ")" + "  "
-					+ ol.getSimpleDate() + "  " + ol.getCurtainShop(), false,true);
+					+ ol.getSimpleDate() + "  " + ol.getCurtainShop(), false);
 			if (ol.getOrderState() == 3) {
 				cli.setC(Color.red);
 			} else if (ol.getOrderState() == 2) {
