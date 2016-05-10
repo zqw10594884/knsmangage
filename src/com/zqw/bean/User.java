@@ -4,6 +4,7 @@ public class User {
 	private int id;
 	private String name;
 	private String password;
+	private int authority;
 
 	public int getId() {
 		return id;
@@ -29,4 +30,20 @@ public class User {
 		this.password = password;
 	}
 
+	/**
+	 * 
+	 * @return 0~9超级管理员 10~19 管理员 20~30雇员 20裁布 21售货员 22裁缝 23 安装工
+	 */
+	public int getAuthority() {
+		return authority;
+	}
+
+	/**
+	 * 
+	 * @param authority
+	 *            0~9超级管理员 10~19 管理员 20~30雇员 20裁布 21售货员 22裁缝 23 安装工
+	 */
+	public void setAuthority(int authority) {
+		this.authority = authority;
+	}
 }

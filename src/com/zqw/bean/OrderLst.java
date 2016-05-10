@@ -7,7 +7,9 @@ import java.util.List;
 public class OrderLst {
 	private List<OrderGoods> goodsLst;
 	private String curtainShop;
-	private String untreatedPerson;
+	private String installPerson;
+	private String libraryPerson;
+	private String machiningPerson;
 	private Date deliveryTime;
 	private Date submitTime;
 	private int id;
@@ -18,21 +20,14 @@ public class OrderLst {
 		super();
 	}
 
-	public OrderLst(int arrears, String curtainShop, Date date, int id, int orderState) {
+	public OrderLst(int arrears, String curtainShop, Date date, int id,
+			int orderState) {
 		super();
 		this.curtainShop = curtainShop;
 		this.deliveryTime = date;
 		this.id = id;
 		this.arrears = arrears;
 		this.orderState = orderState;
-	}
-
-	public String getUntreatedPerson() {
-		return untreatedPerson;
-	}
-
-	public void setUntreatedPerson(String untreatedPerson) {
-		this.untreatedPerson = untreatedPerson;
 	}
 
 	/**
@@ -54,7 +49,7 @@ public class OrderLst {
 
 	/**
 	 * 
-	 * @return 订单状态 0 完成 1出库 2备货中 3提交
+	 * @return 10 完成 20出库 30备货中  31备货完成 40提交
 	 */
 	public int getOrderState() {
 		return orderState;
@@ -63,7 +58,7 @@ public class OrderLst {
 	/**
 	 * 
 	 * @param printState
-	 *            订单状态 0 完成 1出库 2备货中 3提交
+	 *            10 完成 20出库 30备货中  31备货完成 40提交
 	 */
 	public void setOrderState(int printState) {
 		this.orderState = printState;
@@ -136,19 +131,45 @@ public class OrderLst {
 		this.goodsLst = goodsLst;
 	}
 
+	public String getInstallPerson() {
+		return installPerson;
+	}
+
+	public void setInstallPerson(String installPerson) {
+		this.installPerson = installPerson;
+	}
+
+	public String getLibraryPerson() {
+		return libraryPerson;
+	}
+
+	public void setLibraryPerson(String libraryPerson) {
+		this.libraryPerson = libraryPerson;
+	}
+
+	public String getMachiningPerson() {
+		return machiningPerson;
+	}
+
+	public void setMachiningPerson(String machiningPerson) {
+		this.machiningPerson = machiningPerson;
+	}
+
 	/**
 	 * 
 	 * @return String 形式的订单状态
 	 */
 	public String getOrderStateToString() {
 		String state = "";
-		if (0 == orderState) {
+		if (10 <= orderState && orderState < 20) {
 			// do nothing
-		} else if (1 == orderState) {
+		} else if (20 <= orderState && orderState < 30) {
 			state = "出库";
-		} else if (2 == orderState) {
+		} else if (30 == orderState) {
 			state = "备货中";
-		} else if (3 == orderState) {
+		} else if (31 == orderState) {
+			state = "备货完成";
+		} else if (40 <= orderState && orderState < 50) {
 			state = "提交";
 		}
 		return state;

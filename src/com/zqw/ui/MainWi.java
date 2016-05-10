@@ -206,8 +206,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		latelyLst = (ArrayList<OrderLst>) UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
-				null,1);
+		latelyLst = (ArrayList<OrderLst>) UIutil.initLatelyJlist(this,
+				latelyjList, listAdapter, true, null, 1);
 		scrollPane_3.setViewportView(latelyjList);
 	}
 
@@ -463,18 +463,18 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		modifyBtn.setBounds(585, 79, 62, 23);
 		modifyBtn.setEnabled(false);
 		contentPane.add(modifyBtn);
-		
+
 		JButton historyListDelBtn = new JButton("删除");
 		historyListDelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				orderDeleteAction();
 			}
 		});
-		
+
 		historyListDelBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		historyListDelBtn.setBounds(1022, 576, 70, 23);
 		contentPane.add(historyListDelBtn);
-		
+
 		btnNewButton = new JButton("刷新");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -583,11 +583,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	 */
 	private void submitOrderactionPerformed(ActionEvent e) {
 		if (tableModel.getRowCount() > 0) {
-			currentOrder.setOrderState(3);
+			currentOrder.setOrderState(40);
 			currentOrder.setSubmitTime(new Date());
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			latelyLst.add(currentOrder);
-			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true, latelyLst,1);
+			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+					latelyLst, 1);
 			removeSubmit();
 			DBUtil.insert(currentOrder);
 		} else {
@@ -609,9 +610,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 							CurtainShop.class, "name", ol.getCurtainShop(),
 							"eq");
 					DBUtil.update(ol);
-					ol.setOrderState(2);
-					UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
-							latelyLst,1);
+					ol.setOrderState(30);
+					UIutil.initLatelyJlist(this, latelyjList, listAdapter,
+							true, latelyLst, 1);
 					print(Global.EMPLOYEE, ol, cs);
 				}
 			}
@@ -626,8 +627,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private void printActionPerformed(ActionEvent evt) {
 
 		if (currentOrder.getGoodsLst().size() > 0
-				&& currentOrder.getOrderState() != 1) {
-			currentOrder.setOrderState(1);
+				&& currentOrder.getOrderState() >= 30) {
+			currentOrder.setOrderState(20);
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			currentOrder.setDeliveryTime(new Date());
 			List<OrderGoods> lst = currentOrder.getGoodsLst();
@@ -635,7 +636,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				lst.get(i).setDate(new Date());
 			}
 			removePrintBtn();
-			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true, latelyLst,1);
+			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+					latelyLst, 1);
 			print(Global.CUSTOMER, currentOrder, curtainShop);
 			print(Global.OWN, currentOrder, curtainShop);
 			DBUtil.update(currentOrder);
@@ -680,7 +682,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		}
 
 	}
-	
+
 	private void orderDeleteAction() {
 		if (latelyLst != null) {
 			latelyLst.remove(currentOrder);

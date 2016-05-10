@@ -1,8 +1,8 @@
 *.class
-/bin
-bin/
-/bin/
-bin/com/inno/UI/setting/
-/gen
-/.metadata/
-*.log
+# Package Files #
+*.war
+*.ear
+#控制某个文件不上传#
+/*.class
+#控制某个文件夹下面的所有文件不上传#
+/bin/com/zqw/*

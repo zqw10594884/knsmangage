@@ -8,7 +8,9 @@
 			<generator class="increment" />
 		</id>
 		<property name="curtainShop" type="string" column="_curtainShop" />
-		<property name="untreatedPerson" type="string" column="_untreatedPerson" />
+		<property name="installPerson" type="string" column="_installPerson" />
+		<property name="libraryPerson" type="string" column="_libraryPerson" />
+		<property name="machiningPerson" type="string" column="_machiningPerson" />
 		<property name="deliveryTime" type="date" column="_deliveryTime" />
 		<property name="submitTime" type="date" column="_submitTime" />
 		<property name="orderState" type="int" column="_orderState" />

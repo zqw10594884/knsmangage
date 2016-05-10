@@ -580,7 +580,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		if (currentOrderLst != null) {
 			orderArrears.setText(0 + "");// 欠款置0
 			currentOrderLst.setArrears(0);
-			currentOrderLst.setOrderState(0);
+			currentOrderLst.setOrderState(10);
 			curtainShopOrderUncheckLst.remove(currentOrderLst);
 			DBUtil.update(currentOrderLst);
 			updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);

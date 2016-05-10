@@ -20,15 +20,13 @@ import com.zqw.bean.Global;
 import com.zqw.bean.User;
 import com.zqw.util.DBUtil;
 
-public class loginWi extends JFrame {
+public class loginCBWi extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField userName;
 	private JPasswordField password;
 	private JRadioButton orderRa;
-	private JRadioButton orderCheck;
-	private JRadioButton manageRa;
-	private JRadioButton orderingRa;
+	private JRadioButton library;
 	private JButton loginBtn;
 	private ButtonGroup buttonGroup1;
 
@@ -39,7 +37,7 @@ public class loginWi extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					loginWi frame = new loginWi();
+					loginCBWi frame = new loginCBWi();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,43 +55,26 @@ public class loginWi extends JFrame {
 			while (enu.hasMoreElements()) {
 				AbstractButton radioButton = enu.nextElement();
 				Global.CURRENTUSER = user.getName();
-				if (radioButton.getName() == "manage"
-						&& radioButton.isSelected() && user.getAuthority() < 20) {
+
+				if ("library".equals(radioButton.getName())
+						&& radioButton.isSelected()
+						&& (user.getAuthority() == 20 || user.getAuthority() < 20)) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							MainAddWi mainAdd = new MainAddWi();
+							MainCBWi mainAdd = new MainCBWi();
 							mainAdd.setVisible(true);
 							mainAdd.setLocationRelativeTo(null);
 						}
 					});
 					this.dispose();
 				} else if (radioButton.getName() == "order"
-						&& radioButton.isSelected() && user.getAuthority() < 20) {
+						&& radioButton.isSelected()
+						&& (user.getAuthority() == 21 || user.getAuthority() < 20)) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							MainWi main = new MainWi();
-							main.setVisible(true);
-							main.setLocationRelativeTo(null);
-						}
-					});
-					this.dispose();
-				} else if (radioButton.getName() == "ordering"
-						&& radioButton.isSelected() && user.getAuthority() < 20) {
-					java.awt.EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							ManageGoods main = new ManageGoods();
-							main.setVisible(true);
-							main.setLocationRelativeTo(null);
-						}
-					});
-					this.dispose();
-				} else if (radioButton.getName() == "orderCheck"
-						&& radioButton.isSelected() && user.getAuthority() < 20) {
-					java.awt.EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							ManageOrderWi main = new ManageOrderWi();
-							main.setVisible(true);
-							main.setLocationRelativeTo(null);
+							// MainWi main = new MainWi();
+							// main.setVisible(true);
+							// main.setLocationRelativeTo(null);
 						}
 					});
 					this.dispose();
@@ -109,7 +90,7 @@ public class loginWi extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public loginWi() {
+	public loginCBWi() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 344, 277);
 		contentPane = new JPanel();
@@ -124,29 +105,15 @@ public class loginWi extends JFrame {
 		orderRa.setText("订单");
 		orderRa.setSelected(true);
 		orderRa.setName("order");
-		orderRa.setBounds(40, 38, 65, 23);
+		orderRa.setBounds(91, 43, 65, 23);
 		contentPane.add(orderRa);
 
-		orderCheck = new JRadioButton();
-		buttonGroup1.add(orderCheck);
-		orderCheck.setText("结账");
-		orderCheck.setName("orderCheck");
-		orderCheck.setBounds(107, 38, 60, 23);
-		contentPane.add(orderCheck);
-
-		orderingRa = new JRadioButton();
-		buttonGroup1.add(orderingRa);
-		orderingRa.setText("订货");
-		orderingRa.setName("ordering");
-		orderingRa.setBounds(229, 38, 65, 23);
-		contentPane.add(orderingRa);
-
-		manageRa = new JRadioButton();
-		buttonGroup1.add(manageRa);
-		manageRa.setText("管理");
-		manageRa.setName("manage");
-		manageRa.setBounds(169, 38, 58, 23);
-		contentPane.add(manageRa);
+		library = new JRadioButton();
+		buttonGroup1.add(library);
+		library.setText("裁布");
+		library.setName("library");
+		library.setBounds(158, 43, 60, 23);
+		contentPane.add(library);
 
 		userName = new JTextField();
 		userName.setBounds(118, 89, 128, 21);

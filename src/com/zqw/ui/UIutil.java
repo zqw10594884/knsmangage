@@ -137,10 +137,13 @@ public class UIutil {
 		if (orderLst == null) {
 			if (initClass == 1) {
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "gt",
-						OrderLst.class, "orderState", "0", "int");
+						OrderLst.class, "orderState", "19", "int");
 			} else if (initClass == 2) {
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "eq",
-						OrderLst.class, "orderState", "1", "int");
+						OrderLst.class, "orderState", "20", "int");
+			}else if (initClass == 3) {
+				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "gt",
+						OrderLst.class, "orderState", "29", "int");
 			}
 		}
 		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入历史订单
@@ -148,9 +151,9 @@ public class UIutil {
 			CheckListItem cli = new CheckListItem("("
 					+ ol.getOrderStateToString() + ")" + "  "
 					+ ol.getSimpleDate() + "  " + ol.getCurtainShop(), false);
-			if (ol.getOrderState() == 3) {
+			if (ol.getOrderState() >= 40) {
 				cli.setC(Color.red);
-			} else if (ol.getOrderState() == 2) {
+			} else if (ol.getOrderState() >= 30 && ol.getOrderState() < 40) {
 				cli.setC(Color.blue);
 			}
 			checkboxModel.add(i, cli);
