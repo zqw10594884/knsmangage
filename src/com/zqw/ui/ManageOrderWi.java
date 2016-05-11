@@ -197,8 +197,9 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 					this.telephone.setText("");
 					this.telephone.setEditable(false);
 					this.orderTotalArrears.setEditable(false);
-					curtainShopOrderGoodsLst = UIutil
-							.getOrderGoodsFromOrderId(currentOrderLst.getId());
+					curtainShopOrderGoodsLst = currentOrderLst.getGoodsLst();
+//					curtainShopOrderGoodsLst = UIutil
+//							.getOrderGoodsFromOrderId(currentOrderLst.getId());
 					// 按钮状态控制
 					if (orderCheckoutBtn.getActionListeners().length == 0) {
 						orderCheckoutBtn.setEnabled(true);

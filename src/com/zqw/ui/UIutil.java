@@ -132,6 +132,7 @@ public class UIutil {
 	public static List<OrderLst> initLatelyJlist(ListSelectionListener UI,
 			JList latelyjList, MouseAdapter listAdapter, boolean checkbox,
 			List<OrderLst> orderLst, int initClass) {
+		
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		if (orderLst == null) {
