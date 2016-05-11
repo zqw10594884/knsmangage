@@ -303,7 +303,9 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	private void submitOrderactionPerformed(ActionEvent e) {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(31);
-			currentOrder.setLibraryPerson(Global.CURRENTUSER);
+			if (currentOrder.getLibraryPerson().length() == 0) {
+				currentOrder.setLibraryPerson(Global.CURRENTUSER);
+			}
 			UIutil.initLatelyJlist(this, checkedjList, listAdapter, true,
 					checkedLst, 3);
 			DBUtil.update(currentOrder);
@@ -326,8 +328,8 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 						CurtainShop cs = (CurtainShop) DBUtil.getClass(
 								CurtainShop.class, "name", ol.getCurtainShop(),
 								"eq");
-						DBUtil.update(ol);
 						ol.setOrderState(30);
+						DBUtil.update(ol);
 						UIutil.initLatelyJlist(this, checkedjList, listAdapter,
 								true, checkedLst, 3);
 						print(Global.EMPLOYEE, ol, cs);

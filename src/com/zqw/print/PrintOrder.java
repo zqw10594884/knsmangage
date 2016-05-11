@@ -46,6 +46,7 @@ public class PrintOrder implements Printable {
 	int[] col = { 155, 45, 45, 55, 175 };
 	int[] TotalCol = { 120, 100, 255 };
 	String[] title = { "品       名", "数量", "单价", "小计", "备   注" };
+	String[] titleB = { "品       名", "数量", "实际数量", "", "备   注" };
 
 	/**
 	 * @param Graphic指明打印的图形环境
@@ -79,7 +80,7 @@ public class PrintOrder implements Printable {
 			// 表头
 			g2.setFont(fontTitle);
 			if (parameter == Global.EMPLOYEE) {
-				g2.drawString("发货单", x + 170, y - 50);
+				g2.drawString("备货单", x + 170, y - 50);
 			} else if (parameter == Global.CUSTOMER) {
 				g2.drawString("凯妮丝红日窗帘批发", x + 100, y - 50);
 			} else if (parameter == Global.OWN) {
@@ -105,7 +106,11 @@ public class PrintOrder implements Printable {
 			g2.setFont(font);
 			g2.setStroke(stroke);
 			// 表格标题
-			y = drawLine(g2, y, x, w, col, title);
+			if (parameter == Global.EMPLOYEE) {
+				y = drawLine(g2, y, x, w, col, titleB);
+			} else {
+				y = drawLine(g2, y, x, w, col, title);
+			}
 			double subtotal = 0;
 			double cloth = 0;
 			double lace = 0;
@@ -169,12 +174,14 @@ public class PrintOrder implements Printable {
 			g2.drawString(order.getId() + "", x - 20, 800);
 			y += rowH;
 			g2.drawString("确认货物无误后签字_____________", x + 200, y - 15);
-			if (y < 680 && parameter == Global.CUSTOMER) {
+			if (y < 680 && parameter != Global.OWN) {
 				g2.setFont(fontTitle1);
 				g2.drawString(curtainShop.getName(), x + 280, 700);
-				g2.drawString("电话:  " + curtainShop.getTelephone(), x + 280,
-						740);
-				g2.drawString("代收:  " + subtotal + "元整", x + 280, 780);
+				if (parameter == Global.CUSTOMER) {
+					g2.drawString("电话:  " + curtainShop.getTelephone(),
+							x + 280, 740);
+					g2.drawString("代收:  " + subtotal + "元整", x + 280, 780);
+				}
 			}
 			return PAGE_EXISTS;
 		default:

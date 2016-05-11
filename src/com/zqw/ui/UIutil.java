@@ -141,9 +141,23 @@ public class UIutil {
 			} else if (initClass == 2) {
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "eq",
 						OrderLst.class, "orderState", "20", "int");
-			}else if (initClass == 3) {
-				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "gt",
-						OrderLst.class, "orderState", "29", "int");
+			} else if (initClass == 3) {
+				orderLst = new ArrayList<OrderLst>();
+				ArrayList<OrderLst> lst = (ArrayList<OrderLst>) DBUtil
+						.getLstClass("", "gt", OrderLst.class, "orderState",
+								"29", "int");
+				// 过滤器 筛选有布或者纱的订单
+				for (int i = 0; i < lst.size(); i++) {
+					List<OrderGoods> ogLst = lst.get(i).getGoodsLst();
+					for (int j = 0; j < ogLst.size(); j++) {
+						String s = ogLst.get(j).getSerialNumber();
+						if (s.contains("A-") || s.contains("B-")) {
+							orderLst.add(lst.get(i));
+							break;
+						}
+					}
+				}
+
 			}
 		}
 		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入历史订单

@@ -590,7 +590,13 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
 			removeSubmit();
-			DBUtil.insert(currentOrder);
+			// 判断id是否为空
+			if (currentOrder.getId() < 1) {
+				currentOrder.setId(UIutil.getMaxIdFromOrderLst());
+				DBUtil.insert(currentOrder);
+			} else {
+				DBUtil.update(currentOrder);
+			}
 		} else {
 
 		}
@@ -709,10 +715,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (serialNumber.getText().length() > 1) {
 			String[] rowValues = creatRow();
 			tableModel.addRow(rowValues);
-			// 判断id是否为空
-			if (currentOrder.getId() < 1) {
-				currentOrder.setId(UIutil.getMaxIdFromOrderLst());
-			}
 			OrderGoods og = new OrderGoods();
 			updateOrderGoods(tableModel.getRowCount() - 1, og, currentOrder);
 			currentOrder.getGoodsLst().add(og);
