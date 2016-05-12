@@ -56,7 +56,7 @@ public class loginWi extends JFrame {
 			Enumeration<AbstractButton> enu = buttonGroup1.getElements();
 			while (enu.hasMoreElements()) {
 				AbstractButton radioButton = enu.nextElement();
-				Global.CURRENTUSER = user.getName();
+				Global.CURRENTUSER = user.getRealName();
 				if (radioButton.getName() == "manage"
 						&& radioButton.isSelected() && user.getAuthority() < 20) {
 					java.awt.EventQueue.invokeLater(new Runnable() {

@@ -447,8 +447,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		contentPane.add(goodChangeCB);
 
 		flowersComboBox = new JComboBox<String>();
-		flowersComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {
-				"不对花", "对花", "多对", "强对" }));
+		flowersComboBox.setModel(new DefaultComboBoxModel(new String[] {"不对花", "对花", "多对", "少对", "对整花"}));
 		flowersComboBox.setFont(new Font("宋体", Font.PLAIN, 13));
 		flowersComboBox.setBounds(481, 80, 66, 21);
 		contentPane.add(flowersComboBox);
@@ -586,17 +585,17 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			currentOrder.setOrderState(40);
 			currentOrder.setSubmitTime(new Date());
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
-			latelyLst.add(currentOrder);
-			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
-					latelyLst, 1);
-			removeSubmit();
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
 				currentOrder.setId(UIutil.getMaxIdFromOrderLst());
 				DBUtil.insert(currentOrder);
+				latelyLst.add(currentOrder);
 			} else {
 				DBUtil.update(currentOrder);
 			}
+			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+					latelyLst, 1);
+			removeSubmit();
 		} else {
 
 		}

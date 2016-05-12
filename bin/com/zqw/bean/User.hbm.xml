@@ -8,6 +8,7 @@
 			<generator class="native" />
 		</id>
 		<property name="name" type="string" column="_name" />
+		<property name="realName" type="string" column="_realName" />
 		<property name="password" type="string" column="_password" />
 		<property name="authority" type="int" column="_authority" />
 	</class>

@@ -132,7 +132,7 @@ public class UIutil {
 	public static List<OrderLst> initLatelyJlist(ListSelectionListener UI,
 			JList latelyjList, MouseAdapter listAdapter, boolean checkbox,
 			List<OrderLst> orderLst, int initClass) {
-		
+
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		if (orderLst == null) {
@@ -163,9 +163,16 @@ public class UIutil {
 		}
 		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入历史订单
 			OrderLst ol = orderLst.get(i);
-			CheckListItem cli = new CheckListItem("("
-					+ ol.getOrderStateToString() + ")" + "  "
-					+ ol.getSimpleDate() + "  " + ol.getCurtainShop(), false);
+			CheckListItem cli = null;
+			if (initClass == 3) {
+				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
+						+ "  " + ol.getSimpleDate() + "  "
+						+ ol.getCurtainShop()+"("+ol.getLibraryPerson()+")", false);
+			} else {
+				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
+						+ "  " + ol.getSimpleDate() + "  "
+						+ ol.getCurtainShop(), false);
+			}
 			if (ol.getOrderState() >= 40) {
 				cli.setC(Color.red);
 			} else if (ol.getOrderState() >= 30 && ol.getOrderState() < 40) {

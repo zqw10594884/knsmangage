@@ -3,6 +3,7 @@ package com.zqw.bean;
 public class User {
 	private int id;
 	private String name;
+	private String realName;
 	private String password;
 	private int authority;
 
@@ -20,6 +21,14 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 
 	public String getPassword() {

@@ -270,8 +270,8 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void refreshactionPerformed(ActionEvent e) {
-		DBUtil.refresh();
-		UIutil.initLatelyJlist(this, checkedjList, listAdapter, true, null, 3);
+//		DBUtil.refresh();
+//		UIutil.initLatelyJlist(this, checkedjList, listAdapter, true, null, 3);
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	private void submitOrderactionPerformed(ActionEvent e) {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(31);
-			if (currentOrder.getLibraryPerson().length() == 0) {
+			if (currentOrder.getLibraryPerson()==null||currentOrder.getLibraryPerson().length() == 0) {
 				currentOrder.setLibraryPerson(Global.CURRENTUSER);
 			}
 			UIutil.initLatelyJlist(this, checkedjList, listAdapter, true,

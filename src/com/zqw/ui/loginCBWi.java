@@ -54,7 +54,7 @@ public class loginCBWi extends JFrame {
 			Enumeration<AbstractButton> enu = buttonGroup1.getElements();
 			while (enu.hasMoreElements()) {
 				AbstractButton radioButton = enu.nextElement();
-				Global.CURRENTUSER = user.getName();
+				Global.CURRENTUSER = user.getRealName();
 
 				if ("library".equals(radioButton.getName())
 						&& radioButton.isSelected()
