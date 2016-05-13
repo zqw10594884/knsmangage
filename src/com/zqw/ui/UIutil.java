@@ -122,52 +122,56 @@ public class UIutil {
 	/**
 	 * 
 	 * @param UI
-	 * @param latelyjList
+	 * @param jList
 	 * @param listAdapter
 	 * @param checkbox
 	 * @param orderLst
-	 * @param initClass MainWi = 1, ManageOrderWi = 2.
+	 * @param initClass MainWi = 1, ManageOrderWi = 2. MainCBWi = 3.
 	 * @return
 	 */
-	public static List<OrderLst> initLatelyJlist(ListSelectionListener UI,
-			JList latelyjList, MouseAdapter listAdapter, boolean checkbox,
+	public static List<OrderLst> initOrderJlist(ListSelectionListener UI,
+			JList jList, MouseAdapter listAdapter, boolean checkbox,
 			List<OrderLst> orderLst, int initClass) {
-
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		DefaultListModel<String> model = new DefaultListModel<String>();
+
 		if (orderLst == null) {
-			if (initClass == 1) {
+
+			switch (initClass) {
+			case 1:
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "gt",
 						OrderLst.class, "orderState", "19", "int");
-			} else if (initClass == 2) {
+				break;
+			case 2:
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "eq",
 						OrderLst.class, "orderState", "20", "int");
-			} else if (initClass == 3) {
+				break;
+			case 3:
+
 				orderLst = new ArrayList<OrderLst>();
-				ArrayList<OrderLst> lst = (ArrayList<OrderLst>) DBUtil
+				ArrayList<OrderLst> originalLst = (ArrayList<OrderLst>) DBUtil
 						.getLstClass("", "gt", OrderLst.class, "orderState",
 								"29", "int");
-				// 过滤器 筛选有布或者纱的订单
-				for (int i = 0; i < lst.size(); i++) {
-					List<OrderGoods> ogLst = lst.get(i).getGoodsLst();
-					for (int j = 0; j < ogLst.size(); j++) {
-						String s = ogLst.get(j).getSerialNumber();
-						if (s.contains("A-") || s.contains("B-")) {
-							orderLst.add(lst.get(i));
-							break;
-						}
-					}
-				}
+				orderLst = filter(orderLst, originalLst);// 过滤器 筛选有布或者纱的订单
 
+				break;
+			case 4:
+
+				break;
+
+			default:
+				break;
 			}
 		}
-		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入历史订单
+
+		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入
 			OrderLst ol = orderLst.get(i);
 			CheckListItem cli = null;
 			if (initClass == 3) {
 				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
 						+ "  " + ol.getSimpleDate() + "  "
-						+ ol.getCurtainShop()+"("+ol.getLibraryPerson()+")", false);
+						+ ol.getCurtainShop() + "(" + ol.getLibraryPerson()
+						+ ")", false);
 			} else {
 				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
 						+ "  " + ol.getSimpleDate() + "  "
@@ -182,20 +186,36 @@ public class UIutil {
 			// 结账界面历史订单
 			model.add(i, ol.getCurtainShop() + ol.getSimpleDate());
 		}
+
 		if (checkbox) {
-			latelyjList.setModel(checkboxModel);
-			latelyjList.setCellRenderer(new CheckListRenderer());
-			if (latelyjList.getMouseListeners().length < 3) {
-				latelyjList.addMouseListener(listAdapter);
+			jList.setModel(checkboxModel);
+			jList.setCellRenderer(new CheckListRenderer());
+			if (jList.getMouseListeners().length < 3) {
+				jList.addMouseListener(listAdapter);
 			}
 		} else {
-			latelyjList.setModel(model);
-			latelyjList.addListSelectionListener(UI);
+			jList.setModel(model);
+			jList.addListSelectionListener(UI);
 		}
-		latelyjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		latelyjList.setSelectionBackground(new Color(177, 232, 58));// 186,212,239,177,232,58
-		latelyjList.setSelectionForeground(Color.red);
+		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jList.setSelectionBackground(new Color(177, 232, 58));// 186,212,239,177,232,58
+		jList.setSelectionForeground(Color.red);
 		return orderLst;
+	}
+
+	private static List<OrderLst> filter(List<OrderLst> orderLst,
+			ArrayList<OrderLst> lst) {
+		for (int i = 0; i < lst.size(); i++) {
+			List<OrderGoods> ogLst = lst.get(i).getGoodsLst();
+			for (int j = 0; j < ogLst.size(); j++) {
+				String s = ogLst.get(j).getSerialNumber();
+				if (s.contains("A-") || s.contains("B-")) {
+					orderLst.add(lst.get(i));
+					break;
+				}
+			}
+		}
+		return null;
 	}
 
 	public static List<OrderLst> isCurtainShopHaveArrears() {

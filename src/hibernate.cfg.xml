@@ -23,6 +23,7 @@
 		<mapping resource="com/zqw/bean/OrderGoods.hbm.xml" />
 		<mapping resource="com/zqw/bean/User.hbm.xml" />
 		<mapping resource="com/zqw/bean/PurchaseOrder.hbm.xml" />
+		<mapping resource="com/zqw/bean/LittleCloth.hbm.xml" />
 
 	</session-factory>
 </hibernate-configuration>

@@ -512,7 +512,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		curtainShopOrderUncheckLst = UIutil.initLatelyJlist(this,
+		curtainShopOrderUncheckLst = UIutil.initOrderJlist(this,
 				uncheckOrderjLst, listAdapter, false, null, 2);
 		scrollPane_4.setViewportView(uncheckOrderjLst);
 
@@ -585,7 +585,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			curtainShopOrderUncheckLst.remove(currentOrderLst);
 			DBUtil.update(currentOrderLst);
 			updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
-			UIutil.initLatelyJlist(this, uncheckOrderjLst, listAdapter, false,
+			UIutil.initOrderJlist(this, uncheckOrderjLst, listAdapter, false,
 					curtainShopOrderUncheckLst, 2);
 
 			orderCheckoutBtn.setEnabled(false);
@@ -609,7 +609,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		if (currentOrderLst != null) {
 			curtainShopOrderUncheckLst.remove(currentOrderLst);
 			updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
-			UIutil.initLatelyJlist(this, uncheckOrderjLst, listAdapter, false,
+			UIutil.initOrderJlist(this, uncheckOrderjLst, listAdapter, false,
 					curtainShopOrderUncheckLst, 2);
 			DBUtil.del(currentOrderLst);
 			orderCheckoutBtn.setEnabled(false);

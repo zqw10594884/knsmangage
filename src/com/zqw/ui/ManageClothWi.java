@@ -1,6 +1,7 @@
 package com.zqw.ui;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,8 +14,10 @@ import java.awt.print.Paper;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -34,12 +38,17 @@ import javax.swing.table.TableColumn;
 import com.zqw.bean.CheckListItem;
 import com.zqw.bean.CurtainShop;
 import com.zqw.bean.Global;
+import com.zqw.bean.Goods;
+import com.zqw.bean.LittleCloth;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
 import com.zqw.print.PrintOrder;
 import com.zqw.util.DBUtil;
 
-public class MainCBWi extends JFrame implements ListSelectionListener {
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
+public class ManageClothWi extends JFrame implements ListSelectionListener {
 
 	/**
 	 * 
@@ -50,11 +59,8 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	private JScrollPane scrollPane_3;
 	private DefaultTableModel tableModel;
 	private JTable table;
-
-	private JTextField shopName;
 	private JTextField serialNumber;
 	private JTextField number;
-	private JButton modifyBtn;
 	private JButton submitOrderBtn;
 	private ActionListener modifyAL;
 	private ActionListener submitOrderAL;
@@ -65,18 +71,23 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	private ArrayList<OrderLst> checkedLst;
 	private ArrayList<OrderLst> pandectList = new ArrayList<OrderLst>();
 	private OrderLst currentOrder;
-	private JLabel nameLab;
+	private JList<CheckListItem> goodjList;
+	private JScrollPane scrollPane_1;
+	private ArrayList<Goods> goodsLst;
+	private JButton modifyBtn;
+	private JButton delBtn;
+	private JList littleClothjList;
+	private ArrayList<LittleCloth> littleClothLst;
+	private int goodLstIndex;
+	private JComboBox defectiveCB;
+	private LittleCloth currentlc;
+	private ArrayList<LittleCloth> lcLst = new ArrayList<LittleCloth>();
+	private Goods currentGoods;
 
-	public MainCBWi() {
+	public ManageClothWi() {
 		initComponents();
 		initTable();
 		initData();
-		nameLab.setText(Global.CURRENTUSER);
-		
-		JButton button = new JButton("残布管理");
-		button.setFont(new Font("宋体", Font.PLAIN, 14));
-		button.setBounds(22, 579, 93, 23);
-		contentPane.add(button);
 	}
 
 	/**
@@ -86,7 +97,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainCBWi frame = new MainCBWi();
+					ManageClothWi frame = new ManageClothWi();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -98,48 +109,64 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	@SuppressWarnings("unchecked")
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getValueIsAdjusting()) {
-
+			if (e.getSource().equals(goodjList)) {
+				goodLstIndex = goodjList.getSelectedIndex();
+				currentGoods = goodsLst.get(goodLstIndex);
+				serialNumber.setText(currentGoods.getSerialNumber());
+			} else if (e.getSource().equals(littleClothjList)) {
+				
+				String s = (String) littleClothjList.getSelectedValue();
+				for (int i = 0; i < tableModel.getRowCount();) {
+					tableModel.removeRow(0);
+				}
+				for (int i = 0; i < littleClothLst.size(); i++) {
+					LittleCloth lc = littleClothLst.get(i);
+					if (s.equals(lc.getSerialNumber())) {
+						String[] rowValues = { lc.getSerialNumber(),
+								lc.getNumber() + "", lc.getRemark() };
+						tableModel.addRow(rowValues);
+					}
+				}
+				table.setModel(tableModel);
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void initData() {
-		checkedjList = new JList<>();
-		listAdapter = new MouseAdapter() {
-			public void mouseClicked(MouseEvent event) {
-				JList<CheckListItem> list = (JList<CheckListItem>) event
-						.getSource();
-				// Get index of item clicked
-				// 获得用户点击项的索引
-				latelyLstindex = list.locationToIndex(event.getPoint());
-				if (event.getX() < 17) {
-					CheckListItem item = list.getModel().getElementAt(
-							latelyLstindex);
-					// 设置列表中项的选择状态
-					item.setSelected(!item.isSelected());
-				} else {
-					addLatelyLstToMain(latelyLstindex);
-				}
-				// 重新绘制列表中项
-				list.repaint(list.getCellBounds(latelyLstindex, latelyLstindex));
-			}
 
-			public void mousePressed(MouseEvent e) {
-			}
+		goodsLst = (ArrayList<Goods>) DBUtil.getLstClass("serialNumber", "",
+				Goods.class, "");
+		String[] Lst = new String[goodsLst.size()];
+		for (int i = 0; i < goodsLst.size(); i++) {
+			Lst[i] = goodsLst.get(i).getSerialNumber();
+		}
+		goodjList = new JList(Lst);
+		goodjList.addListSelectionListener(this);
+		goodjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_1.setViewportView(goodjList);
 
-			public void mouseReleased(MouseEvent e) {
+		littleClothLst = (ArrayList<LittleCloth>) DBUtil.getLstClass(
+				"serialNumber", "", LittleCloth.class, "");
+		DefaultListModel lm = new DefaultListModel<String>();
+		for (int i = 0; i < littleClothLst.size(); i++) {
+			String s = littleClothLst.get(i).getSerialNumber();
+			if (!lm.contains(s)) {
+				lm.addElement(s);
 			}
-		};
-		checkedLst = (ArrayList<OrderLst>) UIutil.initOrderJlist(this,
-				checkedjList, listAdapter, true, null, 3);
-		scrollPane_3.setViewportView(checkedjList);
+		}
+		littleClothjList = new JList();
+		littleClothjList.setModel(lm);
+		littleClothjList.addListSelectionListener(this);
+		littleClothjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_3.setViewportView(littleClothjList);
+
 	}
 
 	private void initTable() {
 		String[] columnNames = { "编号", "数量", "备注" };
 		String[][] tableVales = {};
 		tableModel = new DefaultTableModel(tableVales, columnNames);
-
 		table.setModel(tableModel);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -170,46 +197,35 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 
 	private void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 796, 649);
+		setBounds(100, 100, 798, 613);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("店名：");
-		lblNewLabel.setBounds(31, 107, 54, 15);
-		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(lblNewLabel);
-
-		shopName = new JTextField();
-		shopName.setEditable(false);
-		shopName.setBounds(74, 105, 130, 21);
-		contentPane.add(shopName);
-		shopName.setColumns(10);
-
 		JLabel label_1 = new JLabel("编号：");
-		label_1.setBounds(220, 110, 54, 15);
+		label_1.setBounds(228, 40, 54, 15);
 		label_1.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_1);
 
 		serialNumber = new JTextField();
 		serialNumber.setEditable(false);
-		serialNumber.setBounds(263, 107, 130, 21);
+		serialNumber.setBounds(271, 37, 130, 21);
 		contentPane.add(serialNumber);
 		serialNumber.setColumns(10);
 
 		JLabel label_3 = new JLabel("数量：");
-		label_3.setBounds(31, 144, 45, 15);
+		label_3.setBounds(228, 71, 45, 15);
 		label_3.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_3);
 
 		number = new JTextField();
-		number.setBounds(74, 141, 41, 21);
+		number.setBounds(271, 68, 41, 21);
 		contentPane.add(number);
 		number.setColumns(10);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 193, 480, 376);
+		scrollPane.setBounds(218, 99, 346, 470);
 		contentPane.add(scrollPane);
 		table = new JTable();
 
@@ -218,23 +234,16 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		scrollPane.setViewportView(table);
 
 		scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(500, 37, 270, 532);
+		scrollPane_3.setBounds(574, 37, 198, 532);
 		contentPane.add(scrollPane_3);
 
-		JLabel jlabel_2 = new JLabel("历史订单");
-		jlabel_2.setFont(new Font("宋体", Font.PLAIN, 14));
-		jlabel_2.setBounds(612, 10, 70, 15);
-		contentPane.add(jlabel_2);
+		littleClothjList = new JList();
+		scrollPane_3.setViewportView(littleClothjList);
 
-		JButton untreatedPrintBtn = new JButton("备货打印");
-		untreatedPrintBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				untreatedPrintActionPerformed(e);
-			}
-		});
-		untreatedPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		untreatedPrintBtn.setBounds(600, 579, 93, 23);
-		contentPane.add(untreatedPrintBtn);
+		JLabel jlabel_2 = new JLabel("布头列表");
+		jlabel_2.setFont(new Font("宋体", Font.PLAIN, 14));
+		jlabel_2.setBounds(646, 10, 70, 15);
+		contentPane.add(jlabel_2);
 
 		submitOrderBtn = new JButton("提交");
 		submitOrderBtn.addActionListener(new ActionListener() {
@@ -243,7 +252,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		submitOrderBtn.setBounds(219, 140, 62, 23);
+		submitOrderBtn.setBounds(411, 67, 62, 23);
 		contentPane.add(submitOrderBtn);
 
 		modifyAL = new ActionListener() {
@@ -251,32 +260,31 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 				modifyALActionPerformed(e);
 			}
 		};
+
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 37, 198, 532);
+		contentPane.add(scrollPane_1);
+
+		JLabel label = new JLabel("货物编号");
+		label.setFont(new Font("宋体", Font.PLAIN, 14));
+		label.setBounds(76, 10, 70, 15);
+		contentPane.add(label);
+
+		defectiveCB = new JComboBox();
+		defectiveCB.setModel(new DefaultComboBoxModel(new String[] { "请选择",
+				"有残次", "无残次" }));
+		defectiveCB.setBounds(322, 68, 79, 21);
+		contentPane.add(defectiveCB);
+
 		modifyBtn = new JButton("修改");
 		modifyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		modifyBtn.setBounds(140, 140, 62, 23);
-		modifyBtn.setEnabled(false);
+		modifyBtn.setBounds(488, 67, 62, 23);
 		contentPane.add(modifyBtn);
 
-		JButton refreshBtn = new JButton("刷新");
-		refreshBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				refreshactionPerformed(e);
-
-			}
-		});
-		refreshBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		refreshBtn.setBounds(304, 140, 62, 23);
-		contentPane.add(refreshBtn);
-		
-		nameLab = new JLabel("");
-		nameLab.setFont(new Font("仿宋", Font.BOLD, 34));
-		nameLab.setBounds(52, 37, 152, 42);
-		contentPane.add(nameLab);
-	}
-
-	private void refreshactionPerformed(ActionEvent e) {
-//		DBUtil.refresh();
-//		UIutil.initLatelyJlist(this, checkedjList, listAdapter, true, null, 3);
+		delBtn = new JButton("删除");
+		delBtn.setFont(new Font("宋体", Font.PLAIN, 14));
+		delBtn.setBounds(488, 36, 62, 23);
+		contentPane.add(delBtn);
 	}
 
 	/**
@@ -306,41 +314,23 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	 * @param e
 	 */
 	private void submitOrderactionPerformed(ActionEvent e) {
-		if (tableModel.getRowCount() > 0) {
-			currentOrder.setOrderState(31);
-			if (currentOrder.getLibraryPerson()==null||currentOrder.getLibraryPerson().length() == 0) {
-				currentOrder.setLibraryPerson(Global.CURRENTUSER);
+		int index = defectiveCB.getSelectedIndex();
+		if (index != 0) {
+			currentlc = new LittleCloth();
+			currentlc.setSerialNumber(serialNumber.getText());
+			currentlc.setPurchasePrice(currentGoods.getPurchasePrice());
+			currentlc.setNumber(Double.parseDouble(number.getText().trim()));
+			currentlc.setProductionDate(new Date());
+			currentlc.setProductionPerson(Global.CURRENTUSER);
+			if (index == 1) {
+				currentlc.setDefective(true);
+			} else if (index == 2) {
+				currentlc.setDefective(false);
 			}
-			UIutil.initOrderJlist(this, checkedjList, listAdapter, true,
-					checkedLst, 3);
-			DBUtil.update(currentOrder);
+			lcLst.add(currentlc);
+			DBUtil.insert(currentlc);
 		} else {
 
-		}
-	}
-
-	/**
-	 * 打印备货单
-	 */
-	private void untreatedPrintActionPerformed(ActionEvent evt) {
-		ListModel<CheckListItem> l = checkedjList.getModel();
-		if (l.getSize() > 0) {
-			for (int i = 0; i < l.getSize(); i++) {
-				CheckListItem cli = l.getElementAt(i);
-				if (cli.isSelected()) {
-					OrderLst ol = checkedLst.get(i);
-					if (ol.getOrderState() == 40) {
-						CurtainShop cs = (CurtainShop) DBUtil.getClass(
-								CurtainShop.class, "name", ol.getCurtainShop(),
-								"eq");
-						ol.setOrderState(30);
-						DBUtil.update(ol);
-						UIutil.initOrderJlist(this, checkedjList, listAdapter,
-								true, checkedLst, 3);
-						print(Global.EMPLOYEE, ol, cs);
-					}
-				}
-			}
 		}
 	}
 
@@ -358,21 +348,6 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 					1).toString()));
 			removeModifyBtnAndDeleteBtn();
 		}
-	}
-
-	private void addLatelyLstToMain(int index) {
-		currentOrder = checkedLst.get(index);
-		List<OrderGoods> Lst = currentOrder.getGoodsLst();
-		for (int i = 0; i < tableModel.getRowCount();) {
-			tableModel.removeRow(0);
-		}
-
-		for (int i = 0; i < Lst.size(); i++) {
-			String[] rowValues = { Lst.get(i).getSerialNumber(),
-					Lst.get(i).getNumber() + "", Lst.get(i).getRemark() };
-			tableModel.addRow(rowValues); // 添加一行
-		}
-		shopName.setText(currentOrder.getCurtainShop());
 	}
 
 	private void print(int parameter, OrderLst order, CurtainShop curtainShop) {

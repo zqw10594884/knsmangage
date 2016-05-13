@@ -206,7 +206,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		latelyLst = (ArrayList<OrderLst>) UIutil.initLatelyJlist(this,
+		latelyLst = (ArrayList<OrderLst>) UIutil.initOrderJlist(this,
 				latelyjList, listAdapter, true, null, 1);
 		scrollPane_3.setViewportView(latelyjList);
 	}
@@ -593,7 +593,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			} else {
 				DBUtil.update(currentOrder);
 			}
-			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
 			removeSubmit();
 		} else {
@@ -616,7 +616,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 							"eq");
 					DBUtil.update(ol);
 					ol.setOrderState(30);
-					UIutil.initLatelyJlist(this, latelyjList, listAdapter,
+					UIutil.initOrderJlist(this, latelyjList, listAdapter,
 							true, latelyLst, 1);
 					print(Global.EMPLOYEE, ol, cs);
 				}
@@ -641,7 +641,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				lst.get(i).setDate(new Date());
 			}
 			removePrintBtn();
-			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
 			print(Global.CUSTOMER, currentOrder, curtainShop);
 			print(Global.OWN, currentOrder, curtainShop);
@@ -691,7 +691,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private void orderDeleteAction() {
 		if (latelyLst != null) {
 			latelyLst.remove(currentOrder);
-			UIutil.initLatelyJlist(this, latelyjList, listAdapter, true,
+			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
 			DBUtil.del(currentOrder);
 			UIutil.delFromCurtainShopGoods();
@@ -793,6 +793,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		shopName.setText(currentOrder.getCurtainShop());
 		telephone.setText(curtainShop.getTelephone());
 		total.setText(currentOrder.getArrears() + "");
+		profit.setText(DataUtil.getProfitm(tableModel) + "");
 		addPrintBtn();
 	}
 

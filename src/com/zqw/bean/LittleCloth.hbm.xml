@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.zqw.bean">
+	<class name="LittleCloth" table="_littlecloth" lazy="true">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="serialNumber" type="string" column="_serialNumber" />
+		<property name="purchasePrice" type="double" column="_purchasePrice" />
+		<property name="number" type="double" column="_number" />
+		<property name="remark" type="string" column="_remark" />
+		<property name="productionDate" type="time" column="_productionDate" />
+		<property name="productionPerson" type="string" column="_productionPerson"/>
+		<property name="defective" type="boolean" column="_defective" />
+	</class>
+</hibernate-mapping>
+
