@@ -4,6 +4,7 @@ public class Goods {
 	private int id;
 	private String serialNumber;
 	private double purchasePrice;
+	private String number;
 	private String distance;
 	private String factory;
 	private String telephone;
@@ -32,8 +33,15 @@ public class Goods {
 		this.distance = distance;
 	}
 
-
 	
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
 	public String getRemark() {
 		return remark;
 	}

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -229,17 +230,26 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 
 		JLabel label_9 = new JLabel();
 		label_9.setText("备 注：");
-		label_9.setBounds(10, 80, 42, 15);
+		label_9.setBounds(10, 109, 42, 15);
 		panel_1.add(label_9);
 
 		goodRemarksModify = new JTextField();
-		goodRemarksModify.setBounds(56, 77, 202, 21);
+		goodRemarksModify.setBounds(56, 106, 202, 21);
 		panel_1.add(goodRemarksModify);
 
 		goodModifyBtn = new JButton();
 		goodModifyBtn.setText("修改");
-		goodModifyBtn.setBounds(112, 104, 67, 23);
+		goodModifyBtn.setBounds(194, 24, 67, 23);
 		panel_1.add(goodModifyBtn);
+		
+		numberTF = new JTextField();
+		numberTF.setBounds(57, 77, 71, 21);
+		panel_1.add(numberTF);
+		
+		label_13 = new JLabel();
+		label_13.setText("数量：");
+		label_13.setBounds(11, 80, 42, 15);
+		panel_1.add(label_13);
 
 		scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(616, 10, 283, 268);
@@ -464,6 +474,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		String serialNumber = goodSerialNumberModify.getText().trim();
 		String purchasePrice = goodPurchasePriceModify.getText().trim();
 		String remark = goodRemarksModify.getText().trim();
+		String number = numberTF.getText().trim();
 		Goods goods = goodsLst.get(goodsLstIndex);
 		if (serialNumber.length() > 0
 				&& !goods.getSerialNumber().equals(serialNumber)) {
@@ -476,6 +487,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		goods.setSerialNumber(serialNumber);
 		goods.setPurchasePrice(Double.parseDouble(purchasePrice));
 		goods.setRemark(remark);
+		goods.setNumber(number);
 		DBUtil.update(goods);
 	}
 
@@ -527,7 +539,9 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 
 	private void goodjListBtnAddActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
-		AddGoodsShop dialog = new AddGoodsShop(new javax.swing.JFrame(), true);
+		
+		AddGood dialog = new AddGood(new JFrame(),
+				true);
 		dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				// dialog.dispose();
@@ -559,6 +573,9 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		});
 		dialog.setVisible(true);
 		dialog.setLocationRelativeTo(null);
+		
+		
+		
 		String sql = "select c.name from CurtainShop as c where c.name=:name0";
 		if (Global.curtainShop != null && Global.curtainShop.getName() != null) {
 			if (DBUtil.get(sql, Global.curtainShop.getName(), "") == null) {
@@ -663,4 +680,6 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 	private JButton delBtn;
 	private JButton curtainShopModifyBtn;
 	private JButton modifyBtn;
+	private JTextField numberTF;
+	private JLabel label_13;
 }

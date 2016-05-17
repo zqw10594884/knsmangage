@@ -9,6 +9,11 @@ package com.zqw.ui;
 import javax.swing.JOptionPane;
 
 import com.zqw.bean.Global;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
 
 /**
  * 
@@ -19,6 +24,7 @@ public class AddGoodsShop extends javax.swing.JDialog {
 	/** Creates new form AddCurtainShop */
 	public AddGoodsShop(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
+		getContentPane().setLayout(null);
 		initComponents();
 	}
 
@@ -32,17 +38,27 @@ public class AddGoodsShop extends javax.swing.JDialog {
 	private void initComponents() {
 
 		jLabel1 = new javax.swing.JLabel();
+		jLabel1.setBounds(28, 35, 42, 15);
 		serialNumber = new javax.swing.JTextField();
+		serialNumber.setBounds(74, 32, 137, 21);
 		jLabel2 = new javax.swing.JLabel();
+		jLabel2.setBounds(28, 62, 42, 15);
 		purchasePrice = new javax.swing.JTextField();
+		purchasePrice.setBounds(74, 59, 137, 21);
 		jLabel3 = new javax.swing.JLabel();
+		jLabel3.setBounds(29, 89, 42, 15);
 		factory = new javax.swing.JTextField();
+		factory.setBounds(75, 86, 136, 21);
 		add = new javax.swing.JButton();
+		add.setBounds(47, 175, 57, 23);
 		jLabel4 = new javax.swing.JLabel();
+		jLabel4.setBounds(29, 116, 42, 15);
 		telephone = new javax.swing.JTextField();
+		telephone.setBounds(75, 113, 136, 21);
 		jButton1 = new javax.swing.JButton();
+		jButton1.setBounds(122, 175, 57, 23);
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+		// setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 		jLabel1.setText("\u578b \u53f7\uff1a");
 
@@ -58,6 +74,7 @@ public class AddGoodsShop extends javax.swing.JDialog {
 		});
 
 		jLabel4.setText("\u7535 \u8bdd\uff1a");
+		getContentPane().add(jLabel4);
 
 		jButton1.setText("\u5173\u95ed");
 		jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -66,132 +83,24 @@ public class AddGoodsShop extends javax.swing.JDialog {
 			}
 		});
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
-				getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addGap(28, 28, 28)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING,
-												false)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addComponent(
-																		jLabel2)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		purchasePrice,
-																		javax.swing.GroupLayout.PREFERRED_SIZE,
-																		137,
-																		javax.swing.GroupLayout.PREFERRED_SIZE))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addComponent(
-																		jLabel1)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		serialNumber))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(1, 1, 1)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addComponent(
-																										jLabel4)
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(
-																										telephone,
-																										javax.swing.GroupLayout.DEFAULT_SIZE,
-																										136,
-																										Short.MAX_VALUE))
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addComponent(
-																										jLabel3)
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(
-																										factory))
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addGap(13,
-																										13,
-																										13)
-																								.addComponent(
-																										add)
-																								.addGap(18,
-																										18,
-																										18)
-																								.addComponent(
-																										jButton1)))))
-								.addContainerGap(28, Short.MAX_VALUE)));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addGap(32, 32, 32)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jLabel1)
-												.addComponent(
-														serialNumber,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jLabel2)
-												.addComponent(
-														purchasePrice,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addGap(6, 6, 6)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jLabel3)
-												.addComponent(
-														factory,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jLabel4)
-												.addComponent(
-														telephone,
-														javax.swing.GroupLayout.PREFERRED_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(
-										javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-										32, Short.MAX_VALUE)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(jButton1)
-												.addComponent(add))
-								.addContainerGap()));
+		label = new JLabel();
+		label.setBounds(29, 147, 42, 15);
+		label.setText("数量：");
+		getContentPane().add(label);
 
-		pack();
+		number = new JTextField();
+		number.setBounds(75, 144, 136, 21);
+		getContentPane().setLayout(null);
+		getContentPane().add(number);
+		getContentPane().add(jLabel2);
+		getContentPane().add(purchasePrice);
+		getContentPane().add(jLabel1);
+		getContentPane().add(serialNumber);
+		getContentPane().add(telephone);
+		getContentPane().add(jLabel3);
+		getContentPane().add(factory);
+		getContentPane().add(add);
+		getContentPane().add(jButton1);
 
 	}// </editor-fold>
 		// GEN-END:initComponents
@@ -238,6 +147,15 @@ public class AddGoodsShop extends javax.swing.JDialog {
 			this.dispose();
 			return;
 		}
+		if (number.getText().trim().length() != 0) {
+			Global.goods.setNumber(number.getText().trim());
+		} else {
+			Global.goods = null;
+			JOptionPane.showMessageDialog(this, "请输入电话", "alert",
+					JOptionPane.ERROR_MESSAGE);
+			this.dispose();
+			return;
+		}
 		this.dispose();
 	}
 
@@ -272,6 +190,8 @@ public class AddGoodsShop extends javax.swing.JDialog {
 	private javax.swing.JTextField purchasePrice;
 	private javax.swing.JTextField serialNumber;
 	private javax.swing.JTextField telephone;
+	private JLabel label;
+	private JTextField number;
 	// End of variables declaration//GEN-END:variables
 
 }
