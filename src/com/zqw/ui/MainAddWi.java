@@ -34,6 +34,7 @@ import com.zqw.bean.CurtainShopGoods;
 import com.zqw.bean.Global;
 import com.zqw.bean.Goods;
 import com.zqw.util.DBUtil;
+import com.zqw.util.UIutil;
 
 @SuppressWarnings("serial")
 public class MainAddWi extends JDialog implements ListSelectionListener {
@@ -242,9 +243,9 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		goodModifyBtn.setBounds(194, 24, 67, 23);
 		panel_1.add(goodModifyBtn);
 		
-		numberTF = new JTextField();
-		numberTF.setBounds(57, 77, 71, 21);
-		panel_1.add(numberTF);
+		goodNumberTF = new JTextField();
+		goodNumberTF.setBounds(57, 77, 71, 21);
+		panel_1.add(goodNumberTF);
 		
 		label_13 = new JLabel();
 		label_13.setText("数量：");
@@ -437,6 +438,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 				goodSerialNumberModify.setText(goods.getSerialNumber());
 				goodPurchasePriceModify.setText(goods.getPurchasePrice() + "");
 				goodRemarksModify.setText(goods.getRemark());
+				goodNumberTF.setText(goods.getNumber());
 				// 加载同时拥有此货物的客户
 				List<CurtainShopGoods> Lst = (List<CurtainShopGoods>) DBUtil
 						.getLstClass("curtainShop", "eq",
@@ -474,7 +476,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		String serialNumber = goodSerialNumberModify.getText().trim();
 		String purchasePrice = goodPurchasePriceModify.getText().trim();
 		String remark = goodRemarksModify.getText().trim();
-		String number = numberTF.getText().trim();
+		String number = goodNumberTF.getText().trim();
 		Goods goods = goodsLst.get(goodsLstIndex);
 		if (serialNumber.length() > 0
 				&& !goods.getSerialNumber().equals(serialNumber)) {
@@ -680,6 +682,6 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 	private JButton delBtn;
 	private JButton curtainShopModifyBtn;
 	private JButton modifyBtn;
-	private JTextField numberTF;
+	private JTextField goodNumberTF;
 	private JLabel label_13;
 }

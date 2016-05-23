@@ -17,7 +17,7 @@ import java.util.Date;
 
 import com.zqw.bean.CurtainShop;
 import com.zqw.bean.OrderLst;
-import com.zqw.ui.UIutil;
+import com.zqw.util.UIutil;
 
 public class PrintPandect implements Printable {
 

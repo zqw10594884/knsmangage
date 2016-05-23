@@ -38,6 +38,7 @@ import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
 import com.zqw.print.PrintOrder;
 import com.zqw.util.DBUtil;
+import com.zqw.util.UIutil;
 
 public class MainCBWi extends JFrame implements ListSelectionListener {
 

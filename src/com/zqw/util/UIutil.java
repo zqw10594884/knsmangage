@@ -1,4 +1,4 @@
-package com.zqw.ui;
+package com.zqw.util;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -19,7 +19,6 @@ import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
 import com.zqw.listener.CheckListRenderer;
 import com.zqw.listener.MyListRenderer;
-import com.zqw.util.DBUtil;
 
 public class UIutil {
 

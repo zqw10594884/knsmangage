@@ -43,6 +43,8 @@ import com.zqw.bean.OrderLst;
 import com.zqw.listener.MyListRenderer;
 import com.zqw.util.DBUtil;
 import com.zqw.util.DataUtil;
+import com.zqw.util.KnsJFreeChart;
+import com.zqw.util.UIutil;
 
 public class ManageOrderWi extends JFrame implements ListSelectionListener {
 
