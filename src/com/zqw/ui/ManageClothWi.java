@@ -343,7 +343,7 @@ public class ManageClothWi extends JFrame implements ListSelectionListener {
 		int selectedRow = table.getSelectedRow();
 		if (selectedRow != -1) {
 			tableModel.setValueAt(number.getText(), selectedRow, 1);
-			OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
+			OrderGoods og = (OrderGoods) currentOrder.getGoodsLst().get(selectedRow);
 			og.setNumber(Double.parseDouble(tableModel.getValueAt(selectedRow,
 					1).toString()));
 			removeModifyBtnAndDeleteBtn();

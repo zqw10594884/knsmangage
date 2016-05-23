@@ -1,14 +1,13 @@
 package com.zqw.bean;
 
-public class CurtainShop {
+public class CurtainShop extends Person{
 	private int id;
 	private String name;
 	private String telephone;
 	private String address;
 	private int owner;
 
-	
-	
+
 	public CurtainShop(int id, String name, String telephone, String address,
 			int owner) {
 		super();

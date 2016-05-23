@@ -86,8 +86,8 @@ public class PrintPandect implements Printable {
 			for (int j = 0; j < pandectList.size(); j++) {
 				OrderLst g = pandectList.get(j);
 				// 画行
-				CurtainShop cs = UIutil.getCurtainShopFromName(g.getCurtainShop());
-				String[] temp = { df.format(g.getDeliveryTime()) + g.getCurtainShop(), cs.getTelephone() + "", g.getArrears() + "", "", "" };
+				CurtainShop cs = (CurtainShop) g.getNameClass();
+				String[] temp = { df.format(g.getDeliveryTime()) + g.getNameClass(), cs.getTelephone() + "", g.getArrears() + "", "", "" };
 				y = drawLine(g2, y, x, w, col, temp);
 			}
 			g2.drawLine(x, y, x + w, y);

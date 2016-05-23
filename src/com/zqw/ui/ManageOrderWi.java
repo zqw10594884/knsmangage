@@ -194,7 +194,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 				if (index != -1) {
 					currentOrderLst = curtainShopOrderUncheckLst.get(index);
 					// 客户信息
-					this.shopName.setText(currentOrderLst.getCurtainShop());
+					this.shopName.setText(currentOrderLst.getName());
 					this.shopName.setEditable(false);
 					this.telephone.setText("");
 					this.telephone.setEditable(false);
@@ -244,7 +244,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
 			OrderLst ol = curtainShopOrderLst.get(i);
 			CheckListItem cli = new CheckListItem(ol.getDeliveryTime()
-					+ ol.getCurtainShop());
+					+ ol.getName());
 			checkboxModel.add(i, cli);
 		}
 		curtainShopOrderjList.setModel(checkboxModel);
@@ -620,7 +620,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 				DBUtil.del(currentOrderLst.getGoodsLst().get(i));
 			}
 			DBUtil.del(currentOrderLst);
-			
+
 			orderCheckoutBtn.setEnabled(false);
 			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
 			orderDeleteBtn.setEnabled(false);

@@ -73,7 +73,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		initTable();
 		initData();
 		nameLab.setText(Global.CURRENTUSER);
-		
+
 		JButton button = new JButton("残布管理");
 		button.setFont(new Font("宋体", Font.PLAIN, 14));
 		button.setBounds(22, 579, 93, 23);
@@ -268,7 +268,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		refreshBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		refreshBtn.setBounds(304, 140, 62, 23);
 		contentPane.add(refreshBtn);
-		
+
 		nameLab = new JLabel("");
 		nameLab.setFont(new Font("仿宋", Font.BOLD, 34));
 		nameLab.setBounds(52, 37, 152, 42);
@@ -276,8 +276,9 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void refreshactionPerformed(ActionEvent e) {
-//		DBUtil.refresh();
-//		UIutil.initLatelyJlist(this, checkedjList, listAdapter, true, null, 3);
+		// DBUtil.refresh();
+		// UIutil.initLatelyJlist(this, checkedjList, listAdapter, true, null,
+		// 3);
 	}
 
 	/**
@@ -309,7 +310,8 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	private void submitOrderactionPerformed(ActionEvent e) {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(31);
-			if (currentOrder.getLibraryPerson()==null||currentOrder.getLibraryPerson().length() == 0) {
+			if (currentOrder.getLibraryPerson() == null
+					|| currentOrder.getLibraryPerson().length() == 0) {
 				currentOrder.setLibraryPerson(Global.CURRENTUSER);
 			}
 			UIutil.initOrderJlist(this, checkedjList, listAdapter, true,
@@ -331,9 +333,9 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 				if (cli.isSelected()) {
 					OrderLst ol = checkedLst.get(i);
 					if (ol.getOrderState() == 40) {
-						CurtainShop cs = (CurtainShop) DBUtil.getClass(
-								CurtainShop.class, "name", ol.getCurtainShop(),
-								"eq");
+						CurtainShop cs = (CurtainShop) DBUtil
+								.getClass(CurtainShop.class, "name",
+										(ol.getName()),"String" , "eq");
 						ol.setOrderState(30);
 						DBUtil.update(ol);
 						UIutil.initOrderJlist(this, checkedjList, listAdapter,
@@ -354,7 +356,8 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		int selectedRow = table.getSelectedRow();
 		if (selectedRow != -1) {
 			tableModel.setValueAt(number.getText(), selectedRow, 1);
-			OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
+			OrderGoods og = (OrderGoods) currentOrder.getGoodsLst().get(
+					selectedRow);
 			og.setNumber(Double.parseDouble(tableModel.getValueAt(selectedRow,
 					1).toString()));
 			removeModifyBtnAndDeleteBtn();
@@ -373,7 +376,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 					Lst.get(i).getNumber() + "", Lst.get(i).getRemark() };
 			tableModel.addRow(rowValues); // 添加一行
 		}
-		shopName.setText(currentOrder.getCurtainShop());
+		shopName.setText(currentOrder.getName());
 	}
 
 	private void print(int parameter, OrderLst order, CurtainShop curtainShop) {

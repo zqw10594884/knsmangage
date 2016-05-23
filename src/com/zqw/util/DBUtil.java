@@ -133,19 +133,25 @@ public class DBUtil {
 	 * @return
 	 */
 	public static Object getClass(Class arg0, String name0, String nameArg0,
-			String par) {
+			String type, String par) {
 		Session session = null;
 		Object obj = null;
 		try {
 			session = HibUtil.getSession();
 			Criteria c = session.createCriteria(arg0);
+
 			if ("eq".endsWith(par)) {
-				c.add(Restrictions.eq(name0, nameArg0));
+				if (type.equals("int")) {
+					c.add(Restrictions.eq(name0, Integer.parseInt(nameArg0)));
+				} else {
+					c.add(Restrictions.eq(name0, nameArg0));
+				}
 			} else if ("gt".endsWith(par)) {
 				c.add(Restrictions.gt(name0, Integer.parseInt(nameArg0)));
 			} else if ("lt".endsWith(par)) {
 				c.add(Restrictions.lt(name0, Integer.parseInt(nameArg0)));
 			}
+
 			obj = c.uniqueResult();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -179,7 +185,7 @@ public class DBUtil {
 			if (order.length() > 0) {
 				c.addOrder(Order.asc(order));
 			}
-			if (nameArg0.length>2){
+			if (nameArg0.length > 2) {
 				for (int i = 0; i < nameArg0.length; i += 3) {
 					if ("eq".endsWith(par)) {
 						if (nameArg0[i + 2].endsWith("int")) {

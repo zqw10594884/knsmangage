@@ -1,6 +1,6 @@
 package com.zqw.bean;
 
-public class CurtainCustomer {
+public class CurtainCustomer extends Person {
 	private int customerId;
 	private String customerName;
 	private String customerTel1;
@@ -8,6 +8,8 @@ public class CurtainCustomer {
 	private String customerAddress;
 	private String customerNumber;
 
+	
+	
 	public int getCustomerId() {
 		return customerId;
 	}

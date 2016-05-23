@@ -46,8 +46,6 @@
 		<property name="curtainLocation" type="string" column="_curtainLocation" />
 		<property name="hightLocation" type="string" column="_hightLocation" />
 		<property name="orderId" type="integer" column="_orderId" />
-		<many-to-one name="order" class="com.zqw.bean.SaleOrderLst"
-			column="Order_id" cascade="none"></many-to-one>
 	</class>
 </hibernate-mapping>
 

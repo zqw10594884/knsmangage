@@ -2,9 +2,7 @@ package com.zqw.bean;
 
 import java.util.Date;
 
-
-
-public class OrderGoods {
+public class OrderGoods   {
 	private int id;
 	private String serialNumber;
 	private double sellingPrice;
@@ -15,10 +13,10 @@ public class OrderGoods {
 	private int owner;
 	private Date date;
 	private String remark;
-	
 
 	public OrderGoods(String serialNumber, double sellingPrice,
-			double purchasePrice, double number, String curtainShop, int owner,String remark) {
+			double purchasePrice, double number, String curtainShop, int owner,
+			String remark) {
 		super();
 		this.serialNumber = serialNumber;
 		this.sellingPrice = sellingPrice;
@@ -28,11 +26,9 @@ public class OrderGoods {
 		this.owner = owner;
 		this.remark = remark;
 	}
-	
-	
 
 	public OrderGoods(String serialNumber, double sellingPrice,
-			double purchasePrice, double number,Date date) {
+			double purchasePrice, double number, Date date) {
 		super();
 		this.serialNumber = serialNumber;
 		this.sellingPrice = sellingPrice;
@@ -40,7 +36,7 @@ public class OrderGoods {
 		this.number = number;
 		this.date = date;
 	}
-	
+
 	public OrderGoods(String serialNumber, double sellingPrice,
 			double purchasePrice, double number) {
 		super();
@@ -51,7 +47,7 @@ public class OrderGoods {
 	}
 
 	public OrderGoods(String serialNumber, double sellingPrice,
-			double purchasePrice, double number,int orderId) {
+			double purchasePrice, double number, int orderId) {
 		super();
 		this.serialNumber = serialNumber;
 		this.sellingPrice = sellingPrice;
@@ -60,19 +56,13 @@ public class OrderGoods {
 		this.orderId = orderId;
 	}
 
-
-
 	public String getRemark() {
 		return remark;
 	}
 
-
-
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
-
 
 	public Date getDate() {
 		return date;
@@ -81,6 +71,7 @@ public class OrderGoods {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
 	public int getOwner() {
 		return owner;
 	}
@@ -104,7 +95,6 @@ public class OrderGoods {
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
-
 
 	public String getSerialNumber() {
 		return serialNumber;

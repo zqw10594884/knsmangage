@@ -32,9 +32,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import com.zqw.bean.CurtainShop;
 import com.zqw.bean.CurtainShopGoods;
+import com.zqw.bean.OrderLst;
 import com.zqw.bean.SaleOrderGoods;
-import com.zqw.bean.SaleOrderLst;
 import com.zqw.util.DBUtil;
 import com.zqw.util.UIutil;
 
@@ -57,8 +58,8 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	private JTextField curtainRodRemark;
 	private JTextField curtainTapeName;
 	private List<CurtainShopGoods> goodsLst = new ArrayList<CurtainShopGoods>();
-	private List<SaleOrderLst> solLatelyLst = new ArrayList<SaleOrderLst>();
-	private SaleOrderLst currentSol = new SaleOrderLst();
+	private List<OrderLst> solLatelyLst = new ArrayList<OrderLst>();
+	private OrderLst currentSol = new OrderLst();
 	private JList saleGoodjList;
 	private JList saleLatelyjList;
 	private JButton addCustomerBtn;
@@ -111,14 +112,14 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	}
 
 	private void initlatelyList() {
-		solLatelyLst = (List<SaleOrderLst>) DBUtil.getLstClass("id", "",
-				SaleOrderLst.class, "");
+		solLatelyLst = (List<OrderLst>) DBUtil.getLstClass("id", "",
+				OrderLst.class, "");
 		ArrayList<String> LatelyItem = new ArrayList<String>();
 		if (solLatelyLst != null) {
 			for (int i = 0; i < solLatelyLst.size(); i++) {
-				SaleOrderLst sol = solLatelyLst.get(i);
+				OrderLst sol = solLatelyLst.get(i);
 				LatelyItem.add("(" + sol.getSubmitTime() + ")"
-						+ sol.getCustomerName());
+						+ ((CurtainShop)sol.getNameClass()).getName());
 			}
 			UIutil.initJlist(this, saleLatelyjList, LatelyItem);
 		}
@@ -226,7 +227,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		addCurtainGood = new JButton("添加货物");
 		addCurtainGood.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (currentSol.getCustomerName().length() > 0) {
+				if (currentSol.getName().length() > 0) {
 					addCurtainGoodActionPerformed(e);
 				} else {
 					JOptionPane.showMessageDialog(null, "请先输入用户信息");
@@ -549,7 +550,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		JButton curtainDelBtn = new JButton("删除");
 		curtainDelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 			}
 		});
 		curtainDelBtn.setFont(new Font("宋体", Font.PLAIN, 14));
@@ -613,7 +614,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	}
 
 	protected void curtainModifyAction(ActionEvent e) {
-		saleOrderGoodsBuild(currentSol.getGoodsLst().get(selectedRow));
+		saleOrderGoodsBuild((SaleOrderGoods) currentSol.getGoodsLst().get(selectedRow));
 	}
 
 	protected void curtainStyleAction(ActionEvent e) {
@@ -624,7 +625,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		ArrayList<String> item = new ArrayList<String>();
 		for (int i = 0; i < solLatelyLst.size(); i++) {
 			item.add(solLatelyLst.get(i).getSimpleDate() + "   "
-					+ solLatelyLst.get(i).getCustomerName());
+					+ solLatelyLst.get(i).getName());
 		}
 		UIutil.initJlist(this, saleLatelyjList, item);
 		DBUtil.insert(currentSol);
@@ -688,7 +689,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			sog.setCurtainLaceNumber(width + 0.5);
 		}
 		sog.setCurtainRodNumber(width);
-		
+
 	}
 
 	private String[] creatRow(SaleOrderGoods sog) {
@@ -767,7 +768,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		// TODO Auto-generated method stub
 		selectedRow = saleTable.getSelectedRow();
 		if (selectedRow != -1) {
-			SaleOrderGoods sog = currentSol.getGoodsLst().get(selectedRow);
+			SaleOrderGoods sog = (SaleOrderGoods) currentSol.getGoodsLst().get(selectedRow);
 
 			curtainClothName.setText(sog.getClothSerialNumber());
 			curtainTapeName.setText(sog.getCurtainTapeSerialNumber());
@@ -823,7 +824,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 				customerTel2.setText(currentSol.getCustomerTel2());
 				customerDeposit.setText(currentSol.getCustomerDeposit());
 				for (int i = 0; i < currentSol.getGoodsLst().size(); i++) {
-					String[] rowValues = creatRow(currentSol.getGoodsLst().get(
+					String[] rowValues = creatRow((SaleOrderGoods) currentSol.getGoodsLst().get(
 							i));
 					tableModel.addRow(rowValues);
 				}

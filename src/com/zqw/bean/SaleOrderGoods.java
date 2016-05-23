@@ -2,7 +2,7 @@ package com.zqw.bean;
 
 import java.io.Serializable;
 
-public class SaleOrderGoods implements Serializable {
+public class SaleOrderGoods  implements Serializable {
 	/**
 	 * 
 	 */
@@ -39,7 +39,6 @@ public class SaleOrderGoods implements Serializable {
 	private String curtainLocation;
 	private String hightLocation;
 	private String curtainStyle;
-	private SaleOrderLst order;
 	
 	
 
@@ -273,12 +272,5 @@ public class SaleOrderGoods implements Serializable {
 		this.curtainStyle = curtainStyle;
 	}
 
-	public SaleOrderLst getOrder() {
-		return order;
-	}
-
-	public void setOrder(SaleOrderLst order) {
-		this.order = order;
-	}
 
 }
