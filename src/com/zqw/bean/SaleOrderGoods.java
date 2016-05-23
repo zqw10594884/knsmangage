@@ -40,6 +40,8 @@ public class SaleOrderGoods implements Serializable {
 	private String hightLocation;
 	private String curtainStyle;
 	private SaleOrderLst order;
+	
+	
 
 	public SaleOrderGoods() {
 		super();
@@ -246,7 +248,6 @@ public class SaleOrderGoods implements Serializable {
 	public void setCurtainWidth(String curtainWidth) {
 		this.curtainWidth = curtainWidth;
 	}
-
 
 	public String getCurtainLocation() {
 		return curtainLocation;

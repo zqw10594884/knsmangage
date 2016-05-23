@@ -200,8 +200,8 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 					this.telephone.setEditable(false);
 					this.orderTotalArrears.setEditable(false);
 					curtainShopOrderGoodsLst = currentOrderLst.getGoodsLst();
-//					curtainShopOrderGoodsLst = UIutil
-//							.getOrderGoodsFromOrderId(currentOrderLst.getId());
+					// curtainShopOrderGoodsLst = UIutil
+					// .getOrderGoodsFromOrderId(currentOrderLst.getId());
 					// 按钮状态控制
 					if (orderCheckoutBtn.getActionListeners().length == 0) {
 						orderCheckoutBtn.setEnabled(true);
@@ -239,11 +239,12 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void initCurtainShopOrderLst() {
-		
+
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
 			OrderLst ol = curtainShopOrderLst.get(i);
-			CheckListItem cli = new CheckListItem(ol.getDeliveryTime() + ol.getCurtainShop());
+			CheckListItem cli = new CheckListItem(ol.getDeliveryTime()
+					+ ol.getCurtainShop());
 			checkboxModel.add(i, cli);
 		}
 		curtainShopOrderjList.setModel(checkboxModel);
@@ -585,6 +586,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			currentOrderLst.setArrears(0);
 			currentOrderLst.setOrderState(10);
 			curtainShopOrderUncheckLst.remove(currentOrderLst);
+
 			DBUtil.update(currentOrderLst);
 			updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
 			UIutil.initOrderJlist(this, uncheckOrderjLst, listAdapter, false,
@@ -613,7 +615,12 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			updateUncheckList(curtainShopOrderUncheckLst, currentOrderLst);
 			UIutil.initOrderJlist(this, uncheckOrderjLst, listAdapter, false,
 					curtainShopOrderUncheckLst, 2);
+
+			for (int i = 0; i < currentOrderLst.getGoodsLst().size(); i++) {
+				DBUtil.del(currentOrderLst.getGoodsLst().get(i));
+			}
 			DBUtil.del(currentOrderLst);
+			
 			orderCheckoutBtn.setEnabled(false);
 			orderCheckoutBtn.removeActionListener(orderCheckoutAl);
 			orderDeleteBtn.setEnabled(false);

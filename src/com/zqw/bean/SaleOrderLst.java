@@ -5,16 +5,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class SaleOrderLst implements Serializable {
+public class SaleOrderLst extends Order implements Serializable {
 	/**
 	 * 
 	 */
 	private List<SaleOrderGoods> goodsLst;
+	
 	private String customerName;
 	private String customerTel1;
 	private String customerTel2;
-	private String customerDeposit;
 	private String customerAddress;
+	private String customerDeposit;
+	
+	
 
 	private Date submitTime;
 	private int id;

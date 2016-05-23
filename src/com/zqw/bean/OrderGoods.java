@@ -13,7 +13,6 @@ public class OrderGoods {
 	private String curtainShop;
 	private int orderId;
 	private int owner;
-	private OrderLst order;
 	private Date date;
 	private String remark;
 	
@@ -106,13 +105,6 @@ public class OrderGoods {
 		this.orderId = orderId;
 	}
 
-	public OrderLst getOrder() {
-		return order;
-	}
-
-	public void setOrder(OrderLst order) {
-		this.order = order;
-	}
 
 	public String getSerialNumber() {
 		return serialNumber;

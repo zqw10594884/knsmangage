@@ -4,7 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class OrderLst {
+import com.zqw.util.DBUtil;
+
+public class OrderLst extends Order {
 	private List<OrderGoods> goodsLst;
 	private String curtainShop;
 	private String installPerson;
@@ -49,7 +51,7 @@ public class OrderLst {
 
 	/**
 	 * 
-	 * @return 10 完成 20出库 30备货中  31备货完成 40提交
+	 * @return 10 完成 20出库 30备货中 31备货完成 40提交
 	 */
 	public int getOrderState() {
 		return orderState;
@@ -58,7 +60,7 @@ public class OrderLst {
 	/**
 	 * 
 	 * @param printState
-	 *            10 完成 20出库 30备货中  31备货完成 40提交
+	 *            10 完成 20出库 30备货中 31备货完成 40提交
 	 */
 	public void setOrderState(int printState) {
 		this.orderState = printState;
@@ -124,6 +126,10 @@ public class OrderLst {
 	}
 
 	public List<OrderGoods> getGoodsLst() {
+		if (goodsLst == null) {
+			goodsLst = (List<OrderGoods>) DBUtil.getLstClass("", "eq",
+					OrderGoods.class, "orderId", id + "", "int");
+		}
 		return goodsLst;
 	}
 

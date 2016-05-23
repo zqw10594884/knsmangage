@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.zqw.bean">
+	<class name="CurtainCustomer" table="_curtainCustomer" lazy="true">
+		<id name="id">
+			<generator class="increment" />
+		</id>
+		<property name="customerName" type="string" column="_customerName" />
+		<property name="customerTel1" type="string" column="_customerTel1" />
+		<property name="customerTel2" type="string" column="_customerTel2" />
+		<property name="customerNumber" type="string" column="_customerNumber" />
+		<property name="customerAddress" type="string" column="_customerAddress" />
+	</class>
+
+</hibernate-mapping>
+

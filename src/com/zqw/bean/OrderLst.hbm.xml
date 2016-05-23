@@ -15,11 +15,6 @@
 		<property name="submitTime" type="date" column="_submitTime" />
 		<property name="orderState" type="int" column="_orderState" />
 		<property name="arrears" type="int" column="_arrears" />
-		<list name="goodsLst" inverse="false" cascade="all" lazy="false">
-			<key column="Order_id"  ></key>
-			<index column="index_"></index>
-			<one-to-many class="com.zqw.bean.OrderGoods"/>
-		</list>
 	</class>
 
 </hibernate-mapping>

@@ -92,6 +92,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private JList<CheckListItem> latelyjList;
 	private List<CurtainShopGoods> goodsLst = new ArrayList<CurtainShopGoods>();
 	private ArrayList<CurtainShop> curtainShopLst = new ArrayList<CurtainShop>();
+	private ArrayList<CurtainShop> curtainShopLstByLocation = new ArrayList<CurtainShop>();
 	private ArrayList<OrderLst> latelyLst;
 	private ArrayList<OrderLst> pandectList = new ArrayList<OrderLst>();
 	private JCheckBox goodChangeCB;
@@ -128,7 +129,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (e.getValueIsAdjusting()) {
 			if (e.getSource().equals(curtainShopjList)) {// 客户
 				curtainShopLstIndex = curtainShopjList.getSelectedIndex();
-				curtainShop = curtainShopLst.get(curtainShopLstIndex);
+				curtainShop = curtainShopLstByLocation.get(curtainShopLstIndex);
 				removeModifyBtnAndDeleteBtn();
 				shopName.setText(curtainShop.getName());
 				shopName.setEditable(false);
@@ -167,7 +168,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				serialNumber.setEditable(false);
 			} else if (e.getSource().equals(locationJlist)) {
 				String location = locationJlist.getSelectedValue().toString();
-				ArrayList<CurtainShop> curtainShopLstByLocation = new ArrayList<CurtainShop>();
+				curtainShopLstByLocation.clear();
 				for (int i = 0; i < curtainShopLst.size(); i++) {
 					CurtainShop cs = curtainShopLst.get(i);
 					if (cs.getAddress().equals(location)) {
@@ -289,12 +290,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		shopName.setColumns(10);
 
 		JLabel label = new JLabel("电话：");
-		label.setBounds(712, 13, 54, 15);
+		label.setBounds(671, 15, 54, 15);
 		label.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label);
 
 		telephone = new JTextField();
-		telephone.setBounds(755, 13, 86, 21);
+		telephone.setBounds(735, 13, 106, 21);
 		contentPane.add(telephone);
 		telephone.setColumns(10);
 
@@ -309,22 +310,22 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		serialNumber.setColumns(10);
 
 		JLabel label_2 = new JLabel("价格：");
-		label_2.setBounds(739, 46, 54, 15);
+		label_2.setBounds(722, 45, 54, 15);
 		label_2.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_2);
 
 		sellingPrice = new JTextField();
-		sellingPrice.setBounds(793, 46, 48, 21);
+		sellingPrice.setBounds(776, 45, 48, 21);
 		contentPane.add(sellingPrice);
 		sellingPrice.setColumns(10);
 
 		JLabel label_3 = new JLabel("数量：");
-		label_3.setBounds(739, 75, 45, 15);
+		label_3.setBounds(722, 74, 45, 15);
 		label_3.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_3);
 
 		number = new JTextField();
-		number.setBounds(793, 75, 47, 21);
+		number.setBounds(776, 74, 47, 21);
 		contentPane.add(number);
 		number.setColumns(10);
 
@@ -334,13 +335,13 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		};
 		orderPrintBtn = new JButton("打印");
-		orderPrintBtn.setBounds(562, 105, 62, 23);
+		orderPrintBtn.setBounds(779, 105, 62, 23);
 		orderPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		orderPrintBtn.setEnabled(false);
 		contentPane.add(orderPrintBtn);
 
 		addBtn = new JButton("添加");
-		addBtn.setBounds(779, 105, 62, 23);
+		addBtn.setBounds(639, 105, 62, 23);
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addActionPerformed(e);
@@ -355,7 +356,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		};
 		deleteBtn = new JButton("删除");
-		deleteBtn.setBounds(706, 105, 62, 23);
+		deleteBtn.setBounds(567, 105, 62, 23);
 		deleteBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		deleteBtn.setEnabled(false);
 		contentPane.add(deleteBtn);
@@ -457,7 +458,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		};
 		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		submitOrderBtn.setEnabled(false);
-		submitOrderBtn.setBounds(490, 105, 62, 23);
+		submitOrderBtn.setBounds(707, 105, 62, 23);
 		contentPane.add(submitOrderBtn);
 
 		goodChangeCB = new JCheckBox("换货");
@@ -479,7 +480,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		};
 		modifyBtn = new JButton("修改");
 		modifyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		modifyBtn.setBounds(634, 105, 62, 23);
+		modifyBtn.setBounds(498, 105, 62, 23);
 		modifyBtn.setEnabled(false);
 		contentPane.add(modifyBtn);
 
@@ -621,9 +622,19 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			if (currentOrder.getId() < 1) {
 				currentOrder.setId(UIutil.getMaxIdFromOrderLst());
 				DBUtil.insert(currentOrder);
+				for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
+					currentOrder.getGoodsLst().get(i)
+							.setOrderId(currentOrder.getId());
+					DBUtil.insert(currentOrder.getGoodsLst().get(i));
+				}
 				latelyLst.add(currentOrder);
 			} else {
 				DBUtil.update(currentOrder);
+				for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
+					currentOrder.getGoodsLst().get(i)
+							.setOrderId(currentOrder.getId());
+					DBUtil.update(currentOrder.getGoodsLst().get(i));
+				}
 			}
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
@@ -725,6 +736,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			latelyLst.remove(currentOrder);
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
+			for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
+				DBUtil.del(currentOrder.getGoodsLst().get(i));
+			}
 			DBUtil.del(currentOrder);
 			UIutil.delFromCurtainShopGoods();
 		} else {
@@ -818,6 +832,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber",
 				"eq", CurtainShopGoods.class, "curtainShop",
 				currentOrder.getCurtainShop(), "String");
+
 		UIutil.initCurtainShopGoodsLstFromName(this, goodsjList, goodsLst);
 		UIutil.tableAddAll(currentOrder.getGoodsLst(), tableModel);
 		curtainShop = (CurtainShop) DBUtil.getClass(CurtainShop.class, "name",

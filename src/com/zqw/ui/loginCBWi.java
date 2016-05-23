@@ -49,7 +49,7 @@ public class loginCBWi extends JFrame {
 	private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		String name = userName.getText().trim();
 		String pass = password.getText().trim();
-		User user = (User)DBUtil.getClass(User.class, "name", name, "eq");
+		User user = (User) DBUtil.getClass(User.class, "name", name, "eq");
 		if (name.equals(user.getName()) && pass.equals(user.getPassword())) {
 			Enumeration<AbstractButton> enu = buttonGroup1.getElements();
 			while (enu.hasMoreElements()) {
@@ -72,9 +72,9 @@ public class loginCBWi extends JFrame {
 						&& (user.getAuthority() == 21 || user.getAuthority() < 20)) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							// MainWi main = new MainWi();
-							// main.setVisible(true);
-							// main.setLocationRelativeTo(null);
+							SaleMain main = new SaleMain();
+							main.setVisible(true);
+							main.setLocationRelativeTo(null);
 						}
 					});
 					this.dispose();
