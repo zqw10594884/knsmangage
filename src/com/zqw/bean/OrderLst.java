@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.zqw.util.DBUtil;
 
-public class OrderLst {
+public class OrderLst extends KNSOrder {
 	private int id;
 	private int nameId;
 	private String name;

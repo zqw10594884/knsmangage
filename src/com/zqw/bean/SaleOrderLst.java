@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.zqw.util.DBUtil;
 
-public class SaleOrderLst {
+public class SaleOrderLst extends KNSOrder {
 	private int id;
 	private String installPerson;
 	private String libraryPerson;

@@ -17,8 +17,10 @@ import com.zqw.bean.CurtainShopGoods;
 import com.zqw.bean.Goods;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
+import com.zqw.bean.SaleOrderLst;
 import com.zqw.listener.CheckListRenderer;
 import com.zqw.listener.MyListRenderer;
+import com.zqw.ui.MainCBWi;
 
 public class UIutil {
 
@@ -126,6 +128,49 @@ public class UIutil {
 		DBUtil.update(hqlupdate_OrderLst_Arrears, string, ol.getId());
 	}
 
+	public static List<SaleOrderLst> initRetailOrderJlist(
+			ListSelectionListener UI, JList jList, MouseAdapter listAdapter,
+			boolean checkbox, List<SaleOrderLst> orderLst) {
+
+		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
+		DefaultListModel<String> model = new DefaultListModel<String>();
+		if (orderLst == null) {
+			orderLst = (ArrayList<SaleOrderLst>) DBUtil.getLstClass("", "gt",
+					SaleOrderLst.class, "orderState", "29", "int");
+		}
+		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入
+			SaleOrderLst ol = orderLst.get(i);
+			CheckListItem cli = null;
+			cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
+					+ "  " + ol.getSimpleDate() + "  "
+					+ ol.getCustomer().getName() + "(" + ol.getLibraryPerson()
+					+ ")", false);
+			if (ol.getOrderState() >= 40) {
+				cli.setC(Color.red);
+			} else if (ol.getOrderState() >= 30 && ol.getOrderState() < 40) {
+				cli.setC(Color.blue);
+			}
+			checkboxModel.add(i, cli);
+			// 结账界面历史订单
+			model.add(i, ol.getCustomer().getName() + ol.getSimpleDate());
+		}
+
+		if (checkbox) {
+			jList.setModel(checkboxModel);
+			jList.setCellRenderer(new CheckListRenderer());
+			if (jList.getMouseListeners().length < 3) {
+				jList.addMouseListener(listAdapter);
+			}
+		} else {
+			jList.setModel(model);
+			jList.addListSelectionListener(UI);
+		}
+		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		jList.setSelectionBackground(new Color(177, 232, 58));// 186,212,239,177,232,58
+		jList.setSelectionForeground(Color.red);
+		return orderLst;
+	}
+
 	@SuppressWarnings("unchecked")
 	/**
 	 * 
@@ -155,12 +200,10 @@ public class UIutil {
 						OrderLst.class, "orderState", "20", "int");
 				break;
 			case 3:
-
-				orderLst = new ArrayList<OrderLst>();
 				ArrayList<OrderLst> originalLst = (ArrayList<OrderLst>) DBUtil
 						.getLstClass("", "gt", OrderLst.class, "orderState",
 								"29", "int");
-				orderLst = filter(orderLst, originalLst);// 过滤器 筛选有布或者纱的订单
+				orderLst = filter(originalLst);// 过滤器 筛选有布或者纱的订单
 
 				break;
 			case 4:
@@ -210,8 +253,8 @@ public class UIutil {
 		return orderLst;
 	}
 
-	private static List<OrderLst> filter(List<OrderLst> orderLst,
-			ArrayList<OrderLst> lst) {
+	private static List<OrderLst> filter(ArrayList<OrderLst> lst) {
+		List<OrderLst> orderLst = new ArrayList<OrderLst>();
 		for (int i = 0; i < lst.size(); i++) {
 			List<OrderGoods> ogLst = lst.get(i).getGoodsLst();
 			for (int j = 0; j < ogLst.size(); j++) {
@@ -222,7 +265,7 @@ public class UIutil {
 				}
 			}
 		}
-		return null;
+		return orderLst;
 	}
 
 	public static List<OrderLst> isCurtainShopHaveArrears() {

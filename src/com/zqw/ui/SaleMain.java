@@ -558,7 +558,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		contentPane.add(curtainModifyBtn);
 
 		hightLocationCB = new JComboBox();
-		hightLocationCB.setModel(new DefaultComboBoxModel(new String[] {
+		hightLocationCB.setModel(new DefaultComboBoxModel<Object>(new String[] {
 				"高度位置", "顶高", "底高" }));
 		hightLocationCB.setToolTipText("");
 		hightLocationCB.setBounds(459, 332, 100, 21);

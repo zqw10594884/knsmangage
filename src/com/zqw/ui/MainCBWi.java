@@ -36,9 +36,14 @@ import com.zqw.bean.CurtainShop;
 import com.zqw.bean.Global;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
+import com.zqw.bean.SaleOrderGoods;
+import com.zqw.bean.SaleOrderLst;
 import com.zqw.print.PrintOrder;
 import com.zqw.util.DBUtil;
 import com.zqw.util.UIutil;
+
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 
 public class MainCBWi extends JFrame implements ListSelectionListener {
 
@@ -63,21 +68,20 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	private CurtainShop curtainShop = null;
 	private int latelyLstindex = -1;
 	private JList<CheckListItem> checkedjList;
-	private ArrayList<OrderLst> checkedLst;
+	private ArrayList<OrderLst> wholesaleLst;
+	private ArrayList<SaleOrderLst> retailLst;
 	private ArrayList<OrderLst> pandectList = new ArrayList<OrderLst>();
 	private OrderLst currentOrder;
+	private SaleOrderLst currentRetailOrder;
 	private JLabel nameLab;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JRadioButton wholesaleRB;
+	private JRadioButton retailRB;
 
 	public MainCBWi() {
 		initComponents();
 		initTable();
 		initData();
-		nameLab.setText(Global.CURRENTUSER);
-
-		JButton button = new JButton("残布管理");
-		button.setFont(new Font("宋体", Font.PLAIN, 14));
-		button.setBounds(22, 579, 93, 23);
-		contentPane.add(button);
 	}
 
 	/**
@@ -131,8 +135,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		checkedLst = (ArrayList<OrderLst>) UIutil.initOrderJlist(this,
-				checkedjList, listAdapter, true, null, 3);
+		initJlist();
 		scrollPane_3.setViewportView(checkedjList);
 	}
 
@@ -177,7 +180,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("店名：");
+		JLabel lblNewLabel = new JLabel("姓名：");
 		lblNewLabel.setBounds(31, 107, 54, 15);
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(lblNewLabel);
@@ -221,11 +224,6 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(500, 37, 270, 532);
 		contentPane.add(scrollPane_3);
-
-		JLabel jlabel_2 = new JLabel("历史订单");
-		jlabel_2.setFont(new Font("宋体", Font.PLAIN, 14));
-		jlabel_2.setBounds(612, 10, 70, 15);
-		contentPane.add(jlabel_2);
 
 		JButton untreatedPrintBtn = new JButton("备货打印");
 		untreatedPrintBtn.addActionListener(new ActionListener() {
@@ -273,6 +271,33 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		nameLab.setFont(new Font("仿宋", Font.BOLD, 34));
 		nameLab.setBounds(52, 37, 152, 42);
 		contentPane.add(nameLab);
+
+		nameLab.setText(Global.CURRENTUSER);
+		JButton button = new JButton("残布管理");
+		button.setFont(new Font("宋体", Font.PLAIN, 14));
+		button.setBounds(22, 579, 93, 23);
+		contentPane.add(button);
+
+		wholesaleRB = new JRadioButton("批发");
+		wholesaleRB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				initJlist();
+			}
+		});
+		wholesaleRB.setSelected(true);
+		buttonGroup.add(wholesaleRB);
+		wholesaleRB.setBounds(529, 8, 68, 23);
+		contentPane.add(wholesaleRB);
+
+		retailRB = new JRadioButton("零售");
+		retailRB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				initJlist();
+			}
+		});
+		buttonGroup.add(retailRB);
+		retailRB.setBounds(599, 8, 68, 23);
+		contentPane.add(retailRB);
 	}
 
 	private void refreshactionPerformed(ActionEvent e) {
@@ -314,11 +339,20 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 					|| currentOrder.getLibraryPerson().length() == 0) {
 				currentOrder.setLibraryPerson(Global.CURRENTUSER);
 			}
-			UIutil.initOrderJlist(this, checkedjList, listAdapter, true,
-					checkedLst, 3);
+			initJlist();
 			DBUtil.update(currentOrder);
 		} else {
 
+		}
+	}
+
+	private void initJlist() {
+		if (wholesaleRB.isSelected()) {
+			wholesaleLst = (ArrayList<OrderLst>) UIutil.initOrderJlist(this,
+					checkedjList, listAdapter, true, wholesaleLst, 3);
+		} else if (retailRB.isSelected()) {
+			retailLst = (ArrayList<SaleOrderLst>) UIutil.initRetailOrderJlist(
+					this, checkedjList, listAdapter, true, retailLst);
 		}
 	}
 
@@ -331,15 +365,15 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 			for (int i = 0; i < l.getSize(); i++) {
 				CheckListItem cli = l.getElementAt(i);
 				if (cli.isSelected()) {
-					OrderLst ol = checkedLst.get(i);
+					OrderLst ol = wholesaleLst.get(i);
 					if (ol.getOrderState() == 40) {
-						CurtainShop cs = (CurtainShop) DBUtil
-								.getClass(CurtainShop.class, "name",
-										(ol.getName()),"String" , "eq");
+						CurtainShop cs = (CurtainShop) DBUtil.getClass(
+								CurtainShop.class, "name", (ol.getName()),
+								"String", "eq");
 						ol.setOrderState(30);
 						DBUtil.update(ol);
 						UIutil.initOrderJlist(this, checkedjList, listAdapter,
-								true, checkedLst, 3);
+								true, wholesaleLst, 3);
 						print(Global.EMPLOYEE, ol, cs);
 					}
 				}
@@ -365,18 +399,33 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void addLatelyLstToMain(int index) {
-		currentOrder = checkedLst.get(index);
-		List<OrderGoods> Lst = currentOrder.getGoodsLst();
+
 		for (int i = 0; i < tableModel.getRowCount();) {
 			tableModel.removeRow(0);
 		}
 
-		for (int i = 0; i < Lst.size(); i++) {
-			String[] rowValues = { Lst.get(i).getSerialNumber(),
-					Lst.get(i).getNumber() + "", Lst.get(i).getRemark() };
-			tableModel.addRow(rowValues); // 添加一行
+		if (wholesaleRB.isSelected()) {
+			currentOrder = wholesaleLst.get(index);
+			List<OrderGoods> Lst = currentOrder.getGoodsLst();
+
+			for (int i = 0; i < Lst.size(); i++) {
+				String[] rowValues = { Lst.get(i).getSerialNumber(),
+						Lst.get(i).getNumber() + "", Lst.get(i).getRemark() };
+				tableModel.addRow(rowValues); // 添加一行
+			}
+			shopName.setText(currentOrder.getName());
+		} else {
+			currentRetailOrder = retailLst.get(index);
+			List<SaleOrderGoods> Lst = currentRetailOrder.getGoodsLst();
+
+			for (int i = 0; i < Lst.size(); i++) {
+				String[] rowValues = { Lst.get(i).getClothSerialNumber(),
+						Lst.get(i).getClothNumber() + "",
+						Lst.get(i).getClothRemark() };
+				tableModel.addRow(rowValues); // 添加一行
+			}
+			shopName.setText(currentRetailOrder.getCustomer().getName());
 		}
-		shopName.setText(currentOrder.getName());
 	}
 
 	private void print(int parameter, OrderLst order, CurtainShop curtainShop) {
