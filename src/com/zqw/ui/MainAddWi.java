@@ -46,7 +46,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		initComponents();
 		initListener();
 		initCurtainShop();
-		initGoods();
+		goodsLst = initGoods(goodsLst);
 		initTable();
 	}
 
@@ -242,11 +242,11 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		goodModifyBtn.setText("修改");
 		goodModifyBtn.setBounds(194, 24, 67, 23);
 		panel_1.add(goodModifyBtn);
-		
+
 		goodNumberTF = new JTextField();
 		goodNumberTF.setBounds(57, 77, 71, 21);
 		panel_1.add(goodNumberTF);
-		
+
 		label_13 = new JLabel();
 		label_13.setText("数量：");
 		label_13.setBounds(11, 80, 42, 15);
@@ -351,9 +351,11 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		scrollPane.setViewportView(curtainShopjList);
 	}
 
-	private void initGoods() {
-		goodsLst = (ArrayList<Goods>) DBUtil.getLstClass("serialNumber", "",
-				Goods.class, "");
+	private ArrayList<Goods> initGoods(ArrayList<Goods> goodsLst) {
+		if (goodsLst.size() == 0) {
+			goodsLst = (ArrayList<Goods>) DBUtil.getLstClass("serialNumber",
+					"", Goods.class, "");
+		}
 		String[] Lst = new String[goodsLst.size()];
 		for (int i = 0; i < goodsLst.size(); i++) {
 			Lst[i] = goodsLst.get(i).getSerialNumber();
@@ -362,6 +364,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		goodjList.addListSelectionListener(this);
 		goodjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_1.setViewportView(goodjList);
+		return goodsLst;
 	}
 
 	private void initTable() {
@@ -491,6 +494,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		goods.setRemark(remark);
 		goods.setNumber(number);
 		DBUtil.update(goods);
+		initGoods(goodsLst);
 	}
 
 	private void curtainShopModifyBtnActionPerformed(
@@ -502,12 +506,17 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		if (curtainShopName.length() > 0
 				&& !curtainShop.getName().equals(curtainShopName)) {
 			String hgl = "update CurtainShopGoods csg set csg.curtainShop=? WHERE csg.curtainShop=?";
+			String hg2 = "update OrderGoods csg set csg.curtainShop=? WHERE csg.curtainShop=?";
+			String hg3 = "update OrderLst csg set csg.name=? WHERE csg.name=?";
 			DBUtil.updateField(hgl, curtainShopName, curtainShop.getName());
+			DBUtil.updateField(hg2, curtainShopName, curtainShop.getName());
+			DBUtil.updateField(hg3, curtainShopName, curtainShop.getName());
+			curtainShop.setTelephone(curtainShopTel);
+			curtainShop.setName(curtainShopName);
+			curtainShop.setOwner(owner);
+			DBUtil.update(curtainShop);
+			UIutil.initCurtainShop(this, curtainShopjList, curtainShopLst);
 		}
-		curtainShop.setTelephone(curtainShopTel);
-		curtainShop.setName(curtainShopName);
-		curtainShop.setOwner(owner);
-		DBUtil.update(curtainShop);
 	}
 
 	private void modifyBtnActionPerformed(java.awt.event.ActionEvent evt) {
@@ -541,9 +550,8 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 
 	private void goodjListBtnAddActionPerformed(java.awt.event.ActionEvent evt) {
 		// TODO add your handling code here:
-		
-		AddGood dialog = new AddGood(new JFrame(),
-				true);
+
+		AddGood dialog = new AddGood(new JFrame(), true);
 		dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				// dialog.dispose();
@@ -560,7 +568,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 						Global.goods.getFactory(), Global.goods.getTelephone(),
 						Global.goods.getDistance());
 				goodsLst.add(goods);
-				initGoods();
+				initGoods(goodsLst);
 			}
 		}
 	}
@@ -575,9 +583,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		});
 		dialog.setVisible(true);
 		dialog.setLocationRelativeTo(null);
-		
-		
-		
+
 		String sql = "select c.name from CurtainShop as c where c.name=:name0";
 		if (Global.curtainShop != null && Global.curtainShop.getName() != null) {
 			if (DBUtil.get(sql, Global.curtainShop.getName(), "") == null) {

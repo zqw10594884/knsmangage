@@ -1,15 +1,14 @@
 package com.zqw.bean;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.zqw.util.DBUtil;
 
-public class OrderLst {
+public class SaleOrderLst {
 	private int id;
-	private int nameId;
-	private String name;
 	private String installPerson;
 	private String libraryPerson;
 	private String machiningPerson;
@@ -19,39 +18,24 @@ public class OrderLst {
 	private int arrears;
 	private String customerDeposit;
 	private int orderState;
+	private CurtainCustomer customer;
+	private List<SaleOrderGoods> goodsLst;
 
-	private List goodsLst;
-	private CurtainShop nameClass;
-
-	public OrderLst() {
+	public SaleOrderLst() {
 		super();
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getNameId() {
-		return nameId;
-	}
-
-	public void setNameId(int nameId) {
-		this.nameId = nameId;
-	}
-
-	public CurtainShop getNameClass() {
-		if (nameClass == null) {
-			nameClass = ClassDBUtil.getCurtainShopById(nameId);
+	public CurtainCustomer getCustomer() {
+		for (int i = 0; i < Global.CCLst.size(); i++) {
+			if (Global.CCLst.get(i).getId() == customer.getId()) {
+				return Global.CCLst.get(i);
+			}
 		}
-		return nameClass;
+		return customer;
 	}
 
-	public void setNameClass(CurtainShop nameClass) {
-		this.nameClass = nameClass;
+	public void setCustomer(CurtainCustomer customer) {
+		this.customer = customer;
 	}
 
 	public String getCustomerDeposit() {
@@ -155,15 +139,19 @@ public class OrderLst {
 		this.id = id;
 	}
 
-	public List getGoodsLst() {
+	public List<SaleOrderGoods> getGoodsLst() {
 		if (goodsLst == null) {
-			goodsLst = (List) DBUtil.getLstClass("", "eq", OrderGoods.class,
-					"orderId", id + "", "int");
+			goodsLst = new ArrayList<SaleOrderGoods>();
+			for (int i = 0; i < Global.SOGLst.size(); i++) {
+				if (Global.SOGLst.get(i).getSaleOrderLst().getId() == id) {
+					goodsLst.add(Global.SOGLst.get(i));
+				}
+			}
 		}
 		return goodsLst;
 	}
 
-	public void setGoodsLst(List goodsLst) {
+	public void setGoodsLst(List<SaleOrderGoods> goodsLst) {
 		this.goodsLst = goodsLst;
 	}
 

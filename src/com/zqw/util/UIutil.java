@@ -29,6 +29,7 @@ public class UIutil {
 	static String hqlCurtainShopGoods_From_Name = "select new CurtainShopGoods(g.id,g.serialNumber,g.sellingPrice,g.curtainShop,g.remarks) from CurtainShopGoods g where curtainShop = :name order by serialNumber";
 	static String hqlGoods_From_Name = "select new Goods(g.id,g.serialNumber,g.purchasePrice,g.factory,g.telephone,g.bankCard,g.remark) from Goods g where serialNumber = :name0";
 	static String hqlOrderLst_Max = "select max(id) from OrderLst";
+	static String hqlSaleOrderLst_Max = "select max(id) from SaleOrderLst";
 	static String hqlOrderGoods_From_CurtainShopName = "select new OrderGoods(g.serialNumber,g.sellingPrice,g.purchasePrice,g.number,g.date) from OrderGoods g where curtainShop = :name order by serialNumber";
 	static String hqlOrderGoods_From_OrderId = "select new OrderGoods(g.serialNumber,g.sellingPrice,g.purchasePrice,g.number) from OrderGoods g where orderId = :name";
 	static String sqlDel_ordergoods_is_null = "DELETE  FROM  _ordergoods  WHERE  Order_id is null";
@@ -83,6 +84,14 @@ public class UIutil {
 
 	public static int getMaxIdFromOrderLst() {
 		return (Integer) DBUtil.get(hqlOrderLst_Max, "", "") + 1;
+	}
+
+	public static int getMaxIdFromSaleOrderLst() {
+		int id = 0;
+		if ((Integer) DBUtil.get(hqlSaleOrderLst_Max, "", "") != null) {
+			id += 1;
+		}
+		return id;
 	}
 
 	public static List<OrderLst> getCurtainShopOrderLstFromName(String name) {

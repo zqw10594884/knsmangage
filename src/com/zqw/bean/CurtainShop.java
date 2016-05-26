@@ -1,6 +1,6 @@
 package com.zqw.bean;
 
-public class CurtainShop extends Person{
+public class CurtainShop  {
 	private int id;
 	private String name;
 	private String telephone;

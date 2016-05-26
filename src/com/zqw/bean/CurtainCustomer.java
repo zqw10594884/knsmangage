@@ -1,61 +1,59 @@
 package com.zqw.bean;
 
-public class CurtainCustomer extends Person {
-	private int customerId;
-	private String customerName;
-	private String customerTel1;
-	private String customerTel2;
-	private String customerAddress;
-	private String customerNumber;
+public class CurtainCustomer {
+	private int id;
+	private String name;
+	private String tel1;
+	private String tel2;
+	private String address;
+	private String VIPnumber;
 
-	
-	
-	public int getCustomerId() {
-		return customerId;
+	public int getId() {
+		return id;
 	}
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getCustomerName() {
-		return customerName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCustomerName(String customerName) {
-		this.customerName = customerName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getCustomerTel1() {
-		return customerTel1;
+	public String getTel1() {
+		return tel1;
 	}
 
-	public void setCustomerTel1(String customerTel1) {
-		this.customerTel1 = customerTel1;
+	public void setTel1(String tel1) {
+		this.tel1 = tel1;
 	}
 
-	public String getCustomerTel2() {
-		return customerTel2;
+	public String getTel2() {
+		return tel2;
 	}
 
-	public void setCustomerTel2(String customerTel2) {
-		this.customerTel2 = customerTel2;
+	public void setTel2(String tel2) {
+		this.tel2 = tel2;
 	}
 
-	public String getCustomerAddress() {
-		return customerAddress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setCustomerAddress(String customerAddress) {
-		this.customerAddress = customerAddress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getCustomerNumber() {
-		return customerNumber;
+	public String getVIPnumber() {
+		return VIPnumber;
 	}
 
-	public void setCustomerNumber(String customerNumber) {
-		this.customerNumber = customerNumber;
+	public void setVIPnumber(String vIPnumber) {
+		VIPnumber = vIPnumber;
 	}
 
 }

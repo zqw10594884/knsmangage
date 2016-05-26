@@ -33,12 +33,12 @@ public class SaleOrderGoods  implements Serializable {
 	private double curtainRodNumber;
 	private String curtainRodRemark;
 
-	private int orderId;
 	private String curtainHight;
 	private String curtainWidth;
 	private String curtainLocation;
 	private String hightLocation;
 	private String curtainStyle;
+	private SaleOrderLst saleOrderLst;
 	
 	
 
@@ -62,6 +62,16 @@ public class SaleOrderGoods  implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	
+	
+	public SaleOrderLst getSaleOrderLst() {
+		return saleOrderLst;
+	}
+
+	public void setSaleOrderLst(SaleOrderLst saleOrderLst) {
+		this.saleOrderLst = saleOrderLst;
 	}
 
 	public String getClothSerialNumber() {
@@ -222,14 +232,6 @@ public class SaleOrderGoods  implements Serializable {
 
 	public void setCurtainRodRemark(String curtainRodRemark) {
 		this.curtainRodRemark = curtainRodRemark;
-	}
-
-	public int getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
 	}
 
 	public String getCurtainHight() {

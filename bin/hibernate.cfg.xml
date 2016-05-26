@@ -25,6 +25,7 @@
 		<mapping resource="com/zqw/bean/PurchaseOrder.hbm.xml" />
 		<mapping resource="com/zqw/bean/LittleCloth.hbm.xml" />
 		<mapping resource="com/zqw/bean/SaleOrderGoods.hbm.xml" />
-
+		<mapping resource="com/zqw/bean/CurtainCustomer.hbm.xml" />
+		<mapping resource="com/zqw/bean/SaleOrderLst.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
