@@ -623,19 +623,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			if (currentOrder.getId() < 1) {
 				currentOrder.setId(UIutil.getMaxIdFromOrderLst());
 				DBUtil.insert(currentOrder);
-				for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
-					((OrderGoods) currentOrder.getGoodsLst().get(i))
-							.setOrderId(currentOrder.getId());
-					DBUtil.insert(currentOrder.getGoodsLst().get(i));
-				}
 				latelyLst.add(currentOrder);
 			} else {
 				DBUtil.update(currentOrder);
-				for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
-					((OrderGoods) currentOrder.getGoodsLst().get(i))
-							.setOrderId(currentOrder.getId());
-					DBUtil.update(currentOrder.getGoodsLst().get(i));
-				}
 			}
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
@@ -735,9 +725,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			latelyLst.remove(currentOrder);
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
-			for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
-				DBUtil.del(currentOrder.getGoodsLst().get(i));
-			}
 			DBUtil.del(currentOrder);
 			UIutil.delFromCurtainShopGoods();
 		} else {
@@ -752,6 +739,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			total.setText(DataUtil.getTotalm(tableModel) + "");
 			currentOrder.getGoodsLst().remove(selectedRow);
 			removeModifyBtnAndDeleteBtn();
+			addSubmit();
 		}
 	}
 
@@ -784,6 +772,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			profit.setText(DataUtil.getProfitm(tableModel) + "");
 			total.setText(DataUtil.getTotalm(tableModel) + "");
 			removeModifyBtnAndDeleteBtn();
+			addSubmit();
 		}
 	}
 
