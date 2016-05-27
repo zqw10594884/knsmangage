@@ -26,9 +26,16 @@ public class SaleOrderLst extends KNSOrder {
 	}
 
 	public CurtainCustomer getCustomer() {
-		for (int i = 0; i < Global.CCLst.size(); i++) {
-			if (Global.CCLst.get(i).getId() == customer.getId()) {
-				return Global.CCLst.get(i);
+		if (customer == null) {
+			return null;
+		}
+		if (customer.getId() == 0) {
+			return customer;
+		} else {
+			for (int i = 0; i < Global.CCLst.size(); i++) {
+				if (Global.CCLst.get(i).getId() == customer.getId()) {
+					return Global.CCLst.get(i);
+				}
 			}
 		}
 		return customer;
@@ -142,6 +149,8 @@ public class SaleOrderLst extends KNSOrder {
 	public List<SaleOrderGoods> getGoodsLst() {
 		if (goodsLst == null) {
 			goodsLst = new ArrayList<SaleOrderGoods>();
+		}
+		if (id != 0) {
 			for (int i = 0; i < Global.SOGLst.size(); i++) {
 				if (Global.SOGLst.get(i).getSaleOrderLst().getId() == id) {
 					goodsLst.add(Global.SOGLst.get(i));

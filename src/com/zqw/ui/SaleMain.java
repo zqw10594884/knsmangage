@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -83,6 +84,13 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			"花边", "窗帘杆", "窗帘圈" };
 	private JComboBox curtainStyleCB;
 	private int selectedRow;
+	private JTextField rodWidth;
+	private MouseAdapter curtainRodMA;
+	private MouseAdapter curtainRingMA;
+	private MouseAdapter curtainLaceMA;
+	private MouseAdapter curtainTapeMA;
+	private MouseAdapter curtainClothMA;
+	private JComboBox curtainLocationCB;
 
 	/**
 	 * Launch the application.
@@ -130,7 +138,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	private void initComponents() {
 		// TODO Auto-generated method stub
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 991, 716);
+		setBounds(100, 100, 987, 717);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -189,33 +197,6 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		saleTable.setToolTipText("窗帘");
 		scrollPane_1.setViewportView(saleTable);
 
-		JLabel label_2 = new JLabel("窗帘布：");
-		label_2.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_2.setBounds(209, 186, 56, 15);
-		contentPane.add(label_2);
-
-		curtainClothName = new JTextField();
-		curtainClothName.setEditable(false);
-		curtainClothName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				reBuildGoodLst("A-");
-			}
-		});
-		curtainClothName.setColumns(10);
-		curtainClothName.setBounds(264, 183, 130, 21);
-		contentPane.add(curtainClothName);
-
-		JLabel label_4 = new JLabel("价格：");
-		label_4.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_4.setBounds(404, 186, 45, 15);
-		contentPane.add(label_4);
-
-		clothPrice = new JTextField();
-		clothPrice.setColumns(10);
-		clothPrice.setBounds(444, 183, 38, 21);
-		contentPane.add(clothPrice);
-
 		JLabel saleTotal = new JLabel("总价：");
 		saleTotal.setFont(new Font("宋体", Font.PLAIN, 14));
 		saleTotal.setBounds(209, 643, 45, 25);
@@ -226,70 +207,56 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		label_8.setBounds(253, 643, 54, 20);
 		contentPane.add(label_8);
 
-		addCurtainGood = new JButton("添加货物");
-		addCurtainGood.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (currentSol.getCustomer().getName().length() > 0) {
-					addCurtainGoodActionPerformed(e);
-				} else {
-					JOptionPane.showMessageDialog(null, "请先输入用户信息");
-				}
-			}
-		});
-		addCurtainGood.setFont(new Font("宋体", Font.PLAIN, 14));
-		addCurtainGood.setBounds(574, 361, 100, 23);
-		contentPane.add(addCurtainGood);
-
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "\u5BA2\u6237\u4FE1\u606F",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(201, 10, 478, 137);
+		panel_1.setBounds(199, 10, 480, 115);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
 		JLabel label_1 = new JLabel("姓名：");
 		label_1.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_1.setBounds(10, 26, 70, 15);
+		label_1.setBounds(14, 26, 45, 15);
 		panel_1.add(label_1);
 
 		customerName = new JTextField();
 		customerName.setColumns(10);
-		customerName.setBounds(54, 23, 103, 21);
+		customerName.setBounds(73, 23, 103, 21);
 		panel_1.add(customerName);
 
 		JLabel label_3 = new JLabel("电话：");
 		label_3.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_3.setBounds(207, 26, 54, 15);
+		label_3.setBounds(190, 26, 45, 15);
 		panel_1.add(label_3);
 
 		customerTel1 = new JTextField();
 		customerTel1.setColumns(10);
-		customerTel1.setBounds(254, 23, 87, 21);
+		customerTel1.setBounds(249, 23, 100, 21);
 		panel_1.add(customerTel1);
 
 		customerTel2 = new JTextField();
 		customerTel2.setColumns(10);
-		customerTel2.setBounds(351, 23, 86, 21);
+		customerTel2.setBounds(363, 23, 100, 21);
 		panel_1.add(customerTel2);
 
 		JLabel label_6 = new JLabel("地址：");
 		label_6.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_6.setBounds(10, 52, 54, 16);
+		label_6.setBounds(16, 52, 45, 16);
 		panel_1.add(label_6);
 
 		customerAdr = new JTextField();
 		customerAdr.setColumns(10);
-		customerAdr.setBounds(54, 51, 383, 21);
+		customerAdr.setBounds(77, 51, 383, 21);
 		panel_1.add(customerAdr);
 
 		customerDeposit = new JTextField();
 		customerDeposit.setColumns(10);
-		customerDeposit.setBounds(53, 78, 66, 21);
+		customerDeposit.setBounds(63, 78, 66, 21);
 		panel_1.add(customerDeposit);
 
 		JLabel label_7 = new JLabel("定金：");
 		label_7.setFont(new Font("新宋体", Font.PLAIN, 14));
-		label_7.setBounds(10, 78, 54, 21);
+		label_7.setBounds(9, 78, 45, 21);
 		panel_1.add(label_7);
 
 		addCustomerBtn = new JButton("添加客户");
@@ -299,7 +266,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			}
 		});
 		addCustomerBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		addCustomerBtn.setBounds(334, 105, 103, 23);
+		addCustomerBtn.setBounds(366, 76, 103, 23);
 		panel_1.add(addCustomerBtn);
 
 		JButton customerModifyBtn = new JButton("修改");
@@ -308,7 +275,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			}
 		});
 		customerModifyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		customerModifyBtn.setBounds(257, 104, 67, 23);
+		customerModifyBtn.setBounds(290, 76, 67, 23);
 		panel_1.add(customerModifyBtn);
 
 		JButton customerDelBtn = new JButton("删除");
@@ -317,8 +284,18 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			}
 		});
 		customerDelBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		customerDelBtn.setBounds(180, 104, 67, 23);
+		customerDelBtn.setBounds(214, 76, 67, 23);
 		panel_1.add(customerDelBtn);
+
+		JButton newButton = new JButton("新建");
+		newButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearAll();
+			}
+		});
+		newButton.setFont(new Font("宋体", Font.PLAIN, 14));
+		newButton.setBounds(138, 76, 67, 23);
+		panel_1.add(newButton);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(689, 10, 274, 374);
@@ -371,162 +348,6 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		scrollPane_2.setViewportView(saleLatelyjList);
 		panel_2.setLayout(gl_panel_2);
 
-		JLabel label_5 = new JLabel("安装位置：");
-		label_5.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_5.setBounds(468, 158, 79, 15);
-		contentPane.add(label_5);
-
-		curtainLocation = new JTextField();
-		curtainLocation.setBounds(544, 155, 130, 21);
-		contentPane.add(curtainLocation);
-		curtainLocation.setColumns(10);
-
-		JLabel lblNewLabel = new JLabel("布带：");
-		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
-		lblNewLabel.setBounds(209, 217, 56, 15);
-		contentPane.add(lblNewLabel);
-
-		JLabel label_10 = new JLabel("价格：");
-		label_10.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_10.setBounds(404, 217, 45, 15);
-		contentPane.add(label_10);
-
-		curtainTapePrice = new JTextField();
-		curtainTapePrice.setColumns(10);
-		curtainTapePrice.setBounds(444, 214, 38, 21);
-		contentPane.add(curtainTapePrice);
-
-		JLabel label_11 = new JLabel("备注：");
-		label_11.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_11.setBounds(510, 186, 45, 15);
-		contentPane.add(label_11);
-
-		clothRemark = new JTextField();
-		clothRemark.setColumns(10);
-		clothRemark.setBounds(550, 183, 124, 21);
-		contentPane.add(clothRemark);
-
-		curtainTapeRemark = new JTextField();
-		curtainTapeRemark.setColumns(10);
-		curtainTapeRemark.setBounds(550, 214, 124, 21);
-		contentPane.add(curtainTapeRemark);
-
-		JLabel label_12 = new JLabel("备注：");
-		label_12.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_12.setBounds(510, 217, 45, 15);
-		contentPane.add(label_12);
-
-		JLabel label_13 = new JLabel("窗帘杆：");
-		label_13.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_13.setBounds(209, 303, 56, 15);
-		contentPane.add(label_13);
-
-		JLabel label_14 = new JLabel("价格：");
-		label_14.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_14.setBounds(409, 303, 45, 15);
-		contentPane.add(label_14);
-
-		curtainRodPrice = new JTextField();
-		curtainRodPrice.setColumns(10);
-		curtainRodPrice.setBounds(449, 300, 38, 21);
-		contentPane.add(curtainRodPrice);
-
-		JLabel label_15 = new JLabel("备注：");
-		label_15.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_15.setBounds(515, 303, 45, 15);
-		contentPane.add(label_15);
-
-		curtainRodRemark = new JTextField();
-		curtainRodRemark.setColumns(10);
-		curtainRodRemark.setBounds(555, 300, 124, 21);
-		contentPane.add(curtainRodRemark);
-
-		curtainTapeName = new JTextField();
-		curtainTapeName.setEditable(false);
-		curtainTapeName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				reBuildGoodLst("C-布带");
-			}
-		});
-		curtainTapeName.setColumns(10);
-		curtainTapeName.setBounds(264, 214, 130, 21);
-		contentPane.add(curtainTapeName);
-
-		JLabel label_16 = new JLabel("花边：");
-		label_16.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_16.setBounds(209, 245, 56, 15);
-		contentPane.add(label_16);
-
-		curtainLaceName = new JTextField();
-		curtainLaceName.setEditable(false);
-		curtainLaceName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				reBuildGoodLst("C-花边");
-			}
-		});
-		curtainLaceName.setColumns(10);
-		curtainLaceName.setBounds(264, 242, 130, 21);
-		contentPane.add(curtainLaceName);
-
-		JLabel label_17 = new JLabel("价格：");
-		label_17.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_17.setBounds(404, 245, 45, 15);
-		contentPane.add(label_17);
-
-		curtainLacePrice = new JTextField();
-		curtainLacePrice.setColumns(10);
-		curtainLacePrice.setBounds(444, 242, 38, 21);
-		contentPane.add(curtainLacePrice);
-
-		JLabel label_18 = new JLabel("备注：");
-		label_18.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_18.setBounds(510, 245, 45, 15);
-		contentPane.add(label_18);
-
-		curtainLaceRemark = new JTextField();
-		curtainLaceRemark.setColumns(10);
-		curtainLaceRemark.setBounds(550, 242, 124, 21);
-		contentPane.add(curtainLaceRemark);
-
-		JLabel label_19 = new JLabel("窗帘圈：");
-		label_19.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_19.setBounds(209, 273, 56, 15);
-		contentPane.add(label_19);
-
-		curtainRingName = new JTextField();
-		curtainRingName.setEditable(false);
-		curtainRingName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				reBuildGoodLst("C-孔");
-			}
-		});
-		curtainRingName.setColumns(10);
-		curtainRingName.setBounds(264, 270, 130, 21);
-		contentPane.add(curtainRingName);
-
-		JLabel label_20 = new JLabel("价格：");
-		label_20.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_20.setBounds(404, 273, 45, 15);
-		contentPane.add(label_20);
-
-		curtainRingPrice = new JTextField();
-		curtainRingPrice.setColumns(10);
-		curtainRingPrice.setBounds(444, 270, 38, 21);
-		contentPane.add(curtainRingPrice);
-
-		JLabel label_21 = new JLabel("备注：");
-		label_21.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_21.setBounds(510, 273, 45, 15);
-		contentPane.add(label_21);
-
-		curtainRingRemark = new JTextField();
-		curtainRingRemark.setColumns(10);
-		curtainRingRemark.setBounds(550, 270, 124, 21);
-		contentPane.add(curtainRingRemark);
-
 		JButton submitBtn = new JButton("提交订单");
 		submitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -537,70 +358,316 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		submitBtn.setBounds(547, 644, 100, 23);
 		contentPane.add(submitBtn);
 
+		JLabel label_22 = new JLabel("宽度：");
+		label_22.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_22.setBounds(924, 181, 56, 15);
+		contentPane.add(label_22);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(null, "\u8D27\u7269\u4FE1\u606F",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_3.setBounds(199, 124, 480, 260);
+		contentPane.add(panel_3);
+		panel_3.setLayout(null);
+
+		JLabel label_2 = new JLabel("窗帘布：");
+		label_2.setBounds(5, 88, 56, 15);
+		panel_3.add(label_2);
+		label_2.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel lblNewLabel = new JLabel("布带：");
+		lblNewLabel.setBounds(5, 119, 56, 15);
+		panel_3.add(lblNewLabel);
+		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_16 = new JLabel("花边：");
+		label_16.setBounds(5, 147, 56, 15);
+		panel_3.add(label_16);
+		label_16.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_19 = new JLabel("窗帘圈：");
+		label_19.setBounds(5, 175, 56, 15);
+		panel_3.add(label_19);
+		label_19.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_13 = new JLabel("窗帘杆：");
+		label_13.setBounds(5, 205, 56, 15);
+		panel_3.add(label_13);
+		label_13.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		curtainRodName = new JTextField();
+		curtainRodName.setBounds(66, 199, 130, 21);
+		panel_3.add(curtainRodName);
+		curtainRodName.setEditable(false);
+		curtainRodMA = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				reBuildGoodLst("C-杆");
+			}
+		};
+		curtainRodName.addMouseListener(curtainRodMA);
+		curtainRodName.setColumns(10);
+
+		curtainRingName = new JTextField();
+		curtainRingName.setBounds(66, 169, 130, 21);
+		panel_3.add(curtainRingName);
+		curtainRingName.setEditable(false);
+		curtainRingMA = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				reBuildGoodLst("C-孔");
+			}
+		};
+		curtainRingName.addMouseListener(curtainRingMA);
+		curtainRingName.setColumns(10);
+
+		curtainLaceName = new JTextField();
+		curtainLaceName.setBounds(66, 141, 130, 21);
+		panel_3.add(curtainLaceName);
+		curtainLaceName.setEditable(false);
+		curtainLaceMA = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				reBuildGoodLst("C-花边");
+			}
+		};
+		curtainLaceName.addMouseListener(curtainLaceMA);
+		curtainLaceName.setColumns(10);
+
+		curtainTapeName = new JTextField();
+		curtainTapeName.setBounds(66, 113, 130, 21);
+		panel_3.add(curtainTapeName);
+		curtainTapeName.setEditable(false);
+		curtainTapeMA = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				reBuildGoodLst("C-布带");
+			}
+		};
+		curtainTapeName.addMouseListener(curtainTapeMA);
+		curtainTapeName.setColumns(10);
+
+		curtainClothName = new JTextField();
+		curtainClothName.setBounds(66, 82, 130, 21);
+		panel_3.add(curtainClothName);
+		curtainClothName.setEditable(false);
+		curtainClothMA = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				reBuildGoodLst("A-");
+			}
+		};
+		curtainClothName.addMouseListener(curtainClothMA);
+		curtainClothName.setColumns(10);
+
+		JLabel label_4 = new JLabel("价格：");
+		label_4.setBounds(201, 88, 45, 15);
+		panel_3.add(label_4);
+		label_4.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_10 = new JLabel("价格：");
+		label_10.setBounds(201, 119, 45, 15);
+		panel_3.add(label_10);
+		label_10.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_17 = new JLabel("价格：");
+		label_17.setBounds(201, 147, 45, 15);
+		panel_3.add(label_17);
+		label_17.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_20 = new JLabel("价格：");
+		label_20.setBounds(201, 175, 45, 15);
+		panel_3.add(label_20);
+		label_20.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_14 = new JLabel("价格：");
+		label_14.setBounds(201, 205, 45, 15);
+		panel_3.add(label_14);
+		label_14.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		curtainRodPrice = new JTextField();
+		curtainRodPrice.setBounds(251, 199, 38, 21);
+		panel_3.add(curtainRodPrice);
+		curtainRodPrice.setColumns(10);
+
+		curtainRingPrice = new JTextField();
+		curtainRingPrice.setBounds(251, 169, 38, 21);
+		panel_3.add(curtainRingPrice);
+		curtainRingPrice.setColumns(10);
+
+		curtainLacePrice = new JTextField();
+		curtainLacePrice.setBounds(251, 141, 38, 21);
+		panel_3.add(curtainLacePrice);
+		curtainLacePrice.setColumns(10);
+
+		curtainTapePrice = new JTextField();
+		curtainTapePrice.setBounds(251, 113, 38, 21);
+		panel_3.add(curtainTapePrice);
+		curtainTapePrice.setColumns(10);
+
+		clothPrice = new JTextField();
+		clothPrice.setBounds(251, 82, 38, 21);
+		panel_3.add(clothPrice);
+		clothPrice.setColumns(10);
+
+		JLabel label_15 = new JLabel("备注：");
+		label_15.setBounds(294, 205, 45, 15);
+		panel_3.add(label_15);
+		label_15.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_21 = new JLabel("备注：");
+		label_21.setBounds(294, 175, 45, 15);
+		panel_3.add(label_21);
+		label_21.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_18 = new JLabel("备注：");
+		label_18.setBounds(294, 147, 45, 15);
+		panel_3.add(label_18);
+		label_18.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_12 = new JLabel("备注：");
+		label_12.setBounds(294, 119, 45, 15);
+		panel_3.add(label_12);
+		label_12.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		JLabel label_11 = new JLabel("备注：");
+		label_11.setBounds(294, 88, 45, 15);
+		panel_3.add(label_11);
+		label_11.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		clothRemark = new JTextField();
+		clothRemark.setBounds(344, 82, 120, 21);
+		panel_3.add(clothRemark);
+		clothRemark.setColumns(10);
+
+		curtainTapeRemark = new JTextField();
+		curtainTapeRemark.setBounds(344, 113, 120, 21);
+		panel_3.add(curtainTapeRemark);
+		curtainTapeRemark.setColumns(10);
+
+		curtainLaceRemark = new JTextField();
+		curtainLaceRemark.setBounds(344, 141, 120, 21);
+		panel_3.add(curtainLaceRemark);
+		curtainLaceRemark.setColumns(10);
+
+		curtainRingRemark = new JTextField();
+		curtainRingRemark.setBounds(344, 169, 120, 21);
+		panel_3.add(curtainRingRemark);
+		curtainRingRemark.setColumns(10);
+
+		curtainRodRemark = new JTextField();
+		curtainRodRemark.setBounds(344, 199, 120, 21);
+		panel_3.add(curtainRodRemark);
+		curtainRodRemark.setColumns(10);
+
 		JButton curtainDelBtn = new JButton("删除");
+		curtainDelBtn.setBounds(172, 227, 67, 23);
+		panel_3.add(curtainDelBtn);
 		curtainDelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 			}
 		});
 		curtainDelBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		curtainDelBtn.setBounds(382, 361, 67, 23);
-		contentPane.add(curtainDelBtn);
 
 		JButton curtainModifyBtn = new JButton("修改");
+		curtainModifyBtn.setBounds(260, 227, 67, 23);
+		panel_3.add(curtainModifyBtn);
 		curtainModifyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				curtainModifyAction(e);
 			}
 		});
 		curtainModifyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		curtainModifyBtn.setBounds(470, 361, 67, 23);
-		contentPane.add(curtainModifyBtn);
 
-		hightLocationCB = new JComboBox();
-		hightLocationCB.setModel(new DefaultComboBoxModel<Object>(new String[] {
-				"高度位置", "顶高", "底高" }));
-		hightLocationCB.setToolTipText("");
-		hightLocationCB.setBounds(459, 332, 100, 21);
-		contentPane.add(hightLocationCB);
-
-		curtainHight = new JTextField();
-		curtainHight.setColumns(10);
-		curtainHight.setBounds(602, 332, 77, 21);
-		contentPane.add(curtainHight);
-
-		JLabel label_22 = new JLabel("宽度：");
-		label_22.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_22.setBounds(209, 331, 56, 15);
-		contentPane.add(label_22);
-
-		curtainWidth = new JTextField();
-		curtainWidth.setColumns(10);
-		curtainWidth.setBounds(264, 328, 77, 21);
-		contentPane.add(curtainWidth);
-
-		curtainRodName = new JTextField();
-		curtainRodName.setEditable(false);
-		curtainRodName.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				reBuildGoodLst("C-杆");
+		addCurtainGood = new JButton("添加货物");
+		addCurtainGood.setBounds(364, 227, 100, 23);
+		panel_3.add(addCurtainGood);
+		addCurtainGood.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (currentSol.getCustomer() != null) {
+					addCurtainGoodActionPerformed(e);
+				} else {
+					JOptionPane.showMessageDialog(null, "请先输入用户信息");
+				}
 			}
 		});
-		curtainRodName.setColumns(10);
-		curtainRodName.setBounds(264, 300, 130, 21);
-		contentPane.add(curtainRodName);
+		addCurtainGood.setFont(new Font("宋体", Font.PLAIN, 14));
 
 		curtainStyleCB = new JComboBox();
+		curtainStyleCB.setBounds(21, 22, 98, 21);
+		panel_3.add(curtainStyleCB);
 		curtainStyleCB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				curtainStyleAction(e);
 			}
 		});
 		curtainStyleCB.setModel(new DefaultComboBoxModel(new String[] {
-				"打孔*1.7", "挂钩*1.5", "挂钩+0.5" }));
-		curtainStyleCB.setBounds(226, 157, 98, 21);
-		contentPane.add(curtainStyleCB);
+				"打孔*1.7", "挂钩*1.5", "挂钩+0.5", "卷帘" }));
+
+		curtainWidth = new JTextField();
+		curtainWidth.setBounds(69, 57, 70, 21);
+		panel_3.add(curtainWidth);
+		curtainWidth.setColumns(10);
+
+		JLabel label_5 = new JLabel("安装位置：");
+		label_5.setBounds(140, 25, 75, 15);
+		panel_3.add(label_5);
+		label_5.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		hightLocationCB = new JComboBox();
+		hightLocationCB.setBounds(305, 57, 79, 21);
+		panel_3.add(hightLocationCB);
+		hightLocationCB.setModel(new DefaultComboBoxModel(new String[] {
+				"高度位置", "顶高", "总高", "杆到地", "顶装" }));
+		hightLocationCB.setToolTipText("");
+
+		curtainLocationCB = new JComboBox();
+		curtainLocationCB.setModel(new DefaultComboBoxModel(new String[] {
+				"请选择", "客厅", "阳台", "主卧", "次卧", "后卧", "餐厅", "厨房", "卫生间" }));
+		curtainLocationCB.setBounds(236, 22, 70, 21);
+		panel_3.add(curtainLocationCB);
+		curtainLocationCB.setToolTipText("");
+
+		curtainLocation = new JTextField();
+		curtainLocation.setBounds(327, 22, 130, 21);
+		panel_3.add(curtainLocation);
+		curtainLocation.setColumns(10);
+
+		curtainHight = new JTextField();
+		curtainHight.setBounds(396, 57, 70, 21);
+		panel_3.add(curtainHight);
+		curtainHight.setColumns(10);
+
+		JLabel label_23 = new JLabel("宽度：");
+		label_23.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_23.setBounds(12, 59, 45, 15);
+		panel_3.add(label_23);
+
+		rodWidth = new JTextField();
+		rodWidth.setColumns(10);
+		rodWidth.setBounds(223, 57, 70, 21);
+		panel_3.add(rodWidth);
+
+		JLabel label_24 = new JLabel("杆增加：");
+		label_24.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_24.setBounds(151, 59, 60, 15);
+		panel_3.add(label_24);
+	}
+
+	protected void clearAll() {
+		currentSol = new SaleOrderLst();
+		currentCC = new CurtainCustomer();
+		customerName.setText("");
+		customerTel1.setText("");
+		customerTel2.setText("");
+		customerAdr.setText("");
+		customerDeposit.setText("");
+		for (int i = 0; i < tableModel.getRowCount();) {
+			tableModel.removeRow(0);
+		}
+		saleTable.setModel(new DefaultTableModel());
+		clearGoodsTable();
 	}
 
 	protected void curtainModifyAction(ActionEvent e) {
@@ -609,6 +676,52 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	}
 
 	protected void curtainStyleAction(ActionEvent e) {
+		int index = curtainStyleCB.getSelectedIndex();
+		saleGoodjList.setModel(new DefaultListModel());
+		curtainRodName.removeMouseListener(curtainRodMA);
+		curtainRingName.removeMouseListener(curtainRingMA);
+		curtainLaceName.removeMouseListener(curtainLaceMA);
+		curtainTapeName.removeMouseListener(curtainTapeMA);
+		curtainClothName.removeMouseListener(curtainClothMA);
+
+		switch (index) {
+		case 0:
+			curtainRodName.addMouseListener(curtainRodMA);
+			curtainRingName.addMouseListener(curtainRingMA);
+			curtainLaceName.addMouseListener(curtainLaceMA);
+			curtainTapeName.addMouseListener(curtainTapeMA);
+			curtainClothName.addMouseListener(curtainClothMA);
+			break;
+		case 1:
+			curtainRodName.addMouseListener(curtainRodMA);
+			curtainLaceName.addMouseListener(curtainLaceMA);
+			curtainTapeName.addMouseListener(curtainTapeMA);
+			curtainClothName.addMouseListener(curtainClothMA);
+			curtainRingPrice.setEditable(false);
+			curtainRingRemark.setEditable(false);
+			break;
+		case 2:
+			curtainRodName.addMouseListener(curtainRodMA);
+			curtainLaceName.addMouseListener(curtainLaceMA);
+			curtainTapeName.addMouseListener(curtainTapeMA);
+			curtainClothName.addMouseListener(curtainClothMA);
+			curtainRingPrice.setEditable(false);
+			curtainRingRemark.setEditable(false);
+			break;
+		case 3:
+			curtainClothName.setEditable(true);
+			curtainRingPrice.setEditable(false);
+			curtainRodPrice.setEditable(false);
+			curtainLacePrice.setEditable(false);
+			curtainTapePrice.setEditable(false);
+			curtainRingRemark.setEditable(false);
+			curtainRodRemark.setEditable(false);
+			curtainLaceRemark.setEditable(false);
+			curtainTapeRemark.setEditable(false);
+			break;
+		default:
+			break;
+		}
 	}
 
 	private void submitAction(ActionEvent e) {
@@ -623,9 +736,6 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	}
 
 	private void addCurtainGoodActionPerformed(ActionEvent e) {
-		if (currentSol.getGoodsLst() == null) {
-			currentSol.setGoodsLst(new ArrayList<SaleOrderGoods>());
-		}
 		SaleOrderGoods sog = new SaleOrderGoods();
 		saleOrderGoodsBuild(sog);
 		currentSol.getGoodsLst().add(sog);
@@ -638,50 +748,67 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		String curtainStyle = curtainStyleCB.getSelectedItem().toString();
 
 		sog.setCurtainHight(curtainHight.getText().trim());
-		sog.setCurtainLocation(curtainLocation.getText().trim());
+		if ("请选择".equals(curtainLocationCB.getSelectedItem().toString())) {
+			sog.setCurtainLocation(curtainLocationCB.getSelectedItem()
+					.toString());
+		} else {
+			sog.setCurtainLocation(curtainLocation.getText().trim());
+		}
 		sog.setHightLocation(hightLocationCB.getSelectedItem().toString());
 		sog.setCurtainStyle(curtainStyle);
 		sog.setCurtainWidth(curtainWidth.getText().trim());
 
-		sog.setClothSerialNumber(curtainClothName.getText().trim());
-		sog.setCurtainTapeSerialNumber(curtainTapeName.getText().trim());
-		sog.setCurtainLaceSerialNumber(curtainLaceName.getText().trim());
-		sog.setCurtainRingSerialNumber(curtainRingName.getText().trim());
-		sog.setCurtainRodSerialNumber(curtainRodName.getText().trim());
-
-		sog.setClothSellingPrice(Double
-				.parseDouble(clothPrice.getText().trim()));
-		sog.setCurtainTapeSellingPrice(Double.parseDouble(curtainTapePrice
-				.getText().trim()));
-		sog.setCurtainLaceSellingPrice(Double.parseDouble(curtainLacePrice
-				.getText().trim()));
-		sog.setCurtainRingSellingPrice(Double.parseDouble(curtainRingPrice
-				.getText().trim()));
-		sog.setCurtainRodSellingPrice(Double.parseDouble(curtainRodPrice
-				.getText().trim()));
-
-		sog.setClothRemark(clothRemark.getText());
-		sog.setCurtainTapeRemark(curtainTapeRemark.getText());
-		sog.setCurtainLaceRemark(curtainLaceRemark.getText());
-		sog.setCurtainRingRemark(curtainRingRemark.getText());
-		sog.setCurtainRodRemark(curtainRodRemark.getText());
-
-		if ("打孔*1.7".equals(curtainStyle)) {
-			sog.setClothNumber(width * 1.7);
-			sog.setCurtainTapeNumber(width * 1.7);
-			sog.setCurtainLaceNumber(width * 1.7);
-			sog.setCurtainRingNumber((int) (width * 1.7 * 7));
-		} else if ("挂钩*1.5".equals(curtainStyle)) {
-			sog.setClothNumber(width * 1.5);
-			sog.setCurtainTapeNumber(width * 1.5);
-			sog.setCurtainLaceNumber(width * 1.5);
+		if ("卷帘".equals(curtainStyle)) {
+			sog.setClothSerialNumber(curtainClothName.getText().trim());
+			sog.setClothSellingPrice(Double.parseDouble(clothPrice.getText()
+					.trim()));
+			sog.setClothRemark(clothRemark.getText());
 		} else {
-			sog.setClothNumber(width + 0.5);
-			sog.setCurtainTapeNumber(width + 0.5);
-			sog.setCurtainLaceNumber(width + 0.5);
-		}
-		sog.setCurtainRodNumber(width);
+			sog.setClothSerialNumber(curtainClothName.getText().trim());
+			sog.setCurtainTapeSerialNumber(curtainTapeName.getText().trim());
+			sog.setCurtainLaceSerialNumber(curtainLaceName.getText().trim());
+			sog.setCurtainRingSerialNumber(curtainRingName.getText().trim());
+			sog.setCurtainRodSerialNumber(curtainRodName.getText().trim());
 
+			sog.setClothSellingPrice(Double.parseDouble(clothPrice.getText()
+					.trim()));
+			sog.setCurtainTapeSellingPrice(Double.parseDouble(curtainTapePrice
+					.getText().trim()));
+			sog.setCurtainLaceSellingPrice(Double.parseDouble(curtainLacePrice
+					.getText().trim()));
+			sog.setCurtainRingSellingPrice(Double.parseDouble(curtainRingPrice
+					.getText().trim()));
+			sog.setCurtainRodSellingPrice(Double.parseDouble(curtainRodPrice
+					.getText().trim()));
+
+			sog.setClothRemark(clothRemark.getText());
+			sog.setCurtainTapeRemark(curtainTapeRemark.getText());
+			sog.setCurtainLaceRemark(curtainLaceRemark.getText());
+			sog.setCurtainRingRemark(curtainRingRemark.getText());
+			sog.setCurtainRodRemark(curtainRodRemark.getText());
+
+			if ("打孔*1.7".equals(curtainStyle)) {
+				sog.setClothNumber(width * 1.7);
+				sog.setCurtainTapeNumber(width * 1.7);
+				sog.setCurtainLaceNumber(width * 1.7);
+				sog.setCurtainRingNumber((int) (width * 1.7 * 7));
+			} else if ("挂钩*1.5".equals(curtainStyle)) {
+				sog.setClothNumber(width * 1.5);
+				sog.setCurtainTapeNumber(width * 1.5);
+				sog.setCurtainLaceNumber(width * 1.5);
+			} else {
+				sog.setClothNumber(width + 0.5);
+				sog.setCurtainTapeNumber(width + 0.5);
+				sog.setCurtainLaceNumber(width + 0.5);
+			}
+		}
+		if (rodWidth.getText().trim().length() > 0) {
+
+			sog.setCurtainRodNumber(width
+					+ Integer.parseInt(rodWidth.getText().trim()));
+		} else {
+			sog.setCurtainRodNumber(width);
+		}
 	}
 
 	private String[] creatRow(SaleOrderGoods sog) {
@@ -722,8 +849,6 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	private void initGoodLst() {
 		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber",
 				"eq", CurtainShopGoods.class, "curtainShop", "凯妮丝二店", "String");
-
-		UIutil.initCurtainShopGoodsLstFromName(this, saleGoodjList, goodsLst);
 	}
 
 	private void reBuildGoodLst(String index) {
