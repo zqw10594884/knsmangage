@@ -18,9 +18,9 @@ public class SortChineseName implements Comparator<OrderLst> {
 
 	@Override
 	public int compare(OrderLst o1, OrderLst o2) {
-		if (cmp.compare(o1.getName(), o2.getName()) > 0) {
+		if (cmp.compare(o1.getCurtainShop(), o2.getCurtainShop()) > 0) {
 			return 1;
-		} else if (cmp.compare(o1.getName(), o2.getName()) < 0) {
+		} else if (cmp.compare(o1.getCurtainShop(), o2.getCurtainShop()) < 0) {
 			return -1;
 		}
 		return 0;

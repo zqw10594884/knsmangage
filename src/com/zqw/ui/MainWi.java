@@ -136,8 +136,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				telephone.setText(curtainShop.getTelephone());
 				telephone.setEditable(false);
 				currentOrder = new OrderLst();
-				currentOrder.setNameId(curtainShop.getId());
-				currentOrder.setName(curtainShop.getName());
+				currentOrder.setCurtainShop(curtainShop.getName());
 				currentOrder.setGoodsLst(new ArrayList<OrderGoods>());
 				goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass(
 						"serialNumber", "eq", CurtainShopGoods.class,
@@ -621,10 +620,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
-				currentOrder.setId(UIutil.getMaxIdFromOrderLst());
 				DBUtil.insert(currentOrder);
 				latelyLst.add(currentOrder);
-			} else {
+			}else{
 				DBUtil.update(currentOrder);
 			}
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
@@ -646,6 +644,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				if (cli.isSelected()) {
 					OrderLst ol = latelyLst.get(i);
 					CurtainShop cs = (CurtainShop) ol.getNameClass();
+					 
 					DBUtil.update(ol);
 					ol.setOrderState(30);
 					UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
@@ -738,6 +737,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			profit.setText(DataUtil.getProfitm(tableModel) + "");
 			total.setText(DataUtil.getTotalm(tableModel) + "");
 			currentOrder.getGoodsLst().remove(selectedRow);
+//			OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
+//			DBUtil.del(og);
 			removeModifyBtnAndDeleteBtn();
 			addSubmit();
 		}
@@ -750,7 +751,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			OrderGoods og = new OrderGoods();
 			updateOrderGoods(tableModel.getRowCount() - 1, og, currentOrder);
 			currentOrder.getGoodsLst().add(og);
-
 			profit.setText(DataUtil.getProfitm(tableModel) + "");
 			total.setText(DataUtil.getTotalm(tableModel) + "");
 			addSubmit();
@@ -801,7 +801,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 	private void updateOrderGoods(int i, OrderGoods og, OrderLst ol) {
 		// TODO Auto-generated method stub
-		og.setOrderId(ol.getId());
 		og.setDate(ol.getDeliveryTime());
 		og.setOwner(curtainShop.getOwner());
 		og.setCurtainShop(curtainShop.getName());
@@ -817,9 +816,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	@SuppressWarnings("unchecked")
 	private void addLatelyLstToMain(int index) {
 		currentOrder = latelyLst.get(index);
-		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber",
-				"eq", CurtainShopGoods.class, "curtainShop",
-				currentOrder.getName(), "String");
+		goodsLst.clear();
+		for (int i = 0; i < Global.CSGLst.size(); i++) {
+			if (Global.CSGLst.get(i).getCurtainShop().equals(currentOrder.getCurtainShop())) {
+				goodsLst.add(Global.CSGLst.get(i));
+			}
+		}
 
 		UIutil.initCurtainShopGoodsLstFromName(this, goodsjList, goodsLst);
 		UIutil.tableAddAll(currentOrder.getGoodsLst(), tableModel);

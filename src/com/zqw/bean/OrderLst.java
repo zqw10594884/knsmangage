@@ -1,73 +1,40 @@
 package com.zqw.bean;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.zqw.util.DBUtil;
+import org.hibernate.collection.PersistentList;
 
-public class OrderLst extends KNSOrder {
-	private int id;
-	private int nameId;
-	private String name;
+import com.zqw.util.DBUtil;
+import com.zqw.util.HibUtil;
+
+public class OrderLst {
+	private List<OrderGoods> goodsLst;
+	private String curtainShop;
 	private String installPerson;
 	private String libraryPerson;
 	private String machiningPerson;
-	private String salePerson;
 	private Date deliveryTime;
 	private Date submitTime;
+	private int id;
 	private int arrears;
-	private String customerDeposit;
 	private int orderState;
-
-	private List goodsLst;
 	private CurtainShop nameClass;
 
 	public OrderLst() {
 		super();
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getNameId() {
-		return nameId;
-	}
-
-	public void setNameId(int nameId) {
-		this.nameId = nameId;
-	}
-
-	public CurtainShop getNameClass() {
-		if (nameClass == null) {
-			nameClass = ClassDBUtil.getCurtainShopById(nameId);
-		}
-		return nameClass;
-	}
-
-	public void setNameClass(CurtainShop nameClass) {
-		this.nameClass = nameClass;
-	}
-
-	public String getCustomerDeposit() {
-		return customerDeposit;
-	}
-
-	public void setCustomerDeposit(String customerDeposit) {
-		this.customerDeposit = customerDeposit;
-	}
-
-	public String getSalePerson() {
-		return salePerson;
-	}
-
-	public void setSalePerson(String salePerson) {
-		this.salePerson = salePerson;
+	public OrderLst(int arrears, String curtainShop, Date date, int id,
+			int orderState) {
+		super();
+		this.curtainShop = curtainShop;
+		this.deliveryTime = date;
+		this.id = id;
+		this.arrears = arrears;
+		this.orderState = orderState;
 	}
 
 	/**
@@ -121,6 +88,14 @@ public class OrderLst extends KNSOrder {
 		this.arrears = arrears;
 	}
 
+	public String getCurtainShop() {
+		return curtainShop;
+	}
+
+	public void setCurtainShop(String curtainShop) {
+		this.curtainShop = curtainShop;
+	}
+
 	/**
 	 * 
 	 * @return 出库时间
@@ -155,15 +130,11 @@ public class OrderLst extends KNSOrder {
 		this.id = id;
 	}
 
-	public List getGoodsLst() {
-		if (goodsLst == null) {
-			goodsLst = (List) DBUtil.getLstClass("", "eq", OrderGoods.class,
-					"orderId", id + "", "int");
-		}
+	public List<OrderGoods> getGoodsLst() {
 		return goodsLst;
 	}
 
-	public void setGoodsLst(List goodsLst) {
+	public void setGoodsLst(List<OrderGoods> goodsLst) {
 		this.goodsLst = goodsLst;
 	}
 
@@ -209,5 +180,17 @@ public class OrderLst extends KNSOrder {
 			state = "提交";
 		}
 		return state;
+	}
+
+	public CurtainShop getNameClass() {
+		if (nameClass == null) {
+			for (int i = 0; i < Global.CSLst.size(); i++) {
+				if (Global.CSLst.get(i).getName().equals(curtainShop)) {
+					nameClass = Global.CSLst.get(i);
+					return nameClass;
+				}
+			}
+		}
+		return nameClass;
 	}
 }

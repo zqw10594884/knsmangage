@@ -220,11 +220,11 @@ public class UIutil {
 			CheckListItem cli = null;
 			if (initClass == 3) {
 				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
-						+ "  " + ol.getSimpleDate() + "  " + ol.getName() + "("
+						+ "  " + ol.getSimpleDate() + "  " + ol.getCurtainShop() + "("
 						+ ol.getLibraryPerson() + ")", false);
 			} else {
 				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
-						+ "  " + ol.getSimpleDate() + "  " + ol.getName(),
+						+ "  " + ol.getSimpleDate() + "  " + ol.getCurtainShop(),
 						false);
 			}
 			if (ol.getOrderState() >= 40) {
@@ -234,7 +234,7 @@ public class UIutil {
 			}
 			checkboxModel.add(i, cli);
 			// 结账界面历史订单
-			model.add(i, ol.getName() + ol.getSimpleDate());
+			model.add(i, ol.getCurtainShop() + ol.getSimpleDate());
 		}
 
 		if (checkbox) {

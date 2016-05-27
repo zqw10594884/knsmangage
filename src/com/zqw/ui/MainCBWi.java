@@ -368,7 +368,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 					OrderLst ol = wholesaleLst.get(i);
 					if (ol.getOrderState() == 40) {
 						CurtainShop cs = (CurtainShop) DBUtil.getClass(
-								CurtainShop.class, "name", (ol.getName()),
+								CurtainShop.class, "name", (ol.getCurtainShop()),
 								"String", "eq");
 						ol.setOrderState(30);
 						DBUtil.update(ol);
@@ -413,7 +413,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 						Lst.get(i).getNumber() + "", Lst.get(i).getRemark() };
 				tableModel.addRow(rowValues); // 添加一行
 			}
-			shopName.setText(currentOrder.getName());
+			shopName.setText(currentOrder.getCurtainShop());
 		} else {
 			currentRetailOrder = retailLst.get(index);
 			List<SaleOrderGoods> Lst = currentRetailOrder.getGoodsLst();
