@@ -151,11 +151,11 @@ public class SaleOrderLst extends KNSOrder {
 			goodsLst = new ArrayList<SaleOrderGoods>();
 		}
 		if (id != 0) {
-			for (int i = 0; i < Global.SOGLst.size(); i++) {
-				if (Global.SOGLst.get(i).getSaleOrderLst().getId() == id) {
-					goodsLst.add(Global.SOGLst.get(i));
-				}
-			}
+//			for (int i = 0; i < Global.SOGLst.size(); i++) {
+//				if (Global.SOGLst.get(i).getSaleOrderLst().getId() == id) {
+//					goodsLst.add(Global.SOGLst.get(i));
+//				}
+//			}
 		}
 		return goodsLst;
 	}

@@ -45,7 +45,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 
 	private JPanel contentPane;
 	private JTextField curtainClothName;
-	private JTextField clothPrice;
+	private JTextField curtainClothPrice;
 	private JTable saleTable;
 	private JTextField customerName;
 	private JTextField customerTel1;
@@ -54,7 +54,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	private JTextField customerDeposit;
 	private JTextField curtainLocation;
 	private JTextField curtainTapePrice;
-	private JTextField clothRemark;
+	private JTextField curtainClothRemark;
 	private JTextField curtainTapeRemark;
 	private JTextField curtainRodPrice;
 	private JTextField curtainRodRemark;
@@ -505,10 +505,10 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		panel_3.add(curtainTapePrice);
 		curtainTapePrice.setColumns(10);
 
-		clothPrice = new JTextField();
-		clothPrice.setBounds(251, 82, 38, 21);
-		panel_3.add(clothPrice);
-		clothPrice.setColumns(10);
+		curtainClothPrice = new JTextField();
+		curtainClothPrice.setBounds(251, 82, 38, 21);
+		panel_3.add(curtainClothPrice);
+		curtainClothPrice.setColumns(10);
 
 		JLabel label_15 = new JLabel("备注：");
 		label_15.setBounds(294, 205, 45, 15);
@@ -535,10 +535,10 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		panel_3.add(label_11);
 		label_11.setFont(new Font("宋体", Font.PLAIN, 14));
 
-		clothRemark = new JTextField();
-		clothRemark.setBounds(344, 82, 120, 21);
-		panel_3.add(clothRemark);
-		clothRemark.setColumns(10);
+		curtainClothRemark = new JTextField();
+		curtainClothRemark.setBounds(344, 82, 120, 21);
+		panel_3.add(curtainClothRemark);
+		curtainClothRemark.setColumns(10);
 
 		curtainTapeRemark = new JTextField();
 		curtainTapeRemark.setBounds(344, 113, 120, 21);
@@ -684,6 +684,24 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainTapeName.removeMouseListener(curtainTapeMA);
 		curtainClothName.removeMouseListener(curtainClothMA);
 
+		curtainRodName.setEditable(false);
+		curtainRingName.setEditable(false);
+		curtainLaceName.setEditable(false);
+		curtainTapeName.setEditable(false);
+		curtainClothName.setEditable(false);
+
+		curtainRodPrice.setEditable(false);
+		curtainRingPrice.setEditable(false);
+		curtainLacePrice.setEditable(false);
+		curtainTapePrice.setEditable(false);
+		curtainClothPrice.setEditable(false);
+
+		curtainRodRemark.setEditable(false);
+		curtainRingRemark.setEditable(false);
+		curtainLaceRemark.setEditable(false);
+		curtainTapeRemark.setEditable(false);
+		curtainClothRemark.setEditable(false);
+
 		switch (index) {
 		case 0:
 			curtainRodName.addMouseListener(curtainRodMA);
@@ -691,33 +709,75 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			curtainLaceName.addMouseListener(curtainLaceMA);
 			curtainTapeName.addMouseListener(curtainTapeMA);
 			curtainClothName.addMouseListener(curtainClothMA);
+
+			curtainRodName.setEditable(true);
+			curtainRingName.setEditable(true);
+			curtainLaceName.setEditable(true);
+			curtainTapeName.setEditable(true);
+			curtainClothName.setEditable(true);
+
+			curtainRodPrice.setEditable(true);
+			curtainRingPrice.setEditable(true);
+			curtainLacePrice.setEditable(true);
+			curtainTapePrice.setEditable(true);
+			curtainClothPrice.setEditable(true);
+
+			curtainRodRemark.setEditable(true);
+			curtainRingRemark.setEditable(true);
+			curtainLaceRemark.setEditable(true);
+			curtainTapeRemark.setEditable(true);
+			curtainClothRemark.setEditable(true);
+
 			break;
 		case 1:
 			curtainRodName.addMouseListener(curtainRodMA);
 			curtainLaceName.addMouseListener(curtainLaceMA);
 			curtainTapeName.addMouseListener(curtainTapeMA);
 			curtainClothName.addMouseListener(curtainClothMA);
-			curtainRingPrice.setEditable(false);
-			curtainRingRemark.setEditable(false);
+
+			curtainRodName.setEditable(true);
+			curtainLaceName.setEditable(true);
+			curtainTapeName.setEditable(true);
+			curtainClothName.setEditable(true);
+
+			curtainRodPrice.setEditable(true);
+			curtainLacePrice.setEditable(true);
+			curtainTapePrice.setEditable(true);
+			curtainClothPrice.setEditable(true);
+
+			curtainRodRemark.setEditable(true);
+			curtainLaceRemark.setEditable(true);
+			curtainTapeRemark.setEditable(true);
+			curtainClothRemark.setEditable(true);
 			break;
 		case 2:
 			curtainRodName.addMouseListener(curtainRodMA);
 			curtainLaceName.addMouseListener(curtainLaceMA);
 			curtainTapeName.addMouseListener(curtainTapeMA);
 			curtainClothName.addMouseListener(curtainClothMA);
-			curtainRingPrice.setEditable(false);
-			curtainRingRemark.setEditable(false);
+
+			curtainRodName.setEditable(true);
+			curtainLaceName.setEditable(true);
+			curtainTapeName.setEditable(true);
+			curtainClothName.setEditable(true);
+
+			curtainRodPrice.setEditable(true);
+			curtainLacePrice.setEditable(true);
+			curtainTapePrice.setEditable(true);
+			curtainClothPrice.setEditable(true);
+
+			curtainRodRemark.setEditable(true);
+			curtainLaceRemark.setEditable(true);
+			curtainTapeRemark.setEditable(true);
+			curtainClothRemark.setEditable(true);
 			break;
 		case 3:
 			curtainClothName.setEditable(true);
-			curtainRingPrice.setEditable(false);
-			curtainRodPrice.setEditable(false);
-			curtainLacePrice.setEditable(false);
-			curtainTapePrice.setEditable(false);
-			curtainRingRemark.setEditable(false);
-			curtainRodRemark.setEditable(false);
-			curtainLaceRemark.setEditable(false);
-			curtainTapeRemark.setEditable(false);
+
+			curtainClothPrice.setEditable(true);
+
+			curtainClothRemark.setEditable(true);
+
 			break;
 		default:
 			break;
@@ -749,10 +809,10 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 
 		sog.setCurtainHight(curtainHight.getText().trim());
 		if ("请选择".equals(curtainLocationCB.getSelectedItem().toString())) {
+			sog.setCurtainLocation(curtainLocation.getText().trim());
+		} else {
 			sog.setCurtainLocation(curtainLocationCB.getSelectedItem()
 					.toString());
-		} else {
-			sog.setCurtainLocation(curtainLocation.getText().trim());
 		}
 		sog.setHightLocation(hightLocationCB.getSelectedItem().toString());
 		sog.setCurtainStyle(curtainStyle);
@@ -760,9 +820,9 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 
 		if ("卷帘".equals(curtainStyle)) {
 			sog.setClothSerialNumber(curtainClothName.getText().trim());
-			sog.setClothSellingPrice(Double.parseDouble(clothPrice.getText()
-					.trim()));
-			sog.setClothRemark(clothRemark.getText());
+			sog.setClothSellingPrice(Double.parseDouble(curtainClothPrice
+					.getText().trim()));
+			sog.setClothRemark(curtainClothRemark.getText());
 		} else {
 			sog.setClothSerialNumber(curtainClothName.getText().trim());
 			sog.setCurtainTapeSerialNumber(curtainTapeName.getText().trim());
@@ -770,8 +830,8 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			sog.setCurtainRingSerialNumber(curtainRingName.getText().trim());
 			sog.setCurtainRodSerialNumber(curtainRodName.getText().trim());
 
-			sog.setClothSellingPrice(Double.parseDouble(clothPrice.getText()
-					.trim()));
+			sog.setClothSellingPrice(Double.parseDouble(curtainClothPrice
+					.getText().trim()));
 			sog.setCurtainTapeSellingPrice(Double.parseDouble(curtainTapePrice
 					.getText().trim()));
 			sog.setCurtainLaceSellingPrice(Double.parseDouble(curtainLacePrice
@@ -781,7 +841,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			sog.setCurtainRodSellingPrice(Double.parseDouble(curtainRodPrice
 					.getText().trim()));
 
-			sog.setClothRemark(clothRemark.getText());
+			sog.setClothRemark(curtainClothRemark.getText());
 			sog.setCurtainTapeRemark(curtainTapeRemark.getText());
 			sog.setCurtainLaceRemark(curtainLaceRemark.getText());
 			sog.setCurtainRingRemark(curtainRingRemark.getText());
@@ -893,13 +953,13 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			curtainRingName.setText(sog.getCurtainRingSerialNumber());
 			curtainRodName.setText(sog.getCurtainRodSerialNumber());
 
-			clothPrice.setText(sog.getClothSellingPrice() + "");
+			curtainClothPrice.setText(sog.getClothSellingPrice() + "");
 			curtainTapePrice.setText(sog.getCurtainTapeSellingPrice() + "");
 			curtainLacePrice.setText(sog.getCurtainLaceSellingPrice() + "");
 			curtainRingPrice.setText(sog.getCurtainRingSellingPrice() + "");
 			curtainRodPrice.setText(sog.getCurtainRodSellingPrice() + "");
 
-			clothRemark.setText(sog.getClothRemark());
+			curtainClothRemark.setText(sog.getClothRemark());
 			curtainTapeRemark.setText(sog.getCurtainTapeRemark());
 			curtainLaceRemark.setText(sog.getClothRemark());
 			curtainRingRemark.setText(sog.getClothRemark());
@@ -958,13 +1018,13 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainRingName.setText("");
 		curtainRodName.setText("");
 
-		clothPrice.setText("");
+		curtainClothPrice.setText("");
 		curtainTapePrice.setText("");
 		curtainLacePrice.setText("");
 		curtainRingPrice.setText("");
 		curtainRodPrice.setText("");
 
-		clothRemark.setText("");
+		curtainClothRemark.setText("");
 		curtainTapeRemark.setText("");
 		curtainLaceRemark.setText("");
 		curtainRingRemark.setText("");
