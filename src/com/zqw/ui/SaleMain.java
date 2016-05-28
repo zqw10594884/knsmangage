@@ -120,11 +120,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 
 	private void initlatelyList() {
 		ArrayList<String> LatelyItem = new ArrayList<String>();
-		for (int i = 0; i < Global.SOLLst.size(); i++) {
-			if (Global.SOLLst.get(i).getSalePerson() != null) {
-				solLatelyLst.add(Global.SOLLst.get(i));
-			}
-		}
+		solLatelyLst = (List<SaleOrderLst>) DBUtil.getLstClass("", "", SaleOrderLst.class,"");
 		if (solLatelyLst.size() > 0) {
 			for (int i = 0; i < solLatelyLst.size(); i++) {
 				SaleOrderLst sol = solLatelyLst.get(i);
@@ -685,22 +681,37 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainClothName.removeMouseListener(curtainClothMA);
 
 		curtainRodName.setEditable(false);
+//		curtainRodName.setText("");
 		curtainRingName.setEditable(false);
+//		curtainRingName.setText("");
 		curtainLaceName.setEditable(false);
+//		curtainLaceName.setText("");
 		curtainTapeName.setEditable(false);
+//		curtainTapeName.setText("");
 		curtainClothName.setEditable(false);
+//		curtainClothName.setText("");
 
 		curtainRodPrice.setEditable(false);
+//		curtainRodPrice.setText("");
 		curtainRingPrice.setEditable(false);
+//		curtainRingPrice.setText("");
 		curtainLacePrice.setEditable(false);
+//		curtainLacePrice.setText("");
 		curtainTapePrice.setEditable(false);
+//		curtainTapePrice.setText("");
 		curtainClothPrice.setEditable(false);
+//		curtainClothPrice.setText("");
 
 		curtainRodRemark.setEditable(false);
+//		curtainRodRemark.setText("");
 		curtainRingRemark.setEditable(false);
+//		curtainRingRemark.setText("");
 		curtainLaceRemark.setEditable(false);
+//		curtainLaceRemark.setText("");
 		curtainTapeRemark.setEditable(false);
+//		curtainTapeRemark.setText("");
 		curtainClothRemark.setEditable(false);
+//		curtainClothRemark.setText("");
 
 		switch (index) {
 		case 0:
@@ -710,11 +721,11 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			curtainTapeName.addMouseListener(curtainTapeMA);
 			curtainClothName.addMouseListener(curtainClothMA);
 
-			curtainRodName.setEditable(true);
-			curtainRingName.setEditable(true);
-			curtainLaceName.setEditable(true);
-			curtainTapeName.setEditable(true);
-			curtainClothName.setEditable(true);
+			curtainRodName.setEditable(false);
+			curtainRingName.setEditable(false);
+			curtainLaceName.setEditable(false);
+			curtainTapeName.setEditable(false);
+			curtainClothName.setEditable(false);
 
 			curtainRodPrice.setEditable(true);
 			curtainRingPrice.setEditable(true);
@@ -735,10 +746,10 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			curtainTapeName.addMouseListener(curtainTapeMA);
 			curtainClothName.addMouseListener(curtainClothMA);
 
-			curtainRodName.setEditable(true);
-			curtainLaceName.setEditable(true);
-			curtainTapeName.setEditable(true);
-			curtainClothName.setEditable(true);
+			curtainRodName.setEditable(false);
+			curtainLaceName.setEditable(false);
+			curtainTapeName.setEditable(false);
+			curtainClothName.setEditable(false);
 
 			curtainRodPrice.setEditable(true);
 			curtainLacePrice.setEditable(true);
@@ -756,10 +767,10 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			curtainTapeName.addMouseListener(curtainTapeMA);
 			curtainClothName.addMouseListener(curtainClothMA);
 
-			curtainRodName.setEditable(true);
-			curtainLaceName.setEditable(true);
-			curtainTapeName.setEditable(true);
-			curtainClothName.setEditable(true);
+			curtainRodName.setEditable(false);
+			curtainLaceName.setEditable(false);
+			curtainTapeName.setEditable(false);
+			curtainClothName.setEditable(false);
 
 			curtainRodPrice.setEditable(true);
 			curtainLacePrice.setEditable(true);

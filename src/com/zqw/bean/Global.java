@@ -17,14 +17,14 @@ public class Global {
 	public static int OWN = 2;
 	public static Font f = new Font("Courier", Font.PLAIN, 13);
 
-	public static List<CurtainShop> CSLst = (List<CurtainShop>) DBUtil
-			.getLstClass("", "", CurtainShop.class, "");
-	
-	public static List<CurtainShopGoods> CSGLst = (List<CurtainShopGoods>) DBUtil
-			.getLstClass("", "", CurtainShopGoods.class, "");
-
-	public static List<CurtainCustomer> CCLst = (List<CurtainCustomer>) DBUtil
-			.getLstClass("", "", CurtainCustomer.class, "");
+//	public static List<CurtainShop> CSLst = (List<CurtainShop>) DBUtil
+//			.getLstClass("", "", CurtainShop.class, "");
+//	
+//	public static List<CurtainShopGoods> CSGLst = (List<CurtainShopGoods>) DBUtil
+//			.getLstClass("", "", CurtainShopGoods.class, "");
+//
+//	public static List<CurtainCustomer> CCLst = (List<CurtainCustomer>) DBUtil
+//			.getLstClass("", "", CurtainCustomer.class, "");
 
 //	public static List<OrderLst> OLLst = (List<OrderLst>) DBUtil.getLstClass(
 //			"id", "", OrderLst.class, "");
@@ -32,8 +32,8 @@ public class Global {
 //	public static List<OrderGoods> OGLst = (List<OrderGoods>) DBUtil
 //			.getLstClass("id", "", OrderGoods.class, "");
 	
-	public static List<SaleOrderLst> SOLLst = (List<SaleOrderLst>) DBUtil
-			.getLstClass("id", "", SaleOrderLst.class, "");
-	public static List<SaleOrderGoods> SOGLst = (List<SaleOrderGoods>) DBUtil
-			.getLstClass("id", "", SaleOrderGoods.class, "");
+//	public static List<SaleOrderLst> SOLLst = (List<SaleOrderLst>) DBUtil
+//			.getLstClass("id", "", SaleOrderLst.class, "");
+//	public static List<SaleOrderGoods> SOGLst = (List<SaleOrderGoods>) DBUtil
+//			.getLstClass("id", "", SaleOrderGoods.class, "");
 }

@@ -172,7 +172,7 @@ public class DBUtil {
 	 * @param arg0
 	 *            类名
 	 * @param nameArg0
-	 *            "curtainShop", order.getCurtainShop(), "String"
+	 *            "curtainShop", order.getCurtainShop(), "String" 
 	 * @return
 	 */
 	public static Object getLstClass(String order, String par, Class arg0,

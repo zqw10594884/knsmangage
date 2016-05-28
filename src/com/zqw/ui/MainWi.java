@@ -816,12 +816,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	@SuppressWarnings("unchecked")
 	private void addLatelyLstToMain(int index) {
 		currentOrder = latelyLst.get(index);
-		goodsLst.clear();
-		for (int i = 0; i < Global.CSGLst.size(); i++) {
-			if (Global.CSGLst.get(i).getCurtainShop().equals(currentOrder.getCurtainShop())) {
-				goodsLst.add(Global.CSGLst.get(i));
-			}
-		}
+		
+		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber", "eq", CurtainShopGoods.class,  "curtainShop", currentOrder.getCurtainShop(), "String");
+		
 
 		UIutil.initCurtainShopGoodsLstFromName(this, goodsjList, goodsLst);
 		UIutil.tableAddAll(currentOrder.getGoodsLst(), tableModel);

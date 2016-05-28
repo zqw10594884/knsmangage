@@ -16,7 +16,7 @@
 		<property name="libraryPerson" type="string" column="_libraryPerson" />
 		<property name="machiningPerson" type="string" column="_machiningPerson" />
 		<property name="salePerson" type="string" column="_salePerson" />
-		<many-to-one name="customer" column="id_customer" class="com.zqw.bean.CurtainCustomer" cascade="all"/>
+		<many-to-one name="customer" column="id_customer" class="com.zqw.bean.CurtainCustomer" cascade="all" lazy="false"/>
 		<list name="goodsLst" inverse="false" cascade="all" lazy="false">
 			<key column="Order_id"></key>
 			<index column="index_"></index>

@@ -183,14 +183,7 @@ public class OrderLst {
 	}
 
 	public CurtainShop getNameClass() {
-		if (nameClass == null) {
-			for (int i = 0; i < Global.CSLst.size(); i++) {
-				if (Global.CSLst.get(i).getName().equals(curtainShop)) {
-					nameClass = Global.CSLst.get(i);
-					return nameClass;
-				}
-			}
-		}
-		return nameClass;
+		return (CurtainShop) DBUtil.getClass(CurtainShop.class, "name", curtainShop,
+				"String", "eq");
 	}
 }
