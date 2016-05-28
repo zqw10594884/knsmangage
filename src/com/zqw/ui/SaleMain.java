@@ -120,7 +120,8 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 
 	private void initlatelyList() {
 		ArrayList<String> LatelyItem = new ArrayList<String>();
-		solLatelyLst = (List<SaleOrderLst>) DBUtil.getLstClass("", "", SaleOrderLst.class,"");
+		solLatelyLst = (List<SaleOrderLst>) DBUtil.getLstClass("", "",
+				SaleOrderLst.class, "");
 		if (solLatelyLst.size() > 0) {
 			for (int i = 0; i < solLatelyLst.size(); i++) {
 				SaleOrderLst sol = solLatelyLst.get(i);
@@ -681,37 +682,37 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainClothName.removeMouseListener(curtainClothMA);
 
 		curtainRodName.setEditable(false);
-//		curtainRodName.setText("");
+		// curtainRodName.setText("");
 		curtainRingName.setEditable(false);
-//		curtainRingName.setText("");
+		// curtainRingName.setText("");
 		curtainLaceName.setEditable(false);
-//		curtainLaceName.setText("");
+		// curtainLaceName.setText("");
 		curtainTapeName.setEditable(false);
-//		curtainTapeName.setText("");
+		// curtainTapeName.setText("");
 		curtainClothName.setEditable(false);
-//		curtainClothName.setText("");
+		// curtainClothName.setText("");
 
 		curtainRodPrice.setEditable(false);
-//		curtainRodPrice.setText("");
+		// curtainRodPrice.setText("");
 		curtainRingPrice.setEditable(false);
-//		curtainRingPrice.setText("");
+		// curtainRingPrice.setText("");
 		curtainLacePrice.setEditable(false);
-//		curtainLacePrice.setText("");
+		// curtainLacePrice.setText("");
 		curtainTapePrice.setEditable(false);
-//		curtainTapePrice.setText("");
+		// curtainTapePrice.setText("");
 		curtainClothPrice.setEditable(false);
-//		curtainClothPrice.setText("");
+		// curtainClothPrice.setText("");
 
 		curtainRodRemark.setEditable(false);
-//		curtainRodRemark.setText("");
+		// curtainRodRemark.setText("");
 		curtainRingRemark.setEditable(false);
-//		curtainRingRemark.setText("");
+		// curtainRingRemark.setText("");
 		curtainLaceRemark.setEditable(false);
-//		curtainLaceRemark.setText("");
+		// curtainLaceRemark.setText("");
 		curtainTapeRemark.setEditable(false);
-//		curtainTapeRemark.setText("");
+		// curtainTapeRemark.setText("");
 		curtainClothRemark.setEditable(false);
-//		curtainClothRemark.setText("");
+		// curtainClothRemark.setText("");
 
 		switch (index) {
 		case 0:
@@ -953,7 +954,6 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	}
 
 	protected void tablemouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		selectedRow = saleTable.getSelectedRow();
 		if (selectedRow != -1) {
 			SaleOrderGoods sog = (SaleOrderGoods) currentSol.getGoodsLst().get(
@@ -978,7 +978,16 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 
 			curtainHight.setText(sog.getCurtainHight());
 			curtainWidth.setText(sog.getCurtainWidth());
-			curtainLocation.setText(sog.getCurtainLocation());
+
+			String l = sog.getCurtainLocation();
+			if (l.equals("客厅") || l.equals("阳台") || l.equals("主卧")
+					|| l.equals("次卧") || l.equals("后卧") || l.equals("餐厅")
+					|| l.equals("厨房") || l.equals("卫生间")) {
+				curtainLocationCB.setSelectedItem(l);
+			}else{
+				curtainLocation.setText(sog.getCurtainLocation());
+			}
+
 			hightLocationCB.setSelectedItem(sog.getHightLocation());
 			curtainStyleCB.setSelectedItem(sog.getCurtainStyle());
 		}
