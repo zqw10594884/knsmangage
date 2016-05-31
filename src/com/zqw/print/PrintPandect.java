@@ -87,7 +87,7 @@ public class PrintPandect implements Printable {
 				OrderLst g = pandectList.get(j);
 				// 画行
 				CurtainShop cs = (CurtainShop) g.getNameClass();
-				String[] temp = { df.format(g.getDeliveryTime()) + g.getNameClass(), cs.getTelephone() + "", g.getArrears() + "", "", "" };
+				String[] temp = { df.format(g.getDeliveryTime()) + g.getNameClass().getName(), cs.getTelephone() + "", g.getArrears() + "", "", "" };
 				y = drawLine(g2, y, x, w, col, temp);
 			}
 			g2.drawLine(x, y, x + w, y);
