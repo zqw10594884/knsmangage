@@ -14,10 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.zqw.bean.CurtainCustomer;
 import com.zqw.bean.CurtainShop;
 import com.zqw.bean.Global;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
+import com.zqw.bean.SaleOrderLst;
 import com.zqw.util.DataUtil;
 
 public class PrintOrder implements Printable {
@@ -79,7 +81,7 @@ public class PrintOrder implements Printable {
 
 			// 表头
 			g2.setFont(fontTitle);
-			if (parameter == Global.EMPLOYEE) {
+			if (parameter == Global.EMPLOYEE_LP) {
 				g2.drawString("备货单", x + 170, y - 50);
 			} else if (parameter == Global.CUSTOMER) {
 				g2.drawString("凯妮丝红日窗帘批发", x + 100, y - 50);
@@ -92,13 +94,16 @@ public class PrintOrder implements Printable {
 				}
 				g2.drawString(s, x + 200, y - 50);
 			}
+
 			g2.setFont(font);
 			Date nowTime = new Date();
 			SimpleDateFormat time = new SimpleDateFormat("yyyy MM dd ");
 			g2.drawString(time.format(nowTime), x, y - 50);
+
 			g2.drawString("订单编号：" + order.getId(), x, y - 13);
 			g2.drawString("地址：" + curtainShop.getName(), x + 150, y - 13);
-			if (parameter != Global.EMPLOYEE) {
+
+			if (parameter != Global.EMPLOYEE_LP) {
 				g2.drawString("电话：" + curtainShop.getTelephone(), x + 340,
 						y - 13);
 			}
@@ -106,7 +111,7 @@ public class PrintOrder implements Printable {
 			g2.setFont(font);
 			g2.setStroke(stroke);
 			// 表格标题
-			if (parameter == Global.EMPLOYEE) {
+			if (parameter == Global.EMPLOYEE_LP) {
 				y = drawLine(g2, y, x, w, col, titleB);
 			} else {
 				y = drawLine(g2, y, x, w, col, title);
@@ -138,7 +143,7 @@ public class PrintOrder implements Printable {
 				}
 				// 画行
 				String[] data = null;
-				if (parameter == Global.EMPLOYEE) {
+				if (parameter == Global.EMPLOYEE_LP) {
 					String[] temp = { g.getSerialNumber(), g.getNumber() + "",
 							"", "", g.getRemark() };
 					data = temp;
@@ -162,7 +167,7 @@ public class PrintOrder implements Printable {
 				}
 			}
 			String[] Total = null;
-			if (parameter != Global.EMPLOYEE) {
+			if (parameter == Global.CUSTOMER || parameter == Global.OWN) {
 				String[] temp = { "合计人民币", (int) subtotal + "元整", other };
 				Total = temp;
 			}

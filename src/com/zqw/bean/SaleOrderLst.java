@@ -9,6 +9,7 @@ import com.zqw.util.DBUtil;
 
 public class SaleOrderLst extends KNSOrder {
 	private int id;
+	private String location;
 	private String installPerson;
 	private String libraryPerson;
 	private String machiningPerson;
@@ -47,6 +48,17 @@ public class SaleOrderLst extends KNSOrder {
 
 	public void setSalePerson(String salePerson) {
 		this.salePerson = salePerson;
+	}
+	
+	
+	
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	/**

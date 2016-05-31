@@ -11,6 +11,7 @@
 		<property name="deliveryTime" type="date" column="_deliveryTime" />
 		<property name="submitTime" type="date" column="_submitTime" />
 		<property name="arrears" type="int" column="_arrears" />
+		<property name="location" type="string" column="_location" />
 		<property name="customerDeposit" type="string" column="_customerDeposit" />
 		<property name="installPerson" type="string" column="_installPerson" />
 		<property name="libraryPerson" type="string" column="_libraryPerson" />

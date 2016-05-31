@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import com.zqw.bean.CheckListItem;
+import com.zqw.bean.CurtainCustomer;
 import com.zqw.bean.CurtainShop;
 import com.zqw.bean.Global;
 import com.zqw.bean.OrderGoods;
@@ -39,6 +40,7 @@ import com.zqw.bean.OrderLst;
 import com.zqw.bean.SaleOrderGoods;
 import com.zqw.bean.SaleOrderLst;
 import com.zqw.print.PrintOrder;
+import com.zqw.print.PrintRetailOrder;
 import com.zqw.util.DBUtil;
 import com.zqw.util.UIutil;
 
@@ -361,24 +363,56 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 	 */
 	private void untreatedPrintActionPerformed(ActionEvent evt) {
 		ListModel<CheckListItem> l = checkedjList.getModel();
-		if (l.getSize() > 0) {
-			for (int i = 0; i < l.getSize(); i++) {
-				CheckListItem cli = l.getElementAt(i);
-				if (cli.isSelected()) {
-					OrderLst ol = wholesaleLst.get(i);
-					if (ol.getOrderState() == 40) {
-						CurtainShop cs = (CurtainShop) DBUtil.getClass(
-								CurtainShop.class, "name", (ol.getCurtainShop()),
-								"String", "eq");
-						ol.setOrderState(30);
-						DBUtil.update(ol);
-						UIutil.initOrderJlist(this, checkedjList, listAdapter,
-								true, wholesaleLst, 3);
-						print(Global.EMPLOYEE, ol, cs);
+
+		if (wholesaleRB.isSelected()) {
+			if (l.getSize() > 0) {
+				for (int i = 0; i < l.getSize(); i++) {
+					CheckListItem cli = l.getElementAt(i);
+					if (cli.isSelected()) {
+						OrderLst ol = wholesaleLst.get(i);
+						if (ol.getOrderState() == 40) {
+							CurtainShop cs = (CurtainShop) DBUtil.getClass(
+									CurtainShop.class, "name",
+									(ol.getCurtainShop()), "String", "eq");
+							ol.setOrderState(30);
+							DBUtil.update(ol);
+							UIutil.initOrderJlist(this, checkedjList,
+									listAdapter, true, wholesaleLst, 3);
+							PrintOrder printOrder = new PrintOrder(ol, cs,
+									Global.EMPLOYEE_LP);
+							print(printOrder);
+						}
 					}
 				}
 			}
+		} else {
+			if (l.getSize() > 0) {
+				for (int i = 0; i < l.getSize(); i++) {
+					CheckListItem cli = l.getElementAt(i);
+					if (cli.isSelected()) {
+						SaleOrderLst sol = retailLst.get(i);
+						if (sol.getOrderState() > 29) {
+							CurtainCustomer cs = sol.getCustomer();
+							sol.setOrderState(30);
+							DBUtil.update(sol);
+							UIutil.initRetailOrderJlist(this, checkedjList,
+									listAdapter, true, retailLst);
+							PrintOrder printOrderLp = new PrintRetailOrder(sol,
+									cs, Global.EMPLOYEE_LP);
+							print(printOrderLp);
+							PrintOrder printOrderMp = new PrintRetailOrder(sol,
+									cs, Global.EMPLOYEE_MP);
+							print(printOrderMp);
+							PrintOrder printOrderIp = new PrintRetailOrder(sol,
+									cs, Global.EMPLOYEE_IP);
+							print(printOrderIp);
+						}
+					}
+				}
+			}
+
 		}
+
 	}
 
 	/**
@@ -428,7 +462,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		}
 	}
 
-	private void print(int parameter, OrderLst order, CurtainShop curtainShop) {
+	private void print(PrintOrder printOrder) {
 		Book book = new Book();
 		PageFormat pf = new PageFormat();
 		pf.setOrientation(PageFormat.PORTRAIT);
@@ -436,7 +470,6 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		p.setSize(590, 840);
 		p.setImageableArea(10, 10, 590, 840);
 		pf.setPaper(p);
-		PrintOrder printOrder = new PrintOrder(order, curtainShop, parameter);
 		book.append(printOrder, pf);
 		PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPageable(book);

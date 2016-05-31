@@ -12,7 +12,9 @@ public class Global {
 	public static String ABCcard = "6228481748769035679  姓名:刘会珍";
 	public static String Tel = "18032318933";
 	public static String CURRENTUSER = "test";
-	public static int EMPLOYEE = 0;
+	public static int EMPLOYEE_LP = 0;
+	public static int EMPLOYEE_MP = 3;
+	public static int EMPLOYEE_IP =4;
 	public static int CUSTOMER = 1;
 	public static int OWN = 2;
 	public static Font f = new Font("Courier", Font.PLAIN, 13);

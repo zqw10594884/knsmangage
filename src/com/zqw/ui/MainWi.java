@@ -649,7 +649,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 					ol.setOrderState(30);
 					UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 							latelyLst, 1);
-					print(Global.EMPLOYEE, ol, cs);
+					print(Global.EMPLOYEE_LP, ol, cs);
 				}
 			}
 		}
