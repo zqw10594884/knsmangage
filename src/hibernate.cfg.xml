@@ -1,0 +1,49 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!--C3P0配置 -->
+		<property name="hibernate.connection.provider_class">
+			org.hibernate.connection.C3P0ConnectionProvider
+		</property>
+		<property name="hibernate.c3p0.max_size">100</property>
+		<property name="hibernate.c3p0.min_size">10</property>
+		<property name="hibernate.c3p0.timeout">120</property>
+		<property name="hibernate.c3p0.max_statements">100</property>
+		<property name="hibernate.c3p0.idle_test_period">120</property>
+		<property name="hibernate.c3p0.acquire_increment">1</property>
+		<property name="c3p0.testConnectionOnCheckout">true</property>
+		<property name="c3p0.idleConnectionTestPeriod">18000</property>
+		<property name="c3p0.maxIdleTime">25000</property>
+		<property name="c3p0.idle_test_period">120</property>
+		<!--C3P0配置 -->
+		<property name="show_sql">true</property>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>
+		<property name="hibernate.connection.url">
+			jdbc:mysql://123.56.246.226:3306/kns?useUnicode=true&amp;characterEncoding=utf8
+		</property>
+		<property name="connection.username">knsonline</property>
+		<property name="connection.password">zqw110119</property>
+		<property name="connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
+
+
+		<property name="hibernate.hbm2ddl.auto">update</property>
+
+		<mapping resource="com/zqw/bean/CurtainShop.hbm.xml" />
+		<mapping resource="com/zqw/bean/Goods.hbm.xml" />
+		<mapping resource="com/zqw/bean/CurtainShopGoods.hbm.xml" />
+		<mapping resource="com/zqw/bean/OrderLst.hbm.xml" />
+		<mapping resource="com/zqw/bean/OrderGoods.hbm.xml" />
+		<mapping resource="com/zqw/bean/User.hbm.xml" />
+		<mapping resource="com/zqw/bean/PurchaseOrder.hbm.xml" />
+		<mapping resource="com/zqw/bean/LittleCloth.hbm.xml" />
+		<mapping resource="com/zqw/bean/SaleOrderGoods.hbm.xml" />
+		<mapping resource="com/zqw/bean/CurtainCustomer.hbm.xml" />
+		<mapping resource="com/zqw/bean/SaleOrderLst.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
