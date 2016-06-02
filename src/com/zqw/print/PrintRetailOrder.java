@@ -15,10 +15,8 @@ import java.util.List;
 
 import com.zqw.bean.CurtainCustomer;
 import com.zqw.bean.Global;
-import com.zqw.bean.OrderGoods;
 import com.zqw.bean.SaleOrderGoods;
 import com.zqw.bean.SaleOrderLst;
-import com.zqw.util.DataUtil;
 
 public class PrintRetailOrder extends PrintOrder {
 
@@ -40,15 +38,17 @@ public class PrintRetailOrder extends PrintOrder {
 	int offSetX = 60;
 	int offSetY = 110;
 	// 行高
-	int rowH = 30;
+	int rowH = 27;
 	// 每个格子的宽度 所有值的加和= 595 - offSetX*2
+	int[] TotalCol = { 120, 105, 250 };
 	int[] colLp = { 155, 45, 275 };
 	int[] colMp = { 40, 140, 40, 55, 100, 100 };
 	int[] colIp = { 75, 155, 135, 110 };
+	int[] colCS = { 75, 140, 85, 85, 40, 50 };
 	String[] titleLp = { "窗帘", "数量", "备   注" };
 	String[] titleMp = { "形式", "品       名", "数量", "高", "花边", "罗马圈" };
 	String[] titleIp = { "位置", "窗帘", "罗马杆", "备   注" };
-	String[] titleCs = { "位置", "窗帘", "罗马杆", "罗马圈", "辅料", "小计" };
+	String[] titleCS = { "", "窗帘", "罗马杆", "罗马圈", "辅料", "小计" };
 
 	/**
 	 * @param Graphic指明打印的图形环境
@@ -88,21 +88,24 @@ public class PrintRetailOrder extends PrintOrder {
 				title = "加工工单";
 			} else if (parameter == Global.EMPLOYEE_IP) {
 				title = "安装工单";
+			} else if (parameter == Global.EMPLOYEE_CS) {
+				title = "货单";
 			}
 			if (sol.getLocation().equals("帝王")) {
-				title+="_帝王";
+				title += "_帝王";
 			} else if (sol.getLocation().equals("凯妮丝")) {
-				title+="_凯妮丝";
+				title += "_凯妮丝";
 			}
 			g2.drawString(title, x + 170, y - 50);
 
 			g2.setFont(font);
 			Date nowTime = new Date();
 			SimpleDateFormat time = new SimpleDateFormat("yyyy MM dd ");
-			g2.drawString(time.format(nowTime), x, y - 50);
+			g2.drawString("订单编号：" + sol.getId(), x, y - 50);
+			g2.drawString("日期：" + time.format(nowTime), x + 350, y - 50);
 
-			g2.drawString("订单编号：" + sol.getId(), x, y - 13);
-			g2.drawString("地址：" + cs.getName(), x + 150, y - 13);
+			g2.drawString("电话：" + cs.getTel1() + " " + cs.getTel2(), x, y - 13);
+			g2.drawString("地址：" + cs.getAddress(), x + 220, y - 13);
 
 			// 表格
 			g2.setFont(font);
@@ -115,23 +118,37 @@ public class PrintRetailOrder extends PrintOrder {
 				y = drawLine(g2, y, x, w, colMp, titleMp);
 			} else if (parameter == Global.EMPLOYEE_IP) {
 				y = drawLine(g2, y, x, w, colIp, titleIp);
+			} else if (parameter == Global.EMPLOYEE_CS) {
+				y = drawLine(g2, y, x, w, colCS, titleCS);
 			}
 
 			List<SaleOrderGoods> goodsLst = sol.getGoodsLst();
+			int total = 0;
 			for (int j = 0; j < goodsLst.size(); j++) {
 				SaleOrderGoods g = goodsLst.get(j);
 				// 画行
 				String[] data = null;
+				String ring = g.getCurtainRingSerialNumber().substring(4);
+				String lace = g.getCurtainLaceSerialNumber().substring(5);
+				String Rod = g.getCurtainRodSerialNumber().substring(4);
+				String high = g.getHightLocation().substring(0, 1) + "_"
+						+ g.getCurtainHight();
+
+				double rodP = g.getCurtainRodSellingPrice();
+				double LaceP = g.getCurtainLaceSellingPrice();
+				double TapeP = g.getCurtainTapeSellingPrice();
+				double rodN = g.getCurtainRodNumber();
+				double LaceN = g.getCurtainLaceNumber();
+				double TapeN = g.getCurtainTapeNumber();
+				int totali = (int) (rodP * rodN + LaceP * LaceN + TapeP * TapeN);
+				total += totali;
+
 				if (parameter == Global.EMPLOYEE_LP) {
 					String[] temp = { g.getClothSerialNumber(),
 							g.getClothNumber() + "", "", "", g.getClothRemark() };
 					data = temp;
 					y = drawLine(g2, y, x, w, colLp, data);
 				} else if (parameter == Global.EMPLOYEE_MP) {
-					String ring = g.getCurtainRingSerialNumber().substring(4);
-					String lace = g.getCurtainLaceSerialNumber().substring(5);
-					String high = g.getHightLocation().substring(0, 1) + "_"
-							+ g.getCurtainHight();
 					String style = null;
 					if (g.getCurtainStyle().equals("打孔*1.7")) {
 						style = "孔";
@@ -150,13 +167,28 @@ public class PrintRetailOrder extends PrintOrder {
 							g.getCurtainRodSerialNumber(), g.getClothRemark() };
 					data = temp;
 					y = drawLine(g2, y, x, w, colIp, data);
+				} else if (parameter == Global.EMPLOYEE_CS) {
+
+					String[] temp = { g.getCurtainLocation(),
+							g.getClothSerialNumber(), Rod, lace, "", "" };
+					y = drawLine(g2, y, x, w, colCS, temp);
+					String[] temp1 = { "价格", g.getClothSellingPrice() + "",
+							rodP + "", LaceP + "", TapeP + "", "" };
+					y = drawLine(g2, y, x, w, colCS, temp1);
+					String[] temp2 = { "数量", g.getClothNumber() + "",
+							rodN + "", LaceN + "", TapeN + "", totali + "" };
+					y = drawLine(g2, y, x, w, colCS, temp2);
 				}
 			}
 			String other = "";
+			int deposit = Integer.parseInt(sol.getCustomerDeposit());
+			String[] allTotal = {
+					"总价: " + total + " 元",
+					"订金: " + sol.getCustomerDeposit() + " 元",
+					"合计: " + total + " - " + deposit + " = "
+							+ (total - deposit) + " 元整" };
 
-			String[] Total = null;
-
-			y = drawLine(g2, y, x, w, TotalCol, Total);
+			y = drawLine(g2, y, x, w, TotalCol, allTotal);
 			g2.drawLine(x, y, x + w, y);
 			y += rowH;
 			// g2.drawString("订货电话：" + Global.Tel, x - 10, y - 13);
@@ -165,7 +197,9 @@ public class PrintRetailOrder extends PrintOrder {
 			y += rowH;
 			// g2.drawString("确认货物无误后签字_____________", x + 200, y - 15);
 			g2.setFont(fontTitle1);
-			g2.drawString(cs.getName(), x + 280, 700);
+			if (parameter == Global.EMPLOYEE_LP) {
+				g2.drawString(cs.getName(), x + 280, 800);
+			}
 			return PAGE_EXISTS;
 		default:
 			return NO_SUCH_PAGE;

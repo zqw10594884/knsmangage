@@ -406,6 +406,9 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 							PrintOrder printOrderIp = new PrintRetailOrder(sol,
 									cs, Global.EMPLOYEE_IP);
 							print(printOrderIp);
+							PrintOrder printOrderCS = new PrintRetailOrder(sol,
+									cs, Global.EMPLOYEE_CS);
+							print(printOrderCS);
 						}
 					}
 				}
