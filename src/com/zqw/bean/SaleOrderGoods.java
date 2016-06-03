@@ -2,7 +2,7 @@ package com.zqw.bean;
 
 import java.io.Serializable;
 
-public class SaleOrderGoods  implements Serializable {
+public class SaleOrderGoods implements Serializable {
 	/**
 	 * 
 	 */
@@ -39,8 +39,6 @@ public class SaleOrderGoods  implements Serializable {
 	private String hightLocation;
 	private String curtainStyle;
 	private SaleOrderLst saleOrderLst;
-	
-	
 
 	public SaleOrderGoods() {
 		super();
@@ -64,8 +62,6 @@ public class SaleOrderGoods  implements Serializable {
 		this.id = id;
 	}
 
-	
-	
 	public SaleOrderLst getSaleOrderLst() {
 		return saleOrderLst;
 	}
@@ -170,10 +166,19 @@ public class SaleOrderGoods  implements Serializable {
 		this.curtainLaceRemark = curtainLaceRemark;
 	}
 
+	/**
+	 * 
+	 * @return 窗帘圈
+	 */
 	public String getCurtainRingSerialNumber() {
 		return curtainRingSerialNumber;
 	}
 
+	/**
+	 * 
+	 * @param curtainRingSerialNumber
+	 *            窗帘圈
+	 */
 	public void setCurtainRingSerialNumber(String curtainRingSerialNumber) {
 		this.curtainRingSerialNumber = curtainRingSerialNumber;
 	}
@@ -273,6 +278,5 @@ public class SaleOrderGoods  implements Serializable {
 	public void setCurtainStyle(String curtainStyle) {
 		this.curtainStyle = curtainStyle;
 	}
-
 
 }

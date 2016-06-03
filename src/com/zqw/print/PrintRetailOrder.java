@@ -35,20 +35,20 @@ public class PrintRetailOrder extends PrintOrder {
 	}
 
 	// xy起点偏移
-	int offSetX = 60;
+	int offSetX = 35;
 	int offSetY = 110;
 	// 行高
-	int rowH = 27;
+	int rowH = 22;
 	// 每个格子的宽度 所有值的加和= 595 - offSetX*2
-	int[] TotalCol = { 120, 105, 250 };
-	int[] colLp = { 155, 45, 275 };
-	int[] colMp = { 40, 140, 40, 55, 100, 100 };
-	int[] colIp = { 75, 155, 135, 110 };
-	int[] colCS = { 75, 140, 85, 85, 40, 50 };
+	int[] TotalCol = { 135, 120, 270 };
+	int[] colLp = { 155, 50, 320 };
+	int[] colMp = { 40, 140, 45, 40, 60, 100, 100 };
+	int[] colIp = { 75, 140, 120, 45, 145 };
+	int[] colCS = { 55, 135, 85, 85, 85, 40, 40 };
 	String[] titleLp = { "窗帘", "数量", "备   注" };
-	String[] titleMp = { "形式", "品       名", "数量", "高", "花边", "罗马圈" };
-	String[] titleIp = { "位置", "窗帘", "罗马杆", "备   注" };
-	String[] titleCS = { "", "窗帘", "罗马杆", "罗马圈", "辅料", "小计" };
+	String[] titleMp = { "形式", "品       名", "数量", "宽度", "高", "花边", "罗马圈" };
+	String[] titleIp = { "位置", "窗帘", "罗马杆", "数量", "备   注" };
+	String[] titleCS = { "", "窗帘", "罗马杆", "花边", "罗马圈", "辅料", "小计" };
 
 	/**
 	 * @param Graphic指明打印的图形环境
@@ -102,10 +102,23 @@ public class PrintRetailOrder extends PrintOrder {
 			Date nowTime = new Date();
 			SimpleDateFormat time = new SimpleDateFormat("yyyy MM dd ");
 			g2.drawString("订单编号：" + sol.getId(), x, y - 50);
-			g2.drawString("日期：" + time.format(nowTime), x + 350, y - 50);
+			g2.drawString("日期：" + time.format(nowTime), x, y - 70);
 
-			g2.drawString("电话：" + cs.getTel1() + " " + cs.getTel2(), x, y - 13);
-			g2.drawString("地址：" + cs.getAddress(), x + 220, y - 13);
+			if (parameter == Global.EMPLOYEE_IP
+					|| parameter == Global.EMPLOYEE_CS) {
+
+				g2.drawString("电话：" + cs.getTel2(), x, y - 22);
+				g2.drawString("      " + cs.getTel1(), x, y - 7);
+
+				if (cs.getAddress().length() > 18) {
+					g2.drawString("地址：" + cs.getAddress().substring(0, 18),
+							x + 145, y - 22);
+					g2.drawString("     " + cs.getAddress().substring(18),
+							x + 145, y - 7);
+				} else {
+					g2.drawString("地址：" + cs.getAddress(), x + 140, y - 22);
+				}
+			}
 
 			// 表格
 			g2.setFont(font);
@@ -135,9 +148,11 @@ public class PrintRetailOrder extends PrintOrder {
 						+ g.getCurtainHight();
 
 				double rodP = g.getCurtainRodSellingPrice();
+				double ringP = g.getCurtainRingSellingPrice();
 				double LaceP = g.getCurtainLaceSellingPrice();
 				double TapeP = g.getCurtainTapeSellingPrice();
 				double rodN = g.getCurtainRodNumber();
+				double ringN = g.getCurtainRingNumber();
 				double LaceN = g.getCurtainLaceNumber();
 				double TapeN = g.getCurtainTapeNumber();
 				int totali = (int) (rodP * rodN + LaceP * LaceN + TapeP * TapeN);
@@ -158,37 +173,41 @@ public class PrintRetailOrder extends PrintOrder {
 						style = "展";
 					}
 					String[] temp = { style, g.getClothSerialNumber(),
-							g.getClothNumber() + "", high, lace, ring };
+							g.getClothNumber() + "", g.getCurtainWidth(), high,
+							lace, ring };
 					data = temp;
 					y = drawLine(g2, y, x, w, colMp, data);
 				} else if (parameter == Global.EMPLOYEE_IP) {
 					String[] temp = { g.getCurtainLocation(),
 							g.getClothSerialNumber(),
-							g.getCurtainRodSerialNumber(), g.getClothRemark() };
+							g.getCurtainRodSerialNumber(), rodN + "",
+							g.getClothRemark() };
 					data = temp;
 					y = drawLine(g2, y, x, w, colIp, data);
 				} else if (parameter == Global.EMPLOYEE_CS) {
-
 					String[] temp = { g.getCurtainLocation(),
-							g.getClothSerialNumber(), Rod, lace, "", "" };
+							g.getClothSerialNumber(), Rod, lace, ring, "", "" };
 					y = drawLine(g2, y, x, w, colCS, temp);
 					String[] temp1 = { "价格", g.getClothSellingPrice() + "",
-							rodP + "", LaceP + "", TapeP + "", "" };
+							rodP + "", LaceP + "", ringP + "", TapeP + "", "" };
 					y = drawLine(g2, y, x, w, colCS, temp1);
 					String[] temp2 = { "数量", g.getClothNumber() + "",
-							rodN + "", LaceN + "", TapeN + "", totali + "" };
+							rodN + "", LaceN + "", ringN + "", TapeN + "",
+							totali + "" };
 					y = drawLine(g2, y, x, w, colCS, temp2);
 				}
 			}
 			String other = "";
 			int deposit = Integer.parseInt(sol.getCustomerDeposit());
 			String[] allTotal = {
-					"总价: " + total + " 元",
-					"订金: " + sol.getCustomerDeposit() + " 元",
+					"总价: " + total + "元",
+					"订金: " + sol.getCustomerDeposit() + "元",
 					"合计: " + total + " - " + deposit + " = "
-							+ (total - deposit) + " 元整" };
+							+ (total - deposit) + "元整" };
 
-			y = drawLine(g2, y, x, w, TotalCol, allTotal);
+			if (parameter == Global.EMPLOYEE_CS) {
+				y = drawLine(g2, y, x, w, TotalCol, allTotal);
+			}
 			g2.drawLine(x, y, x + w, y);
 			y += rowH;
 			// g2.drawString("订货电话：" + Global.Tel, x - 10, y - 13);

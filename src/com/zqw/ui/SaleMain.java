@@ -592,13 +592,14 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		addCurtainGood.setFont(new Font("宋体", Font.PLAIN, 14));
 
 		curtainStyleCB = new JComboBox();
-		curtainStyleCB.setBounds(21, 22, 98, 21);
-		panel_3.add(curtainStyleCB);
-		curtainStyleCB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		curtainStyleCB.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				curtainStyleAction(e);
 			}
 		});
+		curtainStyleCB.setBounds(21, 22, 98, 21);
+		panel_3.add(curtainStyleCB);
 		curtainStyleCB.setModel(new DefaultComboBoxModel(new String[] {
 				"打孔*1.7", "挂钩*1.5", "挂钩+0.5", "卷帘" }));
 
@@ -672,8 +673,9 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 				selectedRow));
 	}
 
-	protected void curtainStyleAction(ActionEvent e) {
+	protected void curtainStyleAction(MouseEvent e) {
 		int index = curtainStyleCB.getSelectedIndex();
+		clearGoodsTable();
 		saleGoodjList.setModel(new DefaultListModel());
 		curtainRodName.removeMouseListener(curtainRodMA);
 		curtainRingName.removeMouseListener(curtainRingMA);
@@ -682,37 +684,22 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainClothName.removeMouseListener(curtainClothMA);
 
 		curtainRodName.setEditable(false);
-		// curtainRodName.setText("");
 		curtainRingName.setEditable(false);
-		// curtainRingName.setText("");
 		curtainLaceName.setEditable(false);
-		// curtainLaceName.setText("");
 		curtainTapeName.setEditable(false);
-		// curtainTapeName.setText("");
 		curtainClothName.setEditable(false);
-		// curtainClothName.setText("");
 
 		curtainRodPrice.setEditable(false);
-		// curtainRodPrice.setText("");
 		curtainRingPrice.setEditable(false);
-		// curtainRingPrice.setText("");
 		curtainLacePrice.setEditable(false);
-		// curtainLacePrice.setText("");
 		curtainTapePrice.setEditable(false);
-		// curtainTapePrice.setText("");
 		curtainClothPrice.setEditable(false);
-		// curtainClothPrice.setText("");
 
 		curtainRodRemark.setEditable(false);
-		// curtainRodRemark.setText("");
 		curtainRingRemark.setEditable(false);
-		// curtainRingRemark.setText("");
 		curtainLaceRemark.setEditable(false);
-		// curtainLaceRemark.setText("");
 		curtainTapeRemark.setEditable(false);
-		// curtainTapeRemark.setText("");
 		curtainClothRemark.setEditable(false);
-		// curtainClothRemark.setText("");
 
 		switch (index) {
 		case 0:
@@ -808,6 +795,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	}
 
 	private void addCurtainGoodActionPerformed(ActionEvent e) {
+		clearGoodsTable();
 		SaleOrderGoods sog = new SaleOrderGoods();
 		saleOrderGoodsBuild(sog);
 		currentSol.getGoodsLst().add(sog);
