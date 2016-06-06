@@ -530,6 +530,20 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 	}
 
 	private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {
+
+//		for (int i = 0; i < goodsLst.size(); i++) {
+//			Goods g = goodsLst.get(i);
+//			String s = g.getSerialNumber().substring(0, 2);
+//			if (s.contains("A-") || s.contains("B-")) {
+//				CurtainShopGoods csg = new CurtainShopGoods(
+//						g.getSerialNumber(), g.getPurchasePrice(),
+//						curtainShop.getName());
+//				System.out.println(goodsLst.get(i).getSerialNumber());
+//				DBUtil.insert(csg);
+//
+//			}
+//		}
+
 		if (sellingPrice.getText().length() > 0) {
 			CurtainShopGoods csg = new CurtainShopGoods(serialNumber.getText(),
 					Double.parseDouble(sellingPrice.getText().trim()),

@@ -8,6 +8,8 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.table.DefaultTableModel;
 
+import org.hibernate.criterion.Order;
+
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
 
@@ -86,27 +88,23 @@ public class DataUtil {
 		return df.format(d);
 	}
 
-	public static int getProfitm(DefaultTableModel tableModel) {
+	public static int getProfitm(List<OrderGoods> og) {
 		int Profit = 0;
-		for (int i = 0; i < tableModel.getRowCount(); i++) {
-			double purchasePrice = Double.parseDouble(tableModel.getValueAt(i,
-					1).toString());
-			double sellingPrice = Double.parseDouble(tableModel
-					.getValueAt(i, 2).toString());
-			double numberD = Double.parseDouble(tableModel.getValueAt(i, 3)
-					.toString());
+		for (int i = 0; i < og.size(); i++) {
+			
+			double purchasePrice = og.get(i).getPurchasePrice();
+			double sellingPrice =  og.get(i).getSellingPrice();
+			double numberD =  og.get(i).getNumber();
 			Profit += (sellingPrice - purchasePrice) * numberD;
 		}
 		return Profit;
 	}
 
-	public static int getTotalm(DefaultTableModel tableModel) {
+	public static int getTotalm(List<OrderGoods> og) {
 		int Total = 0;
-		for (int i = 0; i < tableModel.getRowCount(); i++) {
-			double sellingPrice = Double.parseDouble(tableModel
-					.getValueAt(i, 2).toString());
-			double numberD = Double.parseDouble(tableModel.getValueAt(i, 3)
-					.toString());
+		for (int i = 0; i <  og.size(); i++) {
+			double sellingPrice =  og.get(i).getSellingPrice();
+			double numberD =  og.get(i).getNumber();
 			Total += sellingPrice * numberD;
 		}
 		return Total;

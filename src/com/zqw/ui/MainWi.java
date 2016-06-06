@@ -241,16 +241,11 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int selectedRow = table.getSelectedRow();
+				OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
 				if (selectedRow != -1) {
-					serialNumber.setText(tableModel.getValueAt(selectedRow, 0)
-							.toString());
-					if (Global.User.getAuthority() < 20) {
-						sellingPrice.setText(tableModel.getValueAt(selectedRow,
-								1).toString());
-					}
-					number.setText(tableModel.getValueAt(selectedRow, 3)
-							.toString());
-					modifyBtn.getActionListeners();
+					serialNumber.setText(og.getSerialNumber());
+					sellingPrice.setText(og.getSellingPrice()+"");
+					number.setText(og.getNumber()+"");
 					addModifyBtnAndDeleteBtn();
 				}
 			}
@@ -645,9 +640,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(40);
 			currentOrder.setSubmitTime(new Date());
-			if (Global.User.getAuthority() < 20) {
-				currentOrder.setArrears(Integer.parseInt(total.getText()));
-			}
+			currentOrder.setArrears(DataUtil.getProfitm(currentOrder.getGoodsLst()));
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
 				DBUtil.insert(currentOrder);
@@ -764,11 +757,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		int selectedRow = table.getSelectedRow();
 		if (selectedRow != -1) {
 			tableModel.removeRow(selectedRow);
-			profit.setText(DataUtil.getProfitm(tableModel) + "");
-			total.setText(DataUtil.getTotalm(tableModel) + "");
+			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
+			total.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			currentOrder.getGoodsLst().remove(selectedRow);
-			// OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
-			// DBUtil.del(og);
 			removeModifyBtnAndDeleteBtn();
 			addSubmit();
 		}
@@ -776,15 +767,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 	private void addActionPerformed(java.awt.event.ActionEvent evt) {
 		if (serialNumber.getText().length() > 1) {
-			String[] rowValues = creatRow();
-			tableModel.addRow(rowValues);
 			OrderGoods og = new OrderGoods();
-			updateOrderGoods(tableModel.getRowCount() - 1, og, currentOrder);
+			String[] rowValues = creatRow(og, currentOrder,true);
+			tableModel.addRow(rowValues);
 			currentOrder.getGoodsLst().add(og);
-			if (Global.User.getAuthority() < 20) {
-				profit.setText(DataUtil.getProfitm(tableModel) + "");
-				total.setText(DataUtil.getTotalm(tableModel) + "");
-			}
+			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
+			total.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			addSubmit();
 		}
 	}
@@ -799,16 +787,16 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			String remark = freeGoods + goodChange + flowers;
 			tableModel.setValueAt(number.getText(), selectedRow, 3);
 			tableModel.setValueAt(remark, selectedRow, 4);
-			updateOrderGoods(selectedRow, (OrderGoods) currentOrder
-					.getGoodsLst().get(selectedRow), currentOrder);
-			profit.setText(DataUtil.getProfitm(tableModel) + "");
-			total.setText(DataUtil.getTotalm(tableModel) + "");
+			creatRow(currentOrder.getGoodsLst().get(selectedRow), currentOrder,true);
+			
+			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
+			total.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			removeModifyBtnAndDeleteBtn();
 			addSubmit();
 		}
 	}
 
-	private String[] creatRow() {
+	private String[] creatRow(OrderGoods og, OrderLst ol, boolean isAdd) {
 		String serialNumber = this.serialNumber.getText().trim();
 		String sellingPrice = this.sellingPrice.getText().trim();
 		String number = this.number.getText().trim();
@@ -821,36 +809,35 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			String s = flowersComboBox.getSelectedItem().toString();
 			String flowers = "不对花".equals(s) ? "" : s;
 			String remark = freeGoods + goodChange + flowers;
-			if (Global.User.getAuthority() < 20) {
-				String[] rowValues = { serialNumber, g.getPurchasePrice() + "",
-						sellingPrice, DataUtil.formatDouble(numberD), remark };
-				return rowValues;
-			} else {
-				String[] rowValues = { serialNumber, "", "",
-						DataUtil.formatDouble(numberD), remark };
-				return rowValues;
+
+			og.setDate(ol.getDeliveryTime());
+			og.setOwner(curtainShop.getOwner());
+			og.setCurtainShop(curtainShop.getName());
+			og.setSerialNumber(serialNumber);
+			og.setPurchasePrice(g.getPurchasePrice());
+			og.setSellingPrice(Double.parseDouble(sellingPrice.trim()));
+			og.setNumber(numberD);
+			og.setRemark(remark);
+			if (isAdd) {
+				if (Global.User.getAuthority() < 20) {
+					String[] rowValues = { serialNumber,
+							g.getPurchasePrice() + "", sellingPrice,
+							DataUtil.formatDouble(numberD), remark };
+					return rowValues;
+				} else {
+					String[] rowValues = { serialNumber, "", "",
+							DataUtil.formatDouble(numberD), remark };
+					return rowValues;
+				}
+			}else{
+				return null;
 			}
+
 		} else {
 			JOptionPane.showMessageDialog(this, "请输入货物信息", "alert",
 					JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
-	}
-
-	private void updateOrderGoods(int i, OrderGoods og, OrderLst ol) {
-		// TODO Auto-generated method stub
-		og.setDate(ol.getDeliveryTime());
-		og.setOwner(curtainShop.getOwner());
-		og.setCurtainShop(curtainShop.getName());
-		og.setSerialNumber(tableModel.getValueAt(i, 0).toString());
-		if (Global.User.getAuthority() < 20) {
-			og.setPurchasePrice(Double.parseDouble(tableModel.getValueAt(i, 1)
-					.toString()));
-			og.setSellingPrice(Double.parseDouble(tableModel.getValueAt(i, 2)
-					.toString()));
-		}
-		og.setNumber(Double.parseDouble(tableModel.getValueAt(i, 3).toString()));
-		og.setRemark(tableModel.getValueAt(i, 4).toString());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -865,10 +852,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		curtainShop = (CurtainShop) currentOrder.getNameClass();
 		shopName.setText(curtainShop.getName());
 		telephone.setText(curtainShop.getTelephone());
-		if (Global.User.getAuthority() < 20) {
-			total.setText(currentOrder.getArrears() + "");
-			profit.setText(DataUtil.getProfitm(tableModel) + "");
-		}
+		total.setText(currentOrder.getArrears() + "");
+		profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 		addPrintBtn();
 	}
 

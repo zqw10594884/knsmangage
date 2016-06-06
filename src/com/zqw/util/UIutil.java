@@ -192,8 +192,13 @@ public class UIutil {
 
 			switch (initClass) {
 			case 1:
-				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "gt",
-						OrderLst.class, "orderState", "20", "int");
+				if (Global.User.getAuthority() < 20) {
+					orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("",
+							"gt", OrderLst.class, "orderState", "19", "int");
+				} else {
+					orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("",
+							"gt", OrderLst.class, "orderState", "20", "int");
+				}
 				break;
 			case 2:
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "eq",
