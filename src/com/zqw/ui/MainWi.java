@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
-import java.awt.print.PrinterException;  
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -244,13 +244,14 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				if (selectedRow != -1) {
 					serialNumber.setText(tableModel.getValueAt(selectedRow, 0)
 							.toString());
-					sellingPrice.setText(tableModel.getValueAt(selectedRow, 1)
-							.toString());
+					if (Global.User.getAuthority() < 20) {
+						sellingPrice.setText(tableModel.getValueAt(selectedRow,
+								1).toString());
+					}
 					number.setText(tableModel.getValueAt(selectedRow, 3)
 							.toString());
 					modifyBtn.getActionListeners();
 					addModifyBtnAndDeleteBtn();
-
 				}
 			}
 		});
@@ -292,11 +293,16 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		JLabel label = new JLabel("电话：");
 		label.setBounds(671, 15, 54, 15);
 		label.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(label);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(label);
+		}
 
 		telephone = new JTextField();
 		telephone.setBounds(735, 13, 106, 21);
-		contentPane.add(telephone);
+
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(telephone);
+		}
 		telephone.setColumns(10);
 
 		JLabel label_1 = new JLabel("编号：");
@@ -312,11 +318,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		JLabel label_2 = new JLabel("价格：");
 		label_2.setBounds(722, 45, 54, 15);
 		label_2.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(label_2);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(label_2);
+		}
 
 		sellingPrice = new JTextField();
 		sellingPrice.setBounds(776, 45, 48, 21);
-		contentPane.add(sellingPrice);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(sellingPrice);
+		}
 		sellingPrice.setColumns(10);
 
 		JLabel label_3 = new JLabel("数量：");
@@ -338,7 +348,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		orderPrintBtn.setBounds(779, 105, 62, 23);
 		orderPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		orderPrintBtn.setEnabled(false);
-		contentPane.add(orderPrintBtn);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(orderPrintBtn);
+		}
 
 		addBtn = new JButton("添加");
 		addBtn.setBounds(639, 105, 62, 23);
@@ -369,11 +381,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		manageBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(manageBtn);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(manageBtn);
+		}
 
 		total = new JLabel("");
 		total.setBounds(689, 584, 38, 15);
-		contentPane.add(total);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(total);
+		}
 
 		JLabel lblNewLabel_1 = new JLabel("总价：");
 		lblNewLabel_1.setBounds(639, 580, 48, 15);
@@ -387,7 +403,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 		profit = new JLabel("");
 		profit.setBounds(787, 584, 54, 15);
-		contentPane.add(profit);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(profit);
+		}
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(488, 138, 353, 428);
@@ -401,7 +419,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		freeGoodsBC = new JCheckBox("样品");
 		freeGoodsBC.setBounds(488, 75, 54, 23);
 		freeGoodsBC.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(freeGoodsBC);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(freeGoodsBC);
+		}
 
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(154, 47, 159, 561);
@@ -438,7 +458,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		pandectPrintBtn.setBounds(861, 576, 94, 23);
-		contentPane.add(pandectPrintBtn);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(pandectPrintBtn);
+		}
 
 		JButton untreatedPrintBtn = new JButton("备货打印");
 		untreatedPrintBtn.addActionListener(new ActionListener() {
@@ -448,7 +470,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		});
 		untreatedPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		untreatedPrintBtn.setBounds(965, 576, 93, 23);
-		contentPane.add(untreatedPrintBtn);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(untreatedPrintBtn);
+		}
 
 		submitOrderBtn = new JButton("提交");
 		submitOrderAL = new ActionListener() {
@@ -464,7 +488,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		goodChangeCB = new JCheckBox("换货");
 		goodChangeCB.setFont(new Font("宋体", Font.PLAIN, 14));
 		goodChangeCB.setBounds(553, 75, 54, 23);
-		contentPane.add(goodChangeCB);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(goodChangeCB);
+		}
 
 		flowersComboBox = new JComboBox<String>();
 		flowersComboBox.setModel(new DefaultComboBoxModel(new String[] { "不对花",
@@ -493,7 +519,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 		historyListDelBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		historyListDelBtn.setBounds(1072, 576, 70, 23);
-		contentPane.add(historyListDelBtn);
+		if (Global.User.getAuthority() < 20) {
+			contentPane.add(historyListDelBtn);
+		}
 
 		btnNewButton = new JButton("刷新");
 		btnNewButton.addActionListener(new ActionListener() {
@@ -617,12 +645,14 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(40);
 			currentOrder.setSubmitTime(new Date());
-			currentOrder.setArrears(Integer.parseInt(total.getText()));
+			if (Global.User.getAuthority() < 20) {
+				currentOrder.setArrears(Integer.parseInt(total.getText()));
+			}
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
 				DBUtil.insert(currentOrder);
 				latelyLst.add(currentOrder);
-			}else{
+			} else {
 				DBUtil.update(currentOrder);
 			}
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
@@ -644,7 +674,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				if (cli.isSelected()) {
 					OrderLst ol = latelyLst.get(i);
 					CurtainShop cs = (CurtainShop) ol.getNameClass();
-					 
+
 					DBUtil.update(ol);
 					ol.setOrderState(30);
 					UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
@@ -737,8 +767,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			profit.setText(DataUtil.getProfitm(tableModel) + "");
 			total.setText(DataUtil.getTotalm(tableModel) + "");
 			currentOrder.getGoodsLst().remove(selectedRow);
-//			OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
-//			DBUtil.del(og);
+			// OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
+			// DBUtil.del(og);
 			removeModifyBtnAndDeleteBtn();
 			addSubmit();
 		}
@@ -751,8 +781,10 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			OrderGoods og = new OrderGoods();
 			updateOrderGoods(tableModel.getRowCount() - 1, og, currentOrder);
 			currentOrder.getGoodsLst().add(og);
-			profit.setText(DataUtil.getProfitm(tableModel) + "");
-			total.setText(DataUtil.getTotalm(tableModel) + "");
+			if (Global.User.getAuthority() < 20) {
+				profit.setText(DataUtil.getProfitm(tableModel) + "");
+				total.setText(DataUtil.getTotalm(tableModel) + "");
+			}
 			addSubmit();
 		}
 	}
@@ -789,9 +821,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			String s = flowersComboBox.getSelectedItem().toString();
 			String flowers = "不对花".equals(s) ? "" : s;
 			String remark = freeGoods + goodChange + flowers;
-			String[] rowValues = { serialNumber, g.getPurchasePrice() + "",
-					sellingPrice, DataUtil.formatDouble(numberD), remark };
-			return rowValues;
+			if (Global.User.getAuthority() < 20) {
+				String[] rowValues = { serialNumber, g.getPurchasePrice() + "",
+						sellingPrice, DataUtil.formatDouble(numberD), remark };
+				return rowValues;
+			} else {
+				String[] rowValues = { serialNumber, "", "",
+						DataUtil.formatDouble(numberD), remark };
+				return rowValues;
+			}
 		} else {
 			JOptionPane.showMessageDialog(this, "请输入货物信息", "alert",
 					JOptionPane.ERROR_MESSAGE);
@@ -805,10 +843,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		og.setOwner(curtainShop.getOwner());
 		og.setCurtainShop(curtainShop.getName());
 		og.setSerialNumber(tableModel.getValueAt(i, 0).toString());
-		og.setPurchasePrice(Double.parseDouble(tableModel.getValueAt(i, 1)
-				.toString()));
-		og.setSellingPrice(Double.parseDouble(tableModel.getValueAt(i, 2)
-				.toString()));
+		if (Global.User.getAuthority() < 20) {
+			og.setPurchasePrice(Double.parseDouble(tableModel.getValueAt(i, 1)
+					.toString()));
+			og.setSellingPrice(Double.parseDouble(tableModel.getValueAt(i, 2)
+					.toString()));
+		}
 		og.setNumber(Double.parseDouble(tableModel.getValueAt(i, 3).toString()));
 		og.setRemark(tableModel.getValueAt(i, 4).toString());
 	}
@@ -816,17 +856,19 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	@SuppressWarnings("unchecked")
 	private void addLatelyLstToMain(int index) {
 		currentOrder = latelyLst.get(index);
-		
-		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber", "eq", CurtainShopGoods.class,  "curtainShop", currentOrder.getCurtainShop(), "String");
-		
+		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber",
+				"eq", CurtainShopGoods.class, "curtainShop",
+				currentOrder.getCurtainShop(), "String");
 
 		UIutil.initCurtainShopGoodsLstFromName(this, goodsjList, goodsLst);
 		UIutil.tableAddAll(currentOrder.getGoodsLst(), tableModel);
 		curtainShop = (CurtainShop) currentOrder.getNameClass();
 		shopName.setText(curtainShop.getName());
 		telephone.setText(curtainShop.getTelephone());
-		total.setText(currentOrder.getArrears() + "");
-		profit.setText(DataUtil.getProfitm(tableModel) + "");
+		if (Global.User.getAuthority() < 20) {
+			total.setText(currentOrder.getArrears() + "");
+			profit.setText(DataUtil.getProfitm(tableModel) + "");
+		}
 		addPrintBtn();
 	}
 

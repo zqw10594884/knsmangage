@@ -321,7 +321,7 @@ public class ManageClothWi extends JFrame implements ListSelectionListener {
 			currentlc.setPurchasePrice(currentGoods.getPurchasePrice());
 			currentlc.setNumber(Double.parseDouble(number.getText().trim()));
 			currentlc.setProductionDate(new Date());
-			currentlc.setProductionPerson(Global.CURRENTUSER);
+			currentlc.setProductionPerson(Global.User.getName());
 			if (index == 1) {
 				currentlc.setDefective(true);
 			} else if (index == 2) {

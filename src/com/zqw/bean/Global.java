@@ -1,17 +1,13 @@
 package com.zqw.bean;
 
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.zqw.util.DBUtil;
 
 public class Global {
 	public static CurtainShop curtainShop = new CurtainShop();
 	public static Goods goods = new Goods();
 	public static String ABCcard = "6228481748769035679  姓名:刘会珍";
 	public static String Tel = "18032318933";
-	public static String CURRENTUSER = "test";
+	public static User User = null;
 	public static int EMPLOYEE_LP = 0;
 	public static int EMPLOYEE_MP = 3;
 	public static int EMPLOYEE_IP = 4;

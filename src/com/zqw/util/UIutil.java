@@ -14,13 +14,13 @@ import javax.swing.table.DefaultTableModel;
 import com.zqw.bean.CheckListItem;
 import com.zqw.bean.CurtainShop;
 import com.zqw.bean.CurtainShopGoods;
+import com.zqw.bean.Global;
 import com.zqw.bean.Goods;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
 import com.zqw.bean.SaleOrderLst;
 import com.zqw.listener.CheckListRenderer;
 import com.zqw.listener.MyListRenderer;
-import com.zqw.ui.MainCBWi;
 
 public class UIutil {
 
@@ -193,7 +193,7 @@ public class UIutil {
 			switch (initClass) {
 			case 1:
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "gt",
-						OrderLst.class, "orderState", "19", "int");
+						OrderLst.class, "orderState", "20", "int");
 				break;
 			case 2:
 				orderLst = (ArrayList<OrderLst>) DBUtil.getLstClass("", "eq",
@@ -220,12 +220,13 @@ public class UIutil {
 			CheckListItem cli = null;
 			if (initClass == 3) {
 				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
-						+ "  " + ol.getSimpleDate() + "  " + ol.getCurtainShop() + "("
-						+ ol.getLibraryPerson() + ")", false);
+						+ "  " + ol.getSimpleDate() + "  "
+						+ ol.getCurtainShop() + "(" + ol.getLibraryPerson()
+						+ ")", false);
 			} else {
 				cli = new CheckListItem("(" + ol.getOrderStateToString() + ")"
-						+ "  " + ol.getSimpleDate() + "  " + ol.getCurtainShop(),
-						false);
+						+ "  " + ol.getSimpleDate() + "  "
+						+ ol.getCurtainShop(), false);
 			}
 			if (ol.getOrderState() >= 40) {
 				cli.setC(Color.red);
@@ -284,9 +285,17 @@ public class UIutil {
 	}
 
 	public static void tableAddLine(OrderGoods g, DefaultTableModel tableModel) {
-		String[] rowValues = { g.getSerialNumber(), g.getPurchasePrice() + "",
-				g.getSellingPrice() + "", g.getNumber() + "", g.getRemark() };
-		tableModel.addRow(rowValues); // 添加一行
+
+		if (Global.User.getAuthority() < 20) {
+			String[] rowValues = { g.getSerialNumber(),
+					g.getPurchasePrice() + "", g.getSellingPrice() + "",
+					g.getNumber() + "", g.getRemark() };
+			tableModel.addRow(rowValues); // 添加一行
+		} else {
+			String[] rowValues = { g.getSerialNumber(), "", "",
+					g.getNumber() + "", g.getRemark() };
+			tableModel.addRow(rowValues); // 添加一行
+		}
 	}
 
 }

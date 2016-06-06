@@ -51,12 +51,13 @@ public class loginWi extends JFrame {
 	private void loginBtnActionPerformed(java.awt.event.ActionEvent evt) {
 		String name = userName.getText().trim();
 		String pass = password.getText().trim();
-		User user = (User)DBUtil.getClass(User.class, "name", name,"String" , "eq");
+		User user = (User) DBUtil.getClass(User.class, "name", name, "String",
+				"eq");
 		if (name.equals(user.getName()) && pass.equals(user.getPassword())) {
 			Enumeration<AbstractButton> enu = buttonGroup1.getElements();
 			while (enu.hasMoreElements()) {
 				AbstractButton radioButton = enu.nextElement();
-				Global.CURRENTUSER = user.getRealName();
+				Global.User = user;
 				if (radioButton.getName() == "manage"
 						&& radioButton.isSelected() && user.getAuthority() < 20) {
 					java.awt.EventQueue.invokeLater(new Runnable() {

@@ -898,7 +898,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			currentSol.setCustomerDeposit(customerDeposit.getText().trim());
 			currentSol.setSubmitTime(new Date());
 			currentSol.setOrderState(40);
-			currentSol.setSalePerson(Global.CURRENTUSER);
+			currentSol.setSalePerson(Global.User.getName());
 		} else {
 			JOptionPane.showMessageDialog(null, "请完善客户信息");
 		}
