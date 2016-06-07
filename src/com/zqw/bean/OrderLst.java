@@ -1,14 +1,10 @@
 package com.zqw.bean;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.collection.PersistentList;
-
 import com.zqw.util.DBUtil;
-import com.zqw.util.HibUtil;
 
 public class OrderLst {
 	private List<OrderGoods> goodsLst;

@@ -157,15 +157,15 @@ public class PrintOrder implements Printable {
 				y = drawLine(g2, y, x, w, col, data);
 			}
 			String other = "";
-			if (parameter == Global.OWN) {
-				int profit = DataUtil.getProfit(order);
-				if (curtainShop.getOwner() == 0) {
-					other = "利润" + profit + "付" + ((int) cloth + (int) lace)
-							+ "辅料成本" + materials;
-				} else {
-					other = "利润" + profit + "辅料成本" + materials;
-				}
-			}
+//			if (parameter == Global.OWN) {
+//				int profit = DataUtil.getProfit(order);
+//				if (curtainShop.getOwner() == 0) {
+//					other = "利润" + profit + "付" + ((int) cloth + (int) lace)
+//							+ "辅料成本" + materials;
+//				} else {
+//					other = "利润" + profit + "辅料成本" + materials;
+//				}
+//			}
 			String[] Total = null;
 			if (parameter == Global.CUSTOMER || parameter == Global.OWN) {
 				String[] temp = { "合计人民币", (int) subtotal + "元整", other };

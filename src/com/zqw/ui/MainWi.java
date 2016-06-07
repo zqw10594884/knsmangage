@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.print.Book;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
 import com.zqw.print.PrintOrder;
 import com.zqw.print.PrintPandect;
+import com.zqw.print.PrintSettlement;
 import com.zqw.util.DBUtil;
 import com.zqw.util.DataUtil;
 import com.zqw.util.SortChineseName;
@@ -244,8 +246,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				OrderGoods og = currentOrder.getGoodsLst().get(selectedRow);
 				if (selectedRow != -1) {
 					serialNumber.setText(og.getSerialNumber());
-					sellingPrice.setText(og.getSellingPrice()+"");
-					number.setText(og.getNumber()+"");
+					sellingPrice.setText(og.getSellingPrice() + "");
+					number.setText(og.getNumber() + "");
 					addModifyBtnAndDeleteBtn();
 				}
 			}
@@ -640,7 +642,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(40);
 			currentOrder.setSubmitTime(new Date());
-			currentOrder.setArrears(DataUtil.getProfitm(currentOrder.getGoodsLst()));
+			currentOrder.setArrears(DataUtil.getProfitm(currentOrder
+					.getGoodsLst()));
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
 				DBUtil.insert(currentOrder);
@@ -672,7 +675,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 					ol.setOrderState(30);
 					UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 							latelyLst, 1);
-					print(Global.EMPLOYEE_LP, ol, cs);
+					print(new PrintOrder(ol, cs, Global.EMPLOYEE_LP));
 				}
 			}
 		}
@@ -697,8 +700,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			removePrintBtn();
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
-			print(Global.CUSTOMER, currentOrder, curtainShop);
-			print(Global.OWN, currentOrder, curtainShop);
+			print(new PrintOrder(currentOrder, curtainShop, Global.CUSTOMER));
+			print(new PrintOrder(currentOrder, curtainShop, Global.OWN));
 			DBUtil.update(currentOrder);
 		} else {
 
@@ -722,24 +725,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		}
 		Collections.sort(pandectList, new SortChineseName());
-		// print
-		Book book = new Book();
-		PageFormat pf = new PageFormat();
-		pf.setOrientation(PageFormat.PORTRAIT);
-		Paper p = new Paper();
-		p.setSize(590, 840);
-		p.setImageableArea(10, 10, 590, 840);
-		pf.setPaper(p);
-		PrintPandect pp = new PrintPandect(pandectList);
-		book.append(pp, pf);
-		PrinterJob job = PrinterJob.getPrinterJob();
-		job.setPageable(book);
-		try {
-			job.print();
-		} catch (PrinterException e) {
-			e.printStackTrace();
-		}
-
+//		print(new PrintPandect(pandectList));
+		print(new PrintSettlement(pandectList));
 	}
 
 	private void orderDeleteAction() {
@@ -768,7 +755,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private void addActionPerformed(java.awt.event.ActionEvent evt) {
 		if (serialNumber.getText().length() > 1) {
 			OrderGoods og = new OrderGoods();
-			String[] rowValues = creatRow(og, currentOrder,true);
+			String[] rowValues = creatRow(og, currentOrder, true);
 			tableModel.addRow(rowValues);
 			currentOrder.getGoodsLst().add(og);
 			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
@@ -787,8 +774,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			String remark = freeGoods + goodChange + flowers;
 			tableModel.setValueAt(number.getText(), selectedRow, 3);
 			tableModel.setValueAt(remark, selectedRow, 4);
-			creatRow(currentOrder.getGoodsLst().get(selectedRow), currentOrder,true);
-			
+			creatRow(currentOrder.getGoodsLst().get(selectedRow), currentOrder,
+					true);
+
 			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			total.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			removeModifyBtnAndDeleteBtn();
@@ -829,7 +817,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 							DataUtil.formatDouble(numberD), remark };
 					return rowValues;
 				}
-			}else{
+			} else {
 				return null;
 			}
 
@@ -857,7 +845,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		addPrintBtn();
 	}
 
-	private void print(int parameter, OrderLst order, CurtainShop curtainShop) {
+	private void print(Printable printOrder) {
 		Book book = new Book();
 		PageFormat pf = new PageFormat();
 		pf.setOrientation(PageFormat.PORTRAIT);
@@ -865,7 +853,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		p.setSize(590, 840);
 		p.setImageableArea(10, 10, 590, 840);
 		pf.setPaper(p);
-		PrintOrder printOrder = new PrintOrder(order, curtainShop, parameter);
+
 		book.append(printOrder, pf);
 		PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPageable(book);
