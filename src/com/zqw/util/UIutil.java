@@ -137,6 +137,15 @@ public class UIutil {
 		if (orderLst == null) {
 			orderLst = (ArrayList<SaleOrderLst>) DBUtil.getLstClass("", "gt",
 					SaleOrderLst.class, "orderState", "29", "int");
+			if (Global.User.getAuthority() == 20) {
+
+			} else if (Global.User.getAuthority() == 21) {
+
+			} else if (Global.User.getAuthority() == 22) {
+
+			} else if (Global.User.getAuthority() == 23) {
+
+			}
 		}
 		for (int i = 0; i < orderLst.size(); i++) {// 遍历并插入
 			SaleOrderLst ol = orderLst.get(i);

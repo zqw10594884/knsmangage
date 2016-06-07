@@ -80,7 +80,7 @@ public class SaleOrderLst extends KNSOrder {
 
 	/**
 	 * 
-	 * @return 10 完成 20出库 30备货中 31备货完成 40提交
+	 * @return 10 结账 20安装中 21 安装完成 30裁布中 31裁布完成 35加工中 36 加工完成 40提交
 	 */
 	public int getOrderState() {
 		return orderState;
@@ -89,7 +89,7 @@ public class SaleOrderLst extends KNSOrder {
 	/**
 	 * 
 	 * @param printState
-	 *            10 完成 20出库 30备货中 31备货完成 40提交
+	 *            10 结账 20安装中 21 安装完成 30裁布中 31裁布完成 35加工中 36 加工完成 40提交
 	 */
 	public void setOrderState(int printState) {
 		this.orderState = printState;
