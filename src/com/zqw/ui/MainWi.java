@@ -725,7 +725,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		}
 		Collections.sort(pandectList, new SortChineseName());
-//		print(new PrintPandect(pandectList));
+		print(new PrintPandect(pandectList));
 		print(new PrintSettlement(pandectList));
 	}
 
