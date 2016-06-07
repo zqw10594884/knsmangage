@@ -38,6 +38,7 @@ import com.zqw.bean.CurtainShopGoods;
 import com.zqw.bean.Global;
 import com.zqw.bean.SaleOrderGoods;
 import com.zqw.bean.SaleOrderLst;
+import com.zqw.bean.User;
 import com.zqw.util.DBUtil;
 import com.zqw.util.UIutil;
 
@@ -91,11 +92,17 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	private MouseAdapter curtainTapeMA;
 	private MouseAdapter curtainClothMA;
 	private JComboBox curtainLocationCB;
+	private ActionListener addCustomerAl;
+	private JLabel nameLab;
+	private JLabel adrLab;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		User user = (User) DBUtil.getClass(User.class, "name", "116330",
+				"String", "eq");
+		Global.User = user;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -186,7 +193,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		panel.setLayout(gl_panel);
 
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(199, 394, 764, 239);
+		scrollPane_1.setBounds(199, 498, 764, 180);
 		contentPane.add(scrollPane_1);
 
 		saleTable = new JTable();
@@ -196,7 +203,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 
 		JLabel saleTotal = new JLabel("总价：");
 		saleTotal.setFont(new Font("宋体", Font.PLAIN, 14));
-		saleTotal.setBounds(209, 643, 45, 25);
+		saleTotal.setBounds(209, 199, 45, 25);
 		contentPane.add(saleTotal);
 
 		JLabel label_8 = new JLabel("");
@@ -256,12 +263,13 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		label_7.setBounds(9, 78, 45, 21);
 		panel_1.add(label_7);
 
-		addCustomerBtn = new JButton("添加客户");
-		addCustomerBtn.addActionListener(new ActionListener() {
+		addCustomerAl = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addCustomerActionPerformed(e);
 			}
-		});
+		};
+		addCustomerBtn = new JButton("添加客户");
+		addCustomerBtn.addActionListener(addCustomerAl);
 		addCustomerBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		addCustomerBtn.setBounds(366, 76, 103, 23);
 		panel_1.add(addCustomerBtn);
@@ -288,6 +296,12 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		newButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearAll();
+				if (addCustomerBtn.getActionListeners().length == 0) {
+					addCustomerBtn.addActionListener(addCustomerAl);
+				}
+				addCustomerBtn.setEnabled(true);
+				nameLab.setText("");
+				adrLab.setText("");
 			}
 		});
 		newButton.setFont(new Font("宋体", Font.PLAIN, 14));
@@ -295,7 +309,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		panel_1.add(newButton);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(689, 10, 274, 374);
+		panel_2.setBounds(689, 10, 274, 478);
 		contentPane.add(panel_2);
 
 		JLabel label_9 = new JLabel();
@@ -345,16 +359,6 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		scrollPane_2.setViewportView(saleLatelyjList);
 		panel_2.setLayout(gl_panel_2);
 
-		JButton submitBtn = new JButton("提交订单");
-		submitBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				submitAction(e);
-			}
-		});
-		submitBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		submitBtn.setBounds(547, 644, 100, 23);
-		contentPane.add(submitBtn);
-
 		JLabel label_22 = new JLabel("宽度：");
 		label_22.setFont(new Font("宋体", Font.PLAIN, 14));
 		label_22.setBounds(924, 181, 56, 15);
@@ -363,7 +367,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "\u8D27\u7269\u4FE1\u606F",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_3.setBounds(199, 124, 480, 260);
+		panel_3.setBounds(199, 228, 480, 260);
 		contentPane.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -558,7 +562,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainRodRemark.setColumns(10);
 
 		JButton curtainDelBtn = new JButton("删除");
-		curtainDelBtn.setBounds(172, 227, 67, 23);
+		curtainDelBtn.setBounds(71, 230, 67, 23);
 		panel_3.add(curtainDelBtn);
 		curtainDelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -568,7 +572,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainDelBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 
 		JButton curtainModifyBtn = new JButton("修改");
-		curtainModifyBtn.setBounds(260, 227, 67, 23);
+		curtainModifyBtn.setBounds(148, 230, 67, 23);
 		panel_3.add(curtainModifyBtn);
 		curtainModifyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -578,7 +582,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		curtainModifyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 
 		addCurtainGood = new JButton("添加货物");
-		addCurtainGood.setBounds(364, 227, 100, 23);
+		addCurtainGood.setBounds(239, 230, 100, 23);
 		panel_3.add(addCurtainGood);
 		addCurtainGood.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -651,6 +655,26 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		label_24.setFont(new Font("宋体", Font.PLAIN, 14));
 		label_24.setBounds(151, 59, 60, 15);
 		panel_3.add(label_24);
+
+		JButton submitBtn = new JButton("提交订单");
+		submitBtn.setBounds(364, 227, 100, 23);
+		panel_3.add(submitBtn);
+		submitBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submitAction(e);
+			}
+		});
+		submitBtn.setFont(new Font("宋体", Font.PLAIN, 14));
+
+		nameLab = new JLabel("");
+		nameLab.setFont(new Font("宋体", Font.PLAIN, 13));
+		nameLab.setBounds(209, 135, 470, 20);
+		contentPane.add(nameLab);
+
+		adrLab = new JLabel("");
+		adrLab.setFont(new Font("宋体", Font.PLAIN, 13));
+		adrLab.setBounds(209, 165, 470, 20);
+		contentPane.add(adrLab);
 	}
 
 	protected void clearAll() {
@@ -795,12 +819,12 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	}
 
 	private void addCurtainGoodActionPerformed(ActionEvent e) {
-		clearGoodsTable();
 		SaleOrderGoods sog = new SaleOrderGoods();
 		saleOrderGoodsBuild(sog);
 		currentSol.getGoodsLst().add(sog);
 		String[] rowValues = creatRow(sog);
 		tableModel.addRow(rowValues);
+		clearGoodsTable();
 	}
 
 	private void saleOrderGoodsBuild(SaleOrderGoods sog) {
@@ -899,6 +923,15 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 			currentSol.setSubmitTime(new Date());
 			currentSol.setOrderState(40);
 			currentSol.setSalePerson(Global.User.getName());
+			addCustomerBtn.removeActionListener(addCustomerAl);
+			addCustomerBtn.setEnabled(false);
+
+			nameLab.setText("姓名:" + customerName.getText().trim() + "  电话1："
+					+ customerTel1.getText().trim() + "  电话2："
+					+ customerTel2.getText().trim() + "  订金："
+					+ customerDeposit.getText().trim());
+
+			adrLab.setText("地址:" + address);
 		} else {
 			JOptionPane.showMessageDialog(null, "请完善客户信息");
 		}
@@ -908,7 +941,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 	@SuppressWarnings("unchecked")
 	private void initGoodLst() {
 		goodsLst = (List<CurtainShopGoods>) DBUtil.getLstClass("serialNumber",
-				"eq", CurtainShopGoods.class, "curtainShop", "凯妮丝二店", "String");
+				"eq", CurtainShopGoods.class, "curtainShop", "test", "String");
 	}
 
 	private void reBuildGoodLst(String index) {
@@ -972,7 +1005,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 					|| l.equals("次卧") || l.equals("后卧") || l.equals("餐厅")
 					|| l.equals("厨房") || l.equals("卫生间")) {
 				curtainLocationCB.setSelectedItem(l);
-			}else{
+			} else {
 				curtainLocation.setText(sog.getCurtainLocation());
 			}
 
