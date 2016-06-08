@@ -43,10 +43,15 @@ import com.zqw.bean.User;
 import com.zqw.print.PrintOrder;
 import com.zqw.print.PrintRetailOrder;
 import com.zqw.util.DBUtil;
+import com.zqw.util.HibUtil;
 import com.zqw.util.UIutil;
 
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 public class MainJZWi extends JFrame implements ListSelectionListener {
 
@@ -74,7 +79,6 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 	private ArrayList<OrderLst> wholesaleLst;
 	private ArrayList<SaleOrderLst> retailLst;
 	private ArrayList<OrderLst> pandectList = new ArrayList<OrderLst>();
-	private OrderLst currentOrder;
 	private SaleOrderLst currentRetailOrder;
 	private JLabel nameLab;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
@@ -313,21 +317,60 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 	 */
 	private void submitOrderactionPerformed(ActionEvent e) {
 		if (tableModel.getRowCount() > 0) {
-			currentOrder.setOrderState(31);
-			if (currentOrder.getLibraryPerson() == null
-					|| currentOrder.getLibraryPerson().length() == 0) {
-				currentOrder.setLibraryPerson(Global.User.getName());
+
+			if (Global.User.getAuthority() == 20) {// 裁布
+				if (currentRetailOrder.getLibraryPerson() == null
+						|| currentRetailOrder.getLibraryPerson().length() == 0) {
+					currentRetailOrder.setOrderState(35);
+					currentRetailOrder.setLibraryPerson(Global.User.getName());
+				}
+			} else if (Global.User.getAuthority() == 21) {// 售货员
+				if (currentRetailOrder.getLibraryPerson() == null
+						|| currentRetailOrder.getLibraryPerson().length() == 0) {
+//					currentRetailOrder.setOrderState(31);
+//					currentRetailOrder.setLibraryPerson(Global.User.getName());
+				}
+			} else if (Global.User.getAuthority() == 22) {// 裁缝
+				if (currentRetailOrder.getLibraryPerson() == null
+						|| currentRetailOrder.getLibraryPerson().length() == 0) {
+					currentRetailOrder.setOrderState(30);
+					currentRetailOrder.setMachiningPerson(Global.User.getName());
+				}
+			} else if (Global.User.getAuthority() == 23) {// 安装工
+				if (currentRetailOrder.getLibraryPerson() == null
+						|| currentRetailOrder.getLibraryPerson().length() == 0) {
+					currentRetailOrder.setOrderState(20);
+					currentRetailOrder.setInstallPerson(Global.User.getName());
+				}
 			}
+
 			initJlist();
-			DBUtil.update(currentOrder);
+			DBUtil.update(currentRetailOrder);
 		} else {
 
 		}
 	}
 
 	private void initJlist() {
-		retailLst = (ArrayList<SaleOrderLst>) UIutil.initRetailOrderJlist(this,
-				checkedjList, listAdapter, true, retailLst);
+		if (retailLst == null) {
+			Session session = HibUtil.getSession();
+			Criteria c = session.createCriteria(SaleOrderLst.class);
+			if (Global.User.getAuthority() == 20) {// 裁布
+				c.add(Restrictions.gt("orderState", 34));
+			} else if (Global.User.getAuthority() == 21) {// 售货员
+				c.add(Restrictions.gt("orderState", 19));
+			} else if (Global.User.getAuthority() == 22) {// 裁缝
+				c.add(Restrictions.and(Restrictions.gt("orderState", 29),
+						Restrictions.lt("orderState", 36)));
+			} else if (Global.User.getAuthority() == 23) {// 安装工
+				c.add(Restrictions.and(Restrictions.gt("orderState", 19),
+						Restrictions.lt("orderState", 31)));
+			}
+			retailLst = (ArrayList<SaleOrderLst>) DBUtil
+					.getLstClass(session, c);
+		}
+		UIutil.initRetailOrderJlist(this, checkedjList, listAdapter, true,
+				retailLst);
 	}
 
 	/**
@@ -374,12 +417,12 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 	private void modifyALActionPerformed(ActionEvent e) {
 		int selectedRow = table.getSelectedRow();
 		if (selectedRow != -1) {
-			tableModel.setValueAt(number.getText(), selectedRow, 1);
-			OrderGoods og = (OrderGoods) currentOrder.getGoodsLst().get(
-					selectedRow);
-			og.setNumber(Double.parseDouble(tableModel.getValueAt(selectedRow,
-					1).toString()));
-			removeModifyBtnAndDeleteBtn();
+//			tableModel.setValueAt(number.getText(), selectedRow, 1);
+//			SaleOrderGoods og = (SaleOrderGoods) currentRetailOrder.getGoodsLst().get(
+//					selectedRow);
+//			og.setNumber(Double.parseDouble(tableModel.getValueAt(selectedRow,
+//					1).toString()));
+//			removeModifyBtnAndDeleteBtn();
 		}
 	}
 
