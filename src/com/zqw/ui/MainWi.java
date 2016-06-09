@@ -642,7 +642,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (tableModel.getRowCount() > 0) {
 			currentOrder.setOrderState(40);
 			currentOrder.setSubmitTime(new Date());
-			currentOrder.setArrears(DataUtil.getProfitm(currentOrder
+			currentOrder.setArrears(DataUtil.getTotalm(currentOrder
 					.getGoodsLst()));
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
@@ -722,11 +722,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			CheckListItem cli = l.getElementAt(i);
 			if (cli.isSelected()) {
 				pandectList.add(latelyLst.get(i));
+				latelyLst.get(i).setOrderState(15);
+				DBUtil.update(latelyLst.get(i));
 			}
 		}
 		Collections.sort(pandectList, new SortChineseName());
 		print(new PrintPandect(pandectList));
 		print(new PrintSettlement(pandectList));
+		UIutil.initOrderJlist(this, latelyjList, listAdapter, true, latelyLst,
+				1);
 	}
 
 	private void orderDeleteAction() {

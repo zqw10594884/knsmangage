@@ -52,7 +52,7 @@ public class OrderLst {
 
 	/**
 	 * 
-	 * @return 10 完成 20出库 30备货中 31备货完成 40提交
+	 * @return 10 完成 15 结账 20出库 30备货中 31备货完成 40提交
 	 */
 	public int getOrderState() {
 		return orderState;
@@ -61,7 +61,7 @@ public class OrderLst {
 	/**
 	 * 
 	 * @param printState
-	 *            10 完成 20出库 30备货中 31备货完成 40提交
+	 *            10 完成 15 结账 20出库 30备货中 31备货完成 40提交
 	 */
 	public void setOrderState(int printState) {
 		this.orderState = printState;
@@ -164,8 +164,10 @@ public class OrderLst {
 	 */
 	public String getOrderStateToString() {
 		String state = "";
-		if (10 <= orderState && orderState < 20) {
+		if (10 == orderState) {
 			// do nothing
+		} else if (15 == orderState) {
+			state = "结账";
 		} else if (20 <= orderState && orderState < 30) {
 			state = "出库";
 		} else if (30 == orderState) {
