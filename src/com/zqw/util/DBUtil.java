@@ -172,7 +172,7 @@ public class DBUtil {
 	 * @param arg0
 	 *            类名
 	 * @param nameArg0
-	 *            "curtainShop", order.getCurtainShop(), "String" 
+	 *            "curtainShop", order.getCurtainShop(), "String"
 	 * @return
 	 */
 	public static Object getLstClass(String order, String par, Class arg0,
@@ -203,6 +203,20 @@ public class DBUtil {
 					}
 				}
 			}
+			obj = c.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return obj;
+	}
+
+	public static Object getLstClass(Session session, Criteria c) {
+		Object obj = null;
+		try {
 			obj = c.list();
 		} catch (Exception e) {
 			e.printStackTrace();

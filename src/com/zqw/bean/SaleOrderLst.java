@@ -49,9 +49,6 @@ public class SaleOrderLst extends KNSOrder {
 	public void setSalePerson(String salePerson) {
 		this.salePerson = salePerson;
 	}
-	
-	
-	
 
 	public String getLocation() {
 		return location;
@@ -80,7 +77,7 @@ public class SaleOrderLst extends KNSOrder {
 
 	/**
 	 * 
-	 * @return 10 结账 20安装中 21 安装完成 30裁布中 31裁布完成 35加工中 36 加工完成 40提交
+	 * @return 10 结账 20 安装完成 21安装中30 加工完成 31加工中 35裁布完成 36裁布中 40提交
 	 */
 	public int getOrderState() {
 		return orderState;
@@ -89,7 +86,7 @@ public class SaleOrderLst extends KNSOrder {
 	/**
 	 * 
 	 * @param printState
-	 *            10 结账 20安装中 21 安装完成 30裁布中 31裁布完成 35加工中 36 加工完成 40提交
+	 *            10 结账 20 安装完成 21安装中30 加工完成 31加工中 35裁布完成 36裁布中 40提交
 	 */
 	public void setOrderState(int printState) {
 		this.orderState = printState;
@@ -184,20 +181,27 @@ public class SaleOrderLst extends KNSOrder {
 	}
 
 	/**
+	 * 10 结账 20 安装完成 21安装中30 加工完成 31加工中 35裁布完成 36裁布中 40提交
 	 * 
 	 * @return String 形式的订单状态
 	 */
 	public String getOrderStateToString() {
 		String state = "";
-		if (10 <= orderState && orderState < 20) {
-			// do nothing
-		} else if (20 <= orderState && orderState < 30) {
-			state = "出库";
+		if (10 == orderState) {
+			state = "结账";
+		} else if (20 == orderState) {
+			state = "安装完成";
+		} else if (21 == orderState) {
+			state = "安装中";
 		} else if (30 == orderState) {
-			state = "备货中";
+			state = "加工完成";
 		} else if (31 == orderState) {
-			state = "备货完成";
-		} else if (40 <= orderState && orderState < 50) {
+			state = "加工中";
+		} else if (35 == orderState) {
+			state = "裁布完成";
+		} else if (36 == orderState) {
+			state = "裁布中";
+		} else if (40 == orderState) {
 			state = "提交";
 		}
 		return state;
