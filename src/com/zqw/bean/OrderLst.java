@@ -181,7 +181,10 @@ public class OrderLst {
 	}
 
 	public CurtainShop getNameClass() {
-		return (CurtainShop) DBUtil.getClass(CurtainShop.class, "name", curtainShop,
-				"String", "eq");
+		if (nameClass == null) {
+			nameClass = (CurtainShop) DBUtil.getClass(CurtainShop.class, "name", curtainShop,
+					"String", "eq");
+		}
+		return nameClass;
 	}
 }

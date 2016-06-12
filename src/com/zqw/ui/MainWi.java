@@ -701,7 +701,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
 			print(new PrintOrder(currentOrder, curtainShop, Global.CUSTOMER));
-			print(new PrintOrder(currentOrder, curtainShop, Global.OWN));
 			DBUtil.update(currentOrder);
 		} else {
 
