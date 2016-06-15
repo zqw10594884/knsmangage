@@ -748,7 +748,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (selectedRow != -1) {
 			tableModel.removeRow(selectedRow);
 			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
-			total.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
+			total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 			currentOrder.getGoodsLst().remove(selectedRow);
 			removeModifyBtnAndDeleteBtn();
 			addSubmit();
@@ -762,7 +762,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			tableModel.addRow(rowValues);
 			currentOrder.getGoodsLst().add(og);
 			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
-			total.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
+			total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 			addSubmit();
 		}
 	}
@@ -781,7 +781,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 					true);
 
 			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
-			total.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
+			total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 			removeModifyBtnAndDeleteBtn();
 			addSubmit();
 		}
@@ -843,7 +843,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		curtainShop = (CurtainShop) currentOrder.getNameClass();
 		shopName.setText(curtainShop.getName());
 		telephone.setText(curtainShop.getTelephone());
-		total.setText(currentOrder.getArrears() + "");
+		total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 		profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 		addPrintBtn();
 	}
