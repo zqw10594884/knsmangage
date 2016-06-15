@@ -274,7 +274,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		nameLab.setBounds(52, 37, 152, 42);
 		contentPane.add(nameLab);
 
-		nameLab.setText(Global.User.getName());
+		nameLab.setText(Global.User.getRealName());
 		JButton button = new JButton("残布管理");
 		button.setFont(new Font("宋体", Font.PLAIN, 14));
 		button.setBounds(22, 579, 93, 23);
@@ -339,7 +339,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 			currentOrder.setOrderState(31);
 			if (currentOrder.getLibraryPerson() == null
 					|| currentOrder.getLibraryPerson().length() == 0) {
-				currentOrder.setLibraryPerson(Global.User.getName());
+				currentOrder.setLibraryPerson(Global.User.getRealName());
 			}
 			initJlist();
 			DBUtil.update(currentOrder);
