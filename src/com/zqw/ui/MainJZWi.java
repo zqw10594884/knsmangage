@@ -69,7 +69,7 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 	private SaleOrderLst currentRetailOrder;
 	private JLabel nameLab;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textField;
+	private JTextField idTF;
 	private JPasswordField password;
 	private JTextField userName;
 	private ActionListener submitOrderBtnAL;
@@ -134,7 +134,9 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 			public void mouseReleased(MouseEvent e) {
 			}
 		};
-		// initJlist();
+		if (Global.User!=null) {
+			 initJlist();
+		}
 		scrollPane_3.setViewportView(checkedjList);
 	}
 
@@ -175,13 +177,13 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 		contentPane.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("姓名：");
-		lblNewLabel.setBounds(24, 179, 54, 15);
+		lblNewLabel.setBounds(226, 179, 54, 15);
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(lblNewLabel);
 
 		shopName = new JTextField();
 		shopName.setEditable(false);
-		shopName.setBounds(67, 177, 130, 21);
+		shopName.setBounds(269, 177, 130, 21);
 		contentPane.add(shopName);
 		shopName.setColumns(10);
 
@@ -206,7 +208,7 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 		submitOrderBtn = new JButton("提交");
 		submitOrderBtn.setEnabled(false);
 		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		submitOrderBtn.setBounds(408, 203, 62, 23);
+		submitOrderBtn.setBounds(409, 175, 62, 23);
 		contentPane.add(submitOrderBtn);
 
 		nameLab = new JLabel("");
@@ -216,16 +218,16 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 
 		nameLab.setText("");
 
-		JLabel label = new JLabel("地址：");
+		JLabel label = new JLabel("订单编号：");
 		label.setFont(new Font("宋体", Font.PLAIN, 14));
-		label.setBounds(24, 206, 54, 15);
+		label.setBounds(24, 180, 82, 15);
 		contentPane.add(label);
 
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(67, 204, 262, 21);
-		contentPane.add(textField);
+		idTF = new JTextField();
+		idTF.setEditable(false);
+		idTF.setColumns(10);
+		idTF.setBounds(97, 176, 82, 21);
+		contentPane.add(idTF);
 
 		JLabel label_1 = new JLabel("用户名：");
 		label_1.setFont(new Font("宋体", Font.PLAIN, 12));
@@ -360,5 +362,6 @@ public class MainJZWi extends JFrame implements ListSelectionListener {
 			tableModel.addRow(rowValues); // 添加一行
 		}
 		shopName.setText(currentRetailOrder.getCustomer().getName());
+		idTF.setText(currentRetailOrder.getId() + "");
 	}
 }

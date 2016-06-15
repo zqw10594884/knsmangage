@@ -26,10 +26,9 @@ public class loginXSWi extends JFrame {
 	private JTextField userName;
 	private JPasswordField password;
 	private JRadioButton orderRa;
-	private JRadioButton library;
+	private JRadioButton checkRa;
 	private JButton loginBtn;
 	private ButtonGroup buttonGroup1;
-	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -57,23 +56,23 @@ public class loginXSWi extends JFrame {
 			while (enu.hasMoreElements()) {
 				AbstractButton radioButton = enu.nextElement();
 				Global.User = user;
-				if ("library".equals(radioButton.getName())
+				if ("orderRa".equals(radioButton.getName())
 						&& radioButton.isSelected()
-						&& (user.getAuthority() == 20 || user.getAuthority() < 20)) {
+						&& (user.getAuthority() == 21)) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							MainCBWi mainAdd = new MainCBWi();
+							SaleMain mainAdd = new SaleMain();
 							mainAdd.setVisible(true);
 							mainAdd.setLocationRelativeTo(null);
 						}
 					});
 					this.dispose();
-				} else if (radioButton.getName() == "order"
+				} else if (radioButton.getName() == "checkRa"
 						&& radioButton.isSelected()
-						&& (user.getAuthority() == 20)) {
+						&& (user.getAuthority() == 21)) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							MainWi main = new MainWi();
+							MainJZWi main = new MainJZWi();
 							main.setVisible(true);
 							main.setLocationRelativeTo(null);
 						}
@@ -109,12 +108,12 @@ public class loginXSWi extends JFrame {
 		orderRa.setBounds(91, 43, 65, 23);
 		contentPane.add(orderRa);
 
-		library = new JRadioButton();
-		buttonGroup1.add(library);
-		library.setText("结账");
-		library.setName("library");
-		library.setBounds(158, 43, 60, 23);
-		contentPane.add(library);
+		checkRa = new JRadioButton();
+		buttonGroup1.add(checkRa);
+		checkRa.setText("结账");
+		checkRa.setName("library");
+		checkRa.setBounds(158, 43, 60, 23);
+		contentPane.add(checkRa);
 
 		userName = new JTextField();
 		userName.setBounds(118, 89, 128, 21);
@@ -143,14 +142,5 @@ public class loginXSWi extends JFrame {
 		loginBtn.setText("登录");
 		loginBtn.setBounds(118, 175, 84, 36);
 		contentPane.add(loginBtn);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(118, 144, 128, 21);
-		contentPane.add(passwordField);
-		
-		JLabel label_2 = new JLabel();
-		label_2.setText("密码（附）：");
-		label_2.setBounds(45, 144, 75, 15);
-		contentPane.add(label_2);
 	}
 }
