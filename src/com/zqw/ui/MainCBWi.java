@@ -41,6 +41,7 @@ import com.zqw.bean.SaleOrderGoods;
 import com.zqw.bean.SaleOrderLst;
 import com.zqw.print.PrintOrder;
 import com.zqw.print.PrintRetailOrder;
+import com.zqw.util.CSVExport;
 import com.zqw.util.DBUtil;
 import com.zqw.util.UIutil;
 
@@ -183,39 +184,39 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		contentPane.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("姓名：");
-		lblNewLabel.setBounds(31, 107, 54, 15);
+		lblNewLabel.setBounds(34, 76, 54, 15);
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(lblNewLabel);
 
 		shopName = new JTextField();
 		shopName.setEditable(false);
-		shopName.setBounds(74, 105, 130, 21);
+		shopName.setBounds(77, 74, 130, 21);
 		contentPane.add(shopName);
 		shopName.setColumns(10);
 
 		JLabel label_1 = new JLabel("编号：");
-		label_1.setBounds(220, 110, 54, 15);
+		label_1.setBounds(223, 79, 54, 15);
 		label_1.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_1);
 
 		serialNumber = new JTextField();
 		serialNumber.setEditable(false);
-		serialNumber.setBounds(263, 107, 130, 21);
+		serialNumber.setBounds(266, 76, 130, 21);
 		contentPane.add(serialNumber);
 		serialNumber.setColumns(10);
 
 		JLabel label_3 = new JLabel("数量：");
-		label_3.setBounds(31, 144, 45, 15);
+		label_3.setBounds(34, 113, 45, 15);
 		label_3.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_3);
 
 		number = new JTextField();
-		number.setBounds(74, 141, 41, 21);
+		number.setBounds(77, 110, 41, 21);
 		contentPane.add(number);
 		number.setColumns(10);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 193, 480, 376);
+		scrollPane.setBounds(10, 156, 480, 240);
 		contentPane.add(scrollPane);
 		table = new JTable();
 
@@ -234,7 +235,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		untreatedPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		untreatedPrintBtn.setBounds(600, 579, 93, 23);
+		untreatedPrintBtn.setBounds(665, 579, 93, 23);
 		contentPane.add(untreatedPrintBtn);
 
 		submitOrderBtn = new JButton("提交");
@@ -244,7 +245,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		submitOrderBtn.setBounds(219, 140, 62, 23);
+		submitOrderBtn.setBounds(215, 109, 62, 23);
 		contentPane.add(submitOrderBtn);
 
 		modifyAL = new ActionListener() {
@@ -254,7 +255,7 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		};
 		modifyBtn = new JButton("修改");
 		modifyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		modifyBtn.setBounds(140, 140, 62, 23);
+		modifyBtn.setBounds(143, 109, 62, 23);
 		modifyBtn.setEnabled(false);
 		contentPane.add(modifyBtn);
 
@@ -266,18 +267,18 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		refreshBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		refreshBtn.setBounds(304, 140, 62, 23);
+		refreshBtn.setBounds(300, 109, 62, 23);
 		contentPane.add(refreshBtn);
 
 		nameLab = new JLabel("");
 		nameLab.setFont(new Font("仿宋", Font.BOLD, 34));
-		nameLab.setBounds(52, 37, 152, 42);
+		nameLab.setBounds(34, 18, 152, 42);
 		contentPane.add(nameLab);
 
 		nameLab.setText(Global.User.getRealName());
 		JButton button = new JButton("残布管理");
 		button.setFont(new Font("宋体", Font.PLAIN, 14));
-		button.setBounds(22, 579, 93, 23);
+		button.setBounds(510, 579, 93, 23);
 		contentPane.add(button);
 
 		wholesaleRB = new JRadioButton("批发");
@@ -300,6 +301,21 @@ public class MainCBWi extends JFrame implements ListSelectionListener {
 		buttonGroup.add(retailRB);
 		retailRB.setBounds(599, 8, 68, 23);
 		contentPane.add(retailRB);
+
+		JButton button_1 = new JButton("导出");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				double number = 0;
+				ArrayList<OrderLst> lst = (ArrayList<OrderLst>) DBUtil
+						.getLstClass("", "eq", OrderLst.class, "libraryPerson",
+								"董", "String");
+				
+				CSVExport csv = new CSVExport();
+				csv.write(lst, "C:");
+			}
+		});
+		button_1.setBounds(303, 428, 93, 23);
+		contentPane.add(button_1);
 	}
 
 	private void refreshactionPerformed(ActionEvent e) {
