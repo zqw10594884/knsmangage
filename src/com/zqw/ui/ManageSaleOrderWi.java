@@ -1,6 +1,5 @@
 package com.zqw.ui;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,15 +11,16 @@ import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -30,7 +30,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.zqw.bean.CheckListItem;
 import com.zqw.bean.CurtainShop;
 import com.zqw.bean.Global;
 import com.zqw.bean.OrderLst;
@@ -40,8 +39,6 @@ import com.zqw.bean.User;
 import com.zqw.util.DBUtil;
 import com.zqw.util.HibUtil;
 import com.zqw.util.UIutil;
-import javax.swing.JPasswordField;
-import javax.swing.JComboBox;
 
 public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 
@@ -53,9 +50,9 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 	private JScrollPane scrollPane_3;
 	private DefaultTableModel tableModel;
 
-	private JTextField shopName;
+	private JTextField customerName;
 	private JButton modifyBtn;
-	private JButton submitOrderBtn;
+	private JButton submitBtn;
 	private ActionListener modifyAL;
 	private ActionListener submitOrderAL;
 	private MouseAdapter listAdapter;
@@ -68,19 +65,22 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 	private SaleOrderLst currentRetailOrder;
 	private JLabel nameLab;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textField;
+	private JTextField customerAdr;
 	private JPasswordField password;
 	private JTextField userName;
-	private ActionListener submitOrderBtnAL;
-	private JButton button;
+	private ActionListener submitBtnAL;
+	private JButton delBtn;
 	private JTable saleTable;
 	private String[] columnNames = { "位置", "形式", "高度位置", "高度", "宽度", "窗帘布",
 			"花边", "窗帘杆", "窗帘圈" };
+	private ActionListener delBtnAl;
+	private JButton submitOrderBtn;
+	private ActionListener submitOrderBtnAl;
 
-	public ManageSaleOrderWi() {
+	public ManageSaleOrderWi(int power) {
 		initComponents();
 		initTable();
-		initData();
+		initData(power);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 					// User user = (User) DBUtil.getClass(User.class, "name",
 					// "chen", "String", "eq");
 					// Global.User = user;
-					ManageSaleOrderWi frame = new ManageSaleOrderWi();
+					ManageSaleOrderWi frame = new ManageSaleOrderWi(0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -132,10 +132,19 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initData() {
+	private void initData(int power) {
 		checkedjList = new JList<>();
 		initJlist();
 		scrollPane_3.setViewportView(checkedjList);
+		if (power == 0) {
+			delBtn.addActionListener(delBtnAl);
+			delBtn.setEnabled(true);
+			submitOrderBtn.addActionListener(submitOrderBtnAl);
+			submitOrderBtn.setEnabled(true);
+			submitBtn.addActionListener(submitOrderBtnAl);
+			submitBtn.setEnabled(true);
+		} else if (power == 1) {
+		}
 	}
 
 	private void initTable() {
@@ -168,26 +177,26 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(lblNewLabel);
 
-		shopName = new JTextField();
-		shopName.setEditable(false);
-		shopName.setBounds(67, 134, 130, 21);
-		contentPane.add(shopName);
-		shopName.setColumns(10);
+		customerName = new JTextField();
+		customerName.setEditable(false);
+		customerName.setBounds(67, 134, 130, 21);
+		contentPane.add(customerName);
+		customerName.setColumns(10);
 
 		scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBounds(500, 10, 270, 344);
 		contentPane.add(scrollPane_3);
 
-		submitOrderBtnAL = new ActionListener() {
+		submitBtnAL = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				submitOrderactionPerformed(e);
 			}
 		};
-		submitOrderBtn = new JButton("结账");
-		submitOrderBtn.setEnabled(false);
-		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		submitOrderBtn.setBounds(408, 203, 62, 23);
-		contentPane.add(submitOrderBtn);
+		submitBtn = new JButton("提交");
+		submitBtn.setEnabled(false);
+		submitBtn.setFont(new Font("宋体", Font.PLAIN, 14));
+		submitBtn.setBounds(31, 203, 62, 23);
+		contentPane.add(submitBtn);
 
 		nameLab = new JLabel("");
 		nameLab.setFont(new Font("仿宋", Font.BOLD, 30));
@@ -201,11 +210,11 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 		label.setBounds(24, 163, 54, 15);
 		contentPane.add(label);
 
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setColumns(10);
-		textField.setBounds(67, 161, 262, 21);
-		contentPane.add(textField);
+		customerAdr = new JTextField();
+		customerAdr.setEditable(false);
+		customerAdr.setColumns(10);
+		customerAdr.setBounds(67, 161, 262, 21);
+		contentPane.add(customerAdr);
 
 		JLabel label_1 = new JLabel("用户名：");
 		label_1.setFont(new Font("宋体", Font.PLAIN, 12));
@@ -239,12 +248,12 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 				if (name.equals(user.getName())
 						&& pass.equals(user.getPassword())) {
 					if (user.getAuthority() == 22 || user.getAuthority() == 23) {
-						submitOrderBtn.setEnabled(true);
+						submitBtn.setEnabled(true);
 						Global.User = user;
 						nameLab.setText(user.getRealName());
 						initJlist();
-						if (submitOrderBtn.getActionListeners().length < 1) {
-							submitOrderBtn.addActionListener(submitOrderBtnAL);
+						if (submitBtn.getActionListeners().length < 1) {
+							submitBtn.addActionListener(submitBtnAL);
 						}
 					}
 				}
@@ -254,21 +263,34 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 		btnNewButton.setBounds(318, 28, 69, 23);
 		contentPane.add(btnNewButton);
 
-		button = new JButton("删除");
-		button.setFont(new Font("宋体", Font.PLAIN, 14));
-		button.setEnabled(false);
-		button.setBounds(336, 203, 62, 23);
-		contentPane.add(button);
+		delBtn = new JButton("删除");
+		delBtnAl = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentRetailOrder = retailLst.get(checkedjList
+						.getSelectedIndex());
+				DBUtil.del(currentRetailOrder);
+			}
+		};
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(24, 204, 76, 21);
-		contentPane.add(comboBox);
+		delBtn.setFont(new Font("宋体", Font.PLAIN, 14));
+		delBtn.setEnabled(false);
+		delBtn.setBounds(112, 203, 62, 23);
+		contentPane.add(delBtn);
 
-		JButton button_1 = new JButton("更改状态");
-		button_1.setFont(new Font("宋体", Font.PLAIN, 14));
-		button_1.setEnabled(false);
-		button_1.setBounds(120, 203, 89, 23);
-		contentPane.add(button_1);
+		submitOrderBtn = new JButton("结账");
+		submitOrderBtnAl = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				currentRetailOrder = retailLst.get(checkedjList
+						.getSelectedIndex());
+				currentRetailOrder.setOrderState(10);
+				DBUtil.update(currentRetailOrder);
+			}
+		};
+
+		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
+		submitOrderBtn.setEnabled(false);
+		submitOrderBtn.setBounds(191, 203, 62, 23);
+		contentPane.add(submitOrderBtn);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(6, 364, 764, 237);
@@ -278,6 +300,13 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 		saleTable.setToolTipText("窗帘");
 		saleTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		scrollPane.setViewportView(saleTable);
+		listAdapter = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index = checkedjList.getSelectedIndex();
+				addLatelyLstToMain(index);
+			}
+		};
 	}
 
 	/**
@@ -334,25 +363,37 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 			Criteria c = session.createCriteria(SaleOrderLst.class);
 			c.add(Restrictions.gt("orderState", 34));
 		}
-		UIutil.initRetailOrderJlist(this, checkedjList, listAdapter, true,
-				retailLst);
+		retailLst = (ArrayList<SaleOrderLst>) UIutil.initRetailOrderJlist(this,
+				checkedjList, listAdapter, true, retailLst);
 	}
 
 	private void addLatelyLstToMain(int index) {
-
 		for (int i = 0; i < tableModel.getRowCount();) {
 			tableModel.removeRow(0);
 		}
 		currentRetailOrder = retailLst.get(index);
-		List<SaleOrderGoods> Lst = currentRetailOrder.getGoodsLst();
 
-		for (int i = 0; i < Lst.size(); i++) {
-			String[] rowValues = { Lst.get(i).getClothSerialNumber(),
-					Lst.get(i).getClothNumber() + "",
-					Lst.get(i).getClothRemark() };
-			tableModel.addRow(rowValues); // 添加一行
+		customerName.setText(currentRetailOrder.getCustomer().getName());
+		customerAdr.setText(currentRetailOrder.getCustomer().getAddress());
+		for (int i = 0; i < currentRetailOrder.getGoodsLst().size(); i++) {
+			String[] rowValues = creatRow((SaleOrderGoods) currentRetailOrder
+					.getGoodsLst().get(i));
+			tableModel.addRow(rowValues);
 		}
-		shopName.setText(currentRetailOrder.getCustomer().getName());
+
+		// for (int i = 0; i < tableModel.getRowCount();) {
+		// tableModel.removeRow(0);
+		// }
+		// currentRetailOrder = retailLst.get(index);
+		// List<SaleOrderGoods> Lst = currentRetailOrder.getGoodsLst();
+		//
+		// for (int i = 0; i < Lst.size(); i++) {
+		// String[] rowValues = { Lst.get(i).getClothSerialNumber(),
+		// Lst.get(i).getClothNumber() + "",
+		// Lst.get(i).getClothRemark() };
+		// tableModel.addRow(rowValues); // 添加一行
+		// }
+		// shopName.setText(currentRetailOrder.getCustomer().getName());
 	}
 
 	protected void clearAll() {

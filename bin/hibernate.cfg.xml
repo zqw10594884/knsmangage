@@ -45,5 +45,6 @@
 		<mapping resource="com/zqw/bean/SaleOrderGoods.hbm.xml" />
 		<mapping resource="com/zqw/bean/CurtainCustomer.hbm.xml" />
 		<mapping resource="com/zqw/bean/SaleOrderLst.hbm.xml" />
+		<mapping resource="com/zqw/bean/VIPUser.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
