@@ -103,6 +103,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private OrderLst currentOrder;
 	private JButton btnNewButton;
 	private JList locationJlist;
+	private JTextField preferentialAmountTF;
+	private JLabel label_7;
+	private JTextField remarksTF;
 
 	public MainWi() {
 		initComponents();
@@ -290,16 +293,16 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		JLabel label = new JLabel("电话：");
 		label.setBounds(671, 15, 54, 15);
 		label.setFont(new Font("宋体", Font.PLAIN, 14));
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(label);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(label);
+		// }
 
 		telephone = new JTextField();
 		telephone.setBounds(735, 13, 106, 21);
 
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(telephone);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(telephone);
+		// }
 		telephone.setColumns(10);
 
 		JLabel label_1 = new JLabel("编号：");
@@ -315,15 +318,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		JLabel label_2 = new JLabel("价格：");
 		label_2.setBounds(722, 45, 54, 15);
 		label_2.setFont(new Font("宋体", Font.PLAIN, 14));
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(label_2);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(label_2);
+		// }
 
 		sellingPrice = new JTextField();
 		sellingPrice.setBounds(776, 45, 48, 21);
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(sellingPrice);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(sellingPrice);
+		// }
 		sellingPrice.setColumns(10);
 
 		JLabel label_3 = new JLabel("数量：");
@@ -345,12 +348,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		orderPrintBtn.setBounds(779, 105, 62, 23);
 		orderPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		orderPrintBtn.setEnabled(false);
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(orderPrintBtn);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(orderPrintBtn);
+		// }
 
 		addBtn = new JButton("添加");
-		addBtn.setBounds(639, 105, 62, 23);
+		addBtn.setBounds(629, 105, 62, 23);
 		addBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addActionPerformed(e);
@@ -365,7 +368,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		};
 		deleteBtn = new JButton("删除");
-		deleteBtn.setBounds(567, 105, 62, 23);
+		deleteBtn.setBounds(557, 105, 62, 23);
 		deleteBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		deleteBtn.setEnabled(false);
 		contentPane.add(deleteBtn);
@@ -378,15 +381,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		manageBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(manageBtn);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(manageBtn);
+		// }
 
 		total = new JLabel("");
-		total.setBounds(689, 584, 38, 15);
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(total);
-		}
+		total.setBounds(670, 580, 38, 15);
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(total);
+		// }
 
 		JLabel lblNewLabel_1 = new JLabel("总价：");
 		lblNewLabel_1.setBounds(639, 580, 48, 15);
@@ -394,18 +397,18 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		contentPane.add(lblNewLabel_1);
 
 		JLabel label_4 = new JLabel("利润：");
-		label_4.setBounds(743, 580, 52, 15);
+		label_4.setBounds(722, 580, 45, 15);
 		label_4.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_4);
 
 		profit = new JLabel("");
 		profit.setBounds(787, 584, 54, 15);
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(profit);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(profit);
+		// }
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(488, 138, 353, 428);
+		scrollPane.setBounds(488, 138, 353, 368);
 		contentPane.add(scrollPane);
 		table = new JTable();
 
@@ -416,9 +419,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		freeGoodsBC = new JCheckBox("样品");
 		freeGoodsBC.setBounds(488, 75, 54, 23);
 		freeGoodsBC.setFont(new Font("宋体", Font.PLAIN, 14));
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(freeGoodsBC);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(freeGoodsBC);
+		// }
 
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(154, 47, 159, 561);
@@ -455,9 +458,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		});
 		pandectPrintBtn.setBounds(861, 576, 94, 23);
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(pandectPrintBtn);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(pandectPrintBtn);
+		// }
 
 		JButton untreatedPrintBtn = new JButton("备货打印");
 		untreatedPrintBtn.addActionListener(new ActionListener() {
@@ -467,9 +470,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		});
 		untreatedPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		untreatedPrintBtn.setBounds(965, 576, 93, 23);
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(untreatedPrintBtn);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(untreatedPrintBtn);
+		// }
 
 		submitOrderBtn = new JButton("提交");
 		submitOrderAL = new ActionListener() {
@@ -479,15 +482,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		};
 		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		submitOrderBtn.setEnabled(false);
-		submitOrderBtn.setBounds(707, 105, 62, 23);
+		submitOrderBtn.setBounds(697, 105, 62, 23);
 		contentPane.add(submitOrderBtn);
 
 		goodChangeCB = new JCheckBox("换货");
 		goodChangeCB.setFont(new Font("宋体", Font.PLAIN, 14));
 		goodChangeCB.setBounds(553, 75, 54, 23);
-		if (Global.User.getAuthority() < 20) {
-			contentPane.add(goodChangeCB);
-		}
+		// if (Global.User.getAuthority() < 20) {
+		contentPane.add(goodChangeCB);
+		// }
 
 		flowersComboBox = new JComboBox<String>();
 		flowersComboBox.setModel(new DefaultComboBoxModel(new String[] { "不对花",
@@ -503,7 +506,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		};
 		modifyBtn = new JButton("修改");
 		modifyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		modifyBtn.setBounds(498, 105, 62, 23);
+		modifyBtn.setBounds(488, 105, 62, 23);
 		modifyBtn.setEnabled(false);
 		contentPane.add(modifyBtn);
 
@@ -542,6 +545,26 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		label_5.setFont(new Font("宋体", Font.PLAIN, 14));
 		label_5.setBounds(54, 19, 54, 15);
 		contentPane.add(label_5);
+
+		preferentialAmountTF = new JTextField();
+		preferentialAmountTF.setBounds(531, 516, 66, 21);
+		contentPane.add(preferentialAmountTF);
+		preferentialAmountTF.setColumns(10);
+
+		JLabel label_6 = new JLabel("优惠：");
+		label_6.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_6.setBounds(488, 519, 45, 15);
+		contentPane.add(label_6);
+
+		label_7 = new JLabel("备注：");
+		label_7.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_7.setBounds(488, 550, 45, 15);
+		contentPane.add(label_7);
+
+		remarksTF = new JTextField();
+		remarksTF.setColumns(10);
+		remarksTF.setBounds(531, 547, 310, 21);
+		contentPane.add(remarksTF);
 	}
 
 	/**
@@ -644,6 +667,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			currentOrder.setSubmitTime(new Date());
 			currentOrder.setArrears(DataUtil.getTotalm(currentOrder
 					.getGoodsLst()));
+			currentOrder.setPreferentialAmount(Integer
+					.parseInt(preferentialAmountTF.getText().trim()));
+			currentOrder.setRemarks(remarksTF.getText().trim());
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
 				DBUtil.insert(currentOrder);
@@ -693,6 +719,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			currentOrder.setOrderState(20);
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			currentOrder.setDeliveryTime(new Date());
+			currentOrder.setPreferentialAmount(Integer
+					.parseInt(preferentialAmountTF.getText().trim()));
 			List<OrderGoods> lst = currentOrder.getGoodsLst();
 			for (int i = 0; i < lst.size(); i++) {
 				lst.get(i).setDate(new Date());
@@ -845,6 +873,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		telephone.setText(curtainShop.getTelephone());
 		total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 		profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
+		preferentialAmountTF.setText(currentOrder.getPreferentialAmount() + "");
 		addPrintBtn();
 	}
 

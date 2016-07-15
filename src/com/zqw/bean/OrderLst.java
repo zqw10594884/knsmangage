@@ -12,11 +12,13 @@ public class OrderLst {
 	private String installPerson;
 	private String libraryPerson;
 	private String machiningPerson;
+	private String remarks;
 	private Date deliveryTime;
 	private Date submitTime;
 	private int id;
 	private int arrears;
 	private int orderState;
+	private int preferentialAmount;
 	private CurtainShop nameClass;
 
 	public OrderLst() {
@@ -31,6 +33,24 @@ public class OrderLst {
 		this.id = id;
 		this.arrears = arrears;
 		this.orderState = orderState;
+	}
+
+
+	
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public int getPreferentialAmount() {
+		return preferentialAmount;
+	}
+
+	public void setPreferentialAmount(int preferentialAmount) {
+		this.preferentialAmount = preferentialAmount;
 	}
 
 	/**

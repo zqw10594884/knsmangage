@@ -84,7 +84,7 @@ public class PrintOrder implements Printable {
 			if (parameter == Global.EMPLOYEE_LP) {
 				g2.drawString("备货单", x + 170, y - 50);
 			} else if (parameter == Global.CUSTOMER) {
-				g2.drawString("凯妮丝红日窗帘批发", x + 100, y - 50);
+				g2.drawString("窗帘辅料批发清单", x + 100, y - 50);
 			} else if (parameter == Global.OWN) {
 				String s = "底单__";
 				if (curtainShop.getOwner() == 0) {
@@ -157,25 +157,23 @@ public class PrintOrder implements Printable {
 				y = drawLine(g2, y, x, w, col, data);
 			}
 			String other = "";
-//			if (parameter == Global.OWN) {
-//				int profit = DataUtil.getProfit(order);
-//				if (curtainShop.getOwner() == 0) {
-//					other = "利润" + profit + "付" + ((int) cloth + (int) lace)
-//							+ "辅料成本" + materials;
-//				} else {
-//					other = "利润" + profit + "辅料成本" + materials;
-//				}
-//			}
 			String[] Total = null;
 			if (parameter == Global.CUSTOMER || parameter == Global.OWN) {
-				String[] temp = { "合计人民币", (int) subtotal + "元整", other };
+				String[] temp = {
+						"合计人民币",
+						(int) (subtotal)
+								+ "-"
+								+ (order.getPreferentialAmount())
+								+ "="
+								+ (int) (subtotal - order
+										.getPreferentialAmount()) + "元整", other };
 				Total = temp;
 			}
 			y = drawLine(g2, y, x, w, TotalCol, Total);
 			g2.drawLine(x, y, x + w, y);
 			y += rowH;
+			g2.drawString("备注：" + order.getRemarks(), x + 170, y - 13);
 			g2.drawString("订货电话：" + Global.Tel, x - 10, y - 13);
-			g2.drawString("农行卡：" + Global.ABCcard, x + 170, y - 13);
 			g2.drawString(order.getId() + "", x - 20, 800);
 			y += rowH;
 			g2.drawString("确认货物无误后签字_____________", x + 200, y - 15);
@@ -185,7 +183,11 @@ public class PrintOrder implements Printable {
 				if (parameter == Global.CUSTOMER) {
 					g2.drawString("电话:  " + curtainShop.getTelephone(),
 							x + 280, 740);
-					g2.drawString("代收:  " + subtotal + "元整", x + 280, 780);
+					g2.drawString(
+							"代收:  "
+									+ (int) (subtotal - order
+											.getPreferentialAmount()) + "元整",
+							x + 280, 780);
 				}
 			}
 			return PAGE_EXISTS;

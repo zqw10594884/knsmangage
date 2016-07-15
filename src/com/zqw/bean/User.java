@@ -7,6 +7,7 @@ public class User {
 	private String password;
 	private int authority;
 
+
 	public int getId() {
 		return id;
 	}

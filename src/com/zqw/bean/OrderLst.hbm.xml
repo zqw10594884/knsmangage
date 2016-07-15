@@ -11,9 +11,11 @@
 		<property name="installPerson" type="string" column="_installPerson" />
 		<property name="libraryPerson" type="string" column="_libraryPerson" />
 		<property name="machiningPerson" type="string" column="_machiningPerson" />
+		<property name="remarks" type="string" column="_remarks" />
 		<property name="deliveryTime" type="date" column="_deliveryTime" />
 		<property name="submitTime" type="date" column="_submitTime" />
 		<property name="orderState" type="int" column="_orderState" />
+		<property name="preferentialAmount" type="int" column="_preferentialAmount" />
 		<property name="arrears" type="int" column="_arrears" />
 		<list name="goodsLst"  cascade="all" lazy="false">
 			<key column="Order_id"  ></key>
