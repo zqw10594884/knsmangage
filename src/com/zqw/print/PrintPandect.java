@@ -48,7 +48,8 @@ public class PrintPandect implements Printable {
 	 *            （页面大小以点为计量单位，1点为1英才的1/72，1英寸为25.4毫米。A4纸大致为595×842点）
 	 * @param pageIndex指明页号
 	 **/
-	public int print(Graphics gra, PageFormat pf, int pageIndex) throws PrinterException {
+	public int print(Graphics gra, PageFormat pf, int pageIndex)
+			throws PrinterException {
 		Component c = null;
 		// 转换成Graphics2D
 		Graphics2D g2 = (Graphics2D) gra;
@@ -87,7 +88,10 @@ public class PrintPandect implements Printable {
 				OrderLst g = pandectList.get(j);
 				// 画行
 				CurtainShop cs = (CurtainShop) g.getNameClass();
-				String[] temp = { df.format(g.getDeliveryTime()) + g.getNameClass().getName(), cs.getTelephone() + "", g.getArrears() + "", "", "" };
+				String data = g.getDeliveryTime() == null ? "" : df.format(g
+						.getDeliveryTime());
+				String[] temp = { data + g.getNameClass().getName(),
+						cs.getTelephone() + "", g.getArrears() + "", "", "" };
 				y = drawLine(g2, y, x, w, col, temp);
 			}
 			g2.drawLine(x, y, x + w, y);
@@ -99,7 +103,8 @@ public class PrintPandect implements Printable {
 
 	}
 
-	private int drawLine(Graphics2D g2, int y, int x, int w, int[] col, String[] str) {
+	private int drawLine(Graphics2D g2, int y, int x, int w, int[] col,
+			String[] str) {
 		// TODO Auto-generated method stub
 		int tempW = 0;
 		g2.drawLine(x, y, x + w, y);

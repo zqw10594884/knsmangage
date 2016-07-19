@@ -46,7 +46,7 @@ public class PrintOrder implements Printable {
 	int rowH = 30;
 	// 每个格子的宽度 所有值的加和= 595 - offSetX*2
 	int[] col = { 155, 45, 45, 55, 175 };
-	int[] TotalCol = { 120, 100, 255 };
+	int[] TotalCol = { 120, 355 };
 	String[] title = { "品       名", "数量", "单价", "小计", "备   注" };
 	String[] titleB = { "品       名", "数量", "实际数量", "", "备   注" };
 
@@ -172,9 +172,10 @@ public class PrintOrder implements Printable {
 			y = drawLine(g2, y, x, w, TotalCol, Total);
 			g2.drawLine(x, y, x + w, y);
 			y += rowH;
-			g2.drawString("备注：" + order.getRemarks(), x + 170, y - 13);
+			g2.drawString("备注：" + order.getRemarks(), x - 10, y - 13);
+			y += rowH;
 			g2.drawString("订货电话：" + Global.Tel, x - 10, y - 13);
-			g2.drawString(order.getId() + "", x - 20, 800);
+//			g2.drawString(order.getId() + "", x - 20, 800);
 			y += rowH;
 			g2.drawString("确认货物无误后签字_____________", x + 200, y - 15);
 			if (y < 680 && parameter != Global.OWN) {

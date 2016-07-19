@@ -667,8 +667,10 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			currentOrder.setSubmitTime(new Date());
 			currentOrder.setArrears(DataUtil.getTotalm(currentOrder
 					.getGoodsLst()));
-			currentOrder.setPreferentialAmount(Integer
-					.parseInt(preferentialAmountTF.getText().trim()));
+			if (preferentialAmountTF.getText().trim().length() > 0) {
+				currentOrder.setPreferentialAmount(Integer
+						.parseInt(preferentialAmountTF.getText().trim()));
+			}
 			currentOrder.setRemarks(remarksTF.getText().trim());
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
