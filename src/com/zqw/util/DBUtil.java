@@ -290,10 +290,14 @@ public class DBUtil {
 
 	public static void updateField(String hgl, String newField, String oldField) {
 		Session session = HibUtil.getSession();
+		Transaction tx = null;
+		
+		tx = session.beginTransaction();
 		Query q = session.createQuery(hgl);
 		q.setParameter(0, newField);
 		q.setParameter(1, oldField);
 		q.executeUpdate();
+		tx.commit();
 	}
 
 	public static void refresh() {

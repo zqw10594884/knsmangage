@@ -309,7 +309,7 @@ public class SaleMain extends JFrame implements ListSelectionListener {
 		panel_1.add(newButton);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(689, 10, 274, 478);
+		panel_2.setBounds(689, 10, 274, 340);
 		contentPane.add(panel_2);
 
 		JLabel label_9 = new JLabel();

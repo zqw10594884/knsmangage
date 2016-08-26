@@ -503,14 +503,15 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		String curtainShopName = curtainShopNameModify.getText();
 		String curtainShopTel = curtainShopTelModify.getText();
 		int owner = curtainShopOwner.getSelectedIndex();
-		if (curtainShopName.length() > 0
-				&& !curtainShop.getName().equals(curtainShopName)) {
-			String hgl = "update CurtainShopGoods csg set csg.curtainShop=? WHERE csg.curtainShop=?";
-			String hg2 = "update OrderGoods csg set csg.curtainShop=? WHERE csg.curtainShop=?";
-			String hg3 = "update OrderLst csg set csg.name=? WHERE csg.name=?";
-			DBUtil.updateField(hgl, curtainShopName, curtainShop.getName());
-			DBUtil.updateField(hg2, curtainShopName, curtainShop.getName());
-			DBUtil.updateField(hg3, curtainShopName, curtainShop.getName());
+		if (curtainShopName.length() > 0) {
+			if (!curtainShopName.equals(curtainShop.getName())) {
+				String hgl = "update CurtainShopGoods csg set csg.curtainShop=? WHERE csg.curtainShop=?";
+				String hg2 = "update OrderGoods csg set csg.curtainShop=? WHERE csg.curtainShop=?";
+				String hg3 = "update OrderLst csg set csg.curtainShop=? WHERE csg.curtainShop=?";
+				DBUtil.updateField(hgl, curtainShopName, curtainShop.getName());
+				DBUtil.updateField(hg2, curtainShopName, curtainShop.getName());
+				DBUtil.updateField(hg3, curtainShopName, curtainShop.getName());
+			}
 			curtainShop.setTelephone(curtainShopTel);
 			curtainShop.setName(curtainShopName);
 			curtainShop.setOwner(owner);
@@ -531,18 +532,18 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 
 	private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {
 
-//		for (int i = 0; i < goodsLst.size(); i++) {
-//			Goods g = goodsLst.get(i);
-//			String s = g.getSerialNumber().substring(0, 2);
-//			if (s.contains("A-") || s.contains("B-")) {
-//				CurtainShopGoods csg = new CurtainShopGoods(
-//						g.getSerialNumber(), g.getPurchasePrice(),
-//						curtainShop.getName());
-//				System.out.println(goodsLst.get(i).getSerialNumber());
-//				DBUtil.insert(csg);
-//
-//			}
-//		}
+		// for (int i = 0; i < goodsLst.size(); i++) {
+		// Goods g = goodsLst.get(i);
+		// String s = g.getSerialNumber().substring(0, 2);
+		// if (s.contains("A-") || s.contains("B-")) {
+		// CurtainShopGoods csg = new CurtainShopGoods(
+		// g.getSerialNumber(), g.getPurchasePrice(),
+		// curtainShop.getName());
+		// System.out.println(goodsLst.get(i).getSerialNumber());
+		// DBUtil.insert(csg);
+		//
+		// }
+		// }
 
 		if (sellingPrice.getText().length() > 0) {
 			CurtainShopGoods csg = new CurtainShopGoods(serialNumber.getText(),
@@ -590,6 +591,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 	private void curtainShopBtnAddActionPerformed(java.awt.event.ActionEvent evt) {
 		AddCurtainShop dialog = new AddCurtainShop(new javax.swing.JFrame(),
 				true);
+		dialog.setSize(250, 210);
 		dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				// System.exit(0);

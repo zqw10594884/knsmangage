@@ -159,15 +159,22 @@ public class PrintOrder implements Printable {
 			String other = "";
 			String[] Total = null;
 			if (parameter == Global.CUSTOMER || parameter == Global.OWN) {
-				String[] temp = {
-						"合计人民币",
-						(int) (subtotal)
-								+ "-"
-								+ (order.getPreferentialAmount())
-								+ "="
-								+ (int) (subtotal - order
-										.getPreferentialAmount()) + "元整", other };
-				Total = temp;
+				if (order.getPreferentialAmount() == 0) {
+					String[] temp = {
+							"合计人民币",
+							(int) (subtotal)
+									+ "-"
+									+ (order.getPreferentialAmount())
+									+ "="
+									+ (int) (subtotal - order
+											.getPreferentialAmount()) + "元整",
+							other };
+					Total = temp;
+				} else {
+					String[] temp = { "合计人民币",
+					+(int) (subtotal) + "元整", other };
+					Total = temp;
+				}
 			}
 			y = drawLine(g2, y, x, w, TotalCol, Total);
 			g2.drawLine(x, y, x + w, y);
@@ -175,7 +182,7 @@ public class PrintOrder implements Printable {
 			g2.drawString("备注：" + order.getRemarks(), x - 10, y - 13);
 			y += rowH;
 			g2.drawString("订货电话：" + Global.Tel, x - 10, y - 13);
-//			g2.drawString(order.getId() + "", x - 20, 800);
+			// g2.drawString(order.getId() + "", x - 20, 800);
 			y += rowH;
 			g2.drawString("确认货物无误后签字_____________", x + 200, y - 15);
 			if (y < 680 && parameter != Global.OWN) {
