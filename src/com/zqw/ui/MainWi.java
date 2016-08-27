@@ -105,7 +105,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private JList locationJlist;
 	private JTextField preferentialAmountTF;
 	private JLabel label_7;
-	private JTextField remarksTF;
+	private JTextField orderRemarksTF;
+	private JTextField goodRemarksTF;
 
 	public MainWi() {
 		initComponents();
@@ -152,6 +153,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				// 重置版面信息
 				number.setText("");
 				sellingPrice.setText("");
+				preferentialAmountTF.setText("");
+				orderRemarksTF.setText("");
+				goodRemarksTF.setText("");
 				sellingPrice.setEditable(false);
 				serialNumber.setText("");
 				serialNumber.setEditable(false);
@@ -386,29 +390,29 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		// }
 
 		total = new JLabel("");
-		total.setBounds(670, 580, 38, 15);
+		total.setBounds(687, 580, 38, 15);
 		// if (Global.User.getAuthority() < 20) {
 		contentPane.add(total);
 		// }
 
 		JLabel lblNewLabel_1 = new JLabel("总价：");
-		lblNewLabel_1.setBounds(639, 580, 48, 15);
+		lblNewLabel_1.setBounds(639, 580, 52, 15);
 		lblNewLabel_1.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(lblNewLabel_1);
 
 		JLabel label_4 = new JLabel("利润：");
-		label_4.setBounds(722, 580, 45, 15);
+		label_4.setBounds(731, 580, 45, 15);
 		label_4.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(label_4);
 
 		profit = new JLabel("");
-		profit.setBounds(787, 584, 54, 15);
+		profit.setBounds(787, 580, 54, 15);
 		// if (Global.User.getAuthority() < 20) {
 		contentPane.add(profit);
 		// }
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(488, 138, 353, 368);
+		scrollPane.setBounds(488, 162, 353, 344);
 		contentPane.add(scrollPane);
 		table = new JTable();
 
@@ -556,15 +560,25 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		label_6.setBounds(488, 519, 45, 15);
 		contentPane.add(label_6);
 
-		label_7 = new JLabel("备注：");
+		label_7 = new JLabel("订单备注：");
 		label_7.setFont(new Font("宋体", Font.PLAIN, 14));
-		label_7.setBounds(488, 550, 45, 15);
+		label_7.setBounds(488, 550, 72, 15);
 		contentPane.add(label_7);
 
-		remarksTF = new JTextField();
-		remarksTF.setColumns(10);
-		remarksTF.setBounds(531, 547, 310, 21);
-		contentPane.add(remarksTF);
+		orderRemarksTF = new JTextField();
+		orderRemarksTF.setColumns(10);
+		orderRemarksTF.setBounds(570, 547, 271, 21);
+		contentPane.add(orderRemarksTF);
+
+		JLabel label_8 = new JLabel("货物备注：");
+		label_8.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_8.setBounds(488, 134, 72, 15);
+		contentPane.add(label_8);
+
+		goodRemarksTF = new JTextField();
+		goodRemarksTF.setColumns(10);
+		goodRemarksTF.setBounds(567, 131, 274, 21);
+		contentPane.add(goodRemarksTF);
 	}
 
 	/**
@@ -671,7 +685,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				currentOrder.setPreferentialAmount(Integer
 						.parseInt(preferentialAmountTF.getText().trim()));
 			}
-			currentOrder.setRemarks(remarksTF.getText().trim());
+			currentOrder.setRemarks(orderRemarksTF.getText().trim());
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
 				DBUtil.insert(currentOrder);
@@ -825,11 +839,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				&& sellingPrice.length() > 0) {
 			double numberD = Double.parseDouble(number);
 			Goods g = UIutil.getGoodsFromName(serialNumber);
+			String remarkText = goodRemarksTF.getText();
 			String freeGoods = freeGoodsBC.isSelected() ? "免费样品-" : "";
 			String goodChange = goodChangeCB.isSelected() ? "换货-" : "";
 			String s = flowersComboBox.getSelectedItem().toString();
 			String flowers = "不对花".equals(s) ? "" : s;
-			String remark = freeGoods + goodChange + flowers;
+			String remark = remarkText + freeGoods + goodChange + flowers;
 
 			og.setDate(ol.getDeliveryTime());
 			og.setOwner(curtainShop.getOwner());
