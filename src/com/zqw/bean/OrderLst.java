@@ -21,6 +21,7 @@ public class OrderLst {
 	private int preferentialAmount;
 	private CurtainShop nameClass;
 
+
 	public OrderLst() {
 		super();
 	}
@@ -35,8 +36,10 @@ public class OrderLst {
 		this.orderState = orderState;
 	}
 
-
 	
+	
+	
+
 	public String getRemarks() {
 		return remarks;
 	}
@@ -202,8 +205,8 @@ public class OrderLst {
 
 	public CurtainShop getNameClass() {
 		if (nameClass == null) {
-			nameClass = (CurtainShop) DBUtil.getClass(CurtainShop.class, "name", curtainShop,
-					"String", "eq");
+			nameClass = (CurtainShop) DBUtil.getClass(CurtainShop.class,
+					"name", curtainShop, "String", "eq");
 		}
 		return nameClass;
 	}

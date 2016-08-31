@@ -185,22 +185,20 @@ public class DBUtil {
 			if (order.length() > 0) {
 				c.addOrder(Order.asc(order));
 			}
-			if (nameArg0.length > 2) {
-				for (int i = 0; i < nameArg0.length; i += 3) {
-					if ("eq".endsWith(par)) {
-						if (nameArg0[i + 2].endsWith("int")) {
-							c.add(Restrictions.eq(nameArg0[i],
-									Integer.parseInt(nameArg0[i + 1])));
-						} else {
-							c.add(Restrictions.eq(nameArg0[i], nameArg0[i + 1]));
-						}
-					} else if ("gt".endsWith(par)) {
-						c.add(Restrictions.gt(nameArg0[i],
+			for (int i = 0; i < nameArg0.length; i += 3) {
+				if ("eq".equals(par)) {
+					if (nameArg0[i + 2].endsWith("int")) {
+						c.add(Restrictions.eq(nameArg0[i],
 								Integer.parseInt(nameArg0[i + 1])));
-					} else if ("lt".endsWith(par)) {
-						c.add(Restrictions.lt(nameArg0[i],
-								Integer.parseInt(nameArg0[i + 1])));
+					} else {
+						c.add(Restrictions.eq(nameArg0[i], nameArg0[i + 1]));
 					}
+				} else if ("gt".equals(par)) {
+					c.add(Restrictions.gt(nameArg0[i],
+							Integer.parseInt(nameArg0[i + 1])));
+				} else if ("lt".equals(par)) {
+					c.add(Restrictions.lt(nameArg0[i],
+							Integer.parseInt(nameArg0[i + 1])));
 				}
 			}
 			obj = c.list();

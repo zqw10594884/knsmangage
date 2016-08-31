@@ -16,6 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -46,7 +47,7 @@ import com.zqw.util.DataUtil;
 import com.zqw.util.KnsJFreeChart;
 import com.zqw.util.UIutil;
 
-public class ManageOrderWi extends JFrame implements ListSelectionListener {
+public class ManageOrderWi  extends JDialog implements ListSelectionListener {
 
 	/**
 	 * 
@@ -96,6 +97,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	private JLabel orderPay;
 	private MouseAdapter listAdapter;
 	private int orderOrUncheckOrder = -1;
+	private int state = 0;
 
 	/**
 	 * Launch the application.
@@ -273,7 +275,7 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void initComponents() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1206, 720);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -629,5 +631,10 @@ public class ManageOrderWi extends JFrame implements ListSelectionListener {
 			UIutil.delFromCurtainShopGoods();
 		} else {
 		}
+	}
+
+	public int getReturnStatus() {
+		// TODO Auto-generated method stub
+		return state;
 	}
 }
