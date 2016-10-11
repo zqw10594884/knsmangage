@@ -147,15 +147,15 @@ public class AddGoodsShop extends javax.swing.JDialog {
 			this.dispose();
 			return;
 		}
-		if (number.getText().trim().length() != 0) {
-			Global.goods.setNumber(number.getText().trim());
-		} else {
-			Global.goods = null;
-			JOptionPane.showMessageDialog(this, "请输入电话", "alert",
-					JOptionPane.ERROR_MESSAGE);
-			this.dispose();
-			return;
-		}
+//		if (number.getText().trim().length() != 0) {
+//			Global.goods.setNumber(number.getText().trim());
+//		} else {
+//			Global.goods = null;
+//			JOptionPane.showMessageDialog(this, "请输入电话", "alert",
+//					JOptionPane.ERROR_MESSAGE);
+//			this.dispose();
+//			return;
+//		}
 		this.dispose();
 	}
 

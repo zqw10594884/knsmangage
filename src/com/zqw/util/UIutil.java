@@ -123,10 +123,6 @@ public class UIutil {
 				hqlOrderGoods_From_OrderId, id + "");
 	}
 
-	public static void updateOrderLstArrears(OrderLst ol, String string) {
-		String hqlupdate_OrderLst_Arrears = "update OrderLst o set o.arrears =:name0 where o.id =:name1 ";
-		DBUtil.update(hqlupdate_OrderLst_Arrears, string, ol.getId());
-	}
 
 	public static List<SaleOrderLst> initRetailOrderJlist(
 			ListSelectionListener UI, JList jList, MouseAdapter listAdapter,
@@ -208,7 +204,8 @@ public class UIutil {
 				ArrayList<OrderLst> originalLst = (ArrayList<OrderLst>) DBUtil
 						.getLstClass("", "gt", OrderLst.class, "orderState",
 								"29", "int");
-				orderLst = filter(originalLst);// 过滤器 筛选有布或者纱的订单
+//				orderLst = filter(originalLst);// 过滤器 筛选有布或者纱的订单
+				orderLst = originalLst;// 过滤器 筛选有布或者纱的订单
 
 				break;
 			case 4:
@@ -274,10 +271,6 @@ public class UIutil {
 		return orderLst;
 	}
 
-	public static List<OrderLst> isCurtainShopHaveArrears() {
-		return (List<OrderLst>) DBUtil.getClassLst(
-				hqlCurtainShop_From_Name_Have_Arrears, 1);
-	}
 
 	public static void tableAddAll(List<OrderGoods> Lst,
 			DefaultTableModel tableModel) {
@@ -297,7 +290,7 @@ public class UIutil {
 					g.getNumber() + "", g.getRemark() };
 			tableModel.addRow(rowValues); // 添加一行
 		} else {
-			String[] rowValues = { g.getSerialNumber(), "", "",
+			String[] rowValues = { g.getSerialNumber(), "",
 					g.getNumber() + "", g.getRemark() };
 			tableModel.addRow(rowValues); // 添加一行
 		}

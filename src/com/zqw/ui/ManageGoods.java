@@ -10,9 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -27,6 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 
 /**
@@ -37,6 +40,7 @@ public class ManageGoods extends javax.swing.JFrame implements
 		ListSelectionListener {
 
 	private JPanel contentPane;
+	private DefaultListModel<String> Lst;
 
 	/** Creates new form ManageGoods */
 	public ManageGoods() {
@@ -55,8 +59,6 @@ public class ManageGoods extends javax.swing.JFrame implements
 			goodsLstIndex = index;
 			goods = goodsLst.get(index);
 			setGoods(goods, false, true);
-			number.setText("");
-			libraryNum.setText(goods.getNumber());
 		}
 	}
 
@@ -78,21 +80,32 @@ public class ManageGoods extends javax.swing.JFrame implements
 		bankCard.setEditable(flag);
 		libraryNum.setEditable(flag);
 		number.setEditable(numberFlag);
+		number.setText("");
+		double numberAdd = 0;
+		for (int i = 0; i < purchaseOrderLst.size(); i++) {
+			PurchaseOrder po = purchaseOrderLst.get(i);
+			if (po.getSerialNumber().equals(goods.getSerialNumber())
+					&& po.getState() == 1) {
+				numberAdd += po.getNumber();
+			}
+		}
+		libraryNum.setText(goods.getNumber() + "+" + numberAdd);
 	}
 
 	private void initGoods() {
-		String[] Lst = new String[goodsLst.size()];
+		Lst = new DefaultListModel<String>();
 		for (int i = 0; i < goodsLst.size(); i++) {
-			Lst[i] = goodsLst.get(i).getSerialNumber();
+			Lst.addElement( goodsLst.get(i).getSerialNumber());
 		}
-		goodjList = new JList(Lst);
+		goodjList = new JList();
 		goodjList.addListSelectionListener(this);
 		goodjList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		goodjList.setModel(Lst);
 		jScrollPane1.setViewportView(goodjList);
 	}
 
 	private void initTable() {
-		String[] columnNames = { "编号", "单价", "数量", "小计", "付款日期", "状态", };
+		String[] columnNames = { "编号", "单价", "数量", "小计", "订货日期", "状态", };
 		String[][] tableVales = {};
 		tableModel = new DefaultTableModel(tableVales, columnNames);
 		table = new JTable(tableModel);
@@ -106,7 +119,7 @@ public class ManageGoods extends javax.swing.JFrame implements
 			goodsLst = (ArrayList<Goods>) DBUtil.getLstClass("serialNumber",
 					"", Goods.class, "", "", "");
 		}
-		String purGoods = "select new PurchaseOrder(p.id,p.serialNumber,p.purchasePrice,p.number,p.date,p.state) from PurchaseOrder p order by serialNumber";
+		String purGoods = "select new PurchaseOrder(p.id,p.serialNumber,p.purchasePrice,p.number,p.date,p.state) from PurchaseOrder p ";
 		purchaseOrderLst = (ArrayList<PurchaseOrder>) DBUtil.getClassLst(
 				purGoods, "");
 	}
@@ -172,7 +185,7 @@ public class ManageGoods extends javax.swing.JFrame implements
 		number.setBounds(378, 67, 60, 21);
 		jLabel7 = new javax.swing.JLabel();
 		jLabel7.setFont(new Font("宋体", Font.PLAIN, 14));
-		jLabel7.setBounds(315, 70, 57, 15);
+		jLabel7.setBounds(340, 70, 50, 15);
 		telephone = new javax.swing.JTextField();
 		telephone.setEditable(false);
 		telephone.setBounds(91, 94, 173, 21);
@@ -301,7 +314,7 @@ public class ManageGoods extends javax.swing.JFrame implements
 
 		libraryNum = new JTextField();
 		libraryNum.setEditable(false);
-		libraryNum.setBounds(245, 67, 60, 21);
+		libraryNum.setBounds(228, 67, 92, 21);
 		jPanel5.add(libraryNum);
 
 		JLabel label = new JLabel();
@@ -352,9 +365,20 @@ public class ManageGoods extends javax.swing.JFrame implements
 		int selectedRow = table.getSelectedRow();
 		if (selectedRow != -1) {
 			PurchaseOrder po = purchaseOrderLst.get(selectedRow);
-			po.setState(3);
-			DBUtil.update(po);
-			refreshTable(false);
+			if (po.getState() != 3) {
+				Goods g = (Goods) DBUtil.getClass(Goods.class, "serialNumber",
+						po.getSerialNumber(), "String", "eq");
+				double number = Double.parseDouble(g.getNumber())
+						+ po.getNumber();  
+				g.setNumber(number + "");
+				po.setState(3);
+				DBUtil.update(po);
+				DBUtil.update(g);
+				refreshTable(false);
+				goodsLst = (ArrayList<Goods>) DBUtil.getLstClass("serialNumber",
+						"", Goods.class, "", "", "");
+				setGoods(g , false, true);
+			}
 		}
 	}
 
@@ -385,7 +409,7 @@ public class ManageGoods extends javax.swing.JFrame implements
 		double purchasePrice = Double.parseDouble(this.purchasePrice.getText()
 				.trim());
 		String number = this.number.getText().trim();
-		Date date = null;
+		Date date = new Date();
 		if (number.length() > 0) {
 			PurchaseOrder po = new PurchaseOrder(serialNumber, purchasePrice,
 					Double.parseDouble(number), date, 1);

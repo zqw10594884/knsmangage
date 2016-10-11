@@ -1,5 +1,6 @@
 package com.zqw.util;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.hibernate.Criteria;
@@ -17,7 +18,7 @@ public class DBUtil {
 		try {
 			session = HibUtil.getSession();
 			Transaction transaction = session.beginTransaction();
-			session.save(obj);
+			Serializable a =  session.save(obj);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,27 +90,6 @@ public class DBUtil {
 			}
 			if (name2 != null) {
 				q1.setDate("name2", name2);
-			}
-			obj = q1.list();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-		return obj;
-	}
-
-	public static Object getClassLst(String sql, int name0) {
-
-		Session session = null;
-		Object obj = null;
-		try {
-			session = HibUtil.getSession();
-			Query q1 = session.createQuery(sql);
-			if (name0 != -1) {
-				q1.setInteger("name0", name0);
 			}
 			obj = q1.list();
 		} catch (Exception e) {
@@ -226,33 +206,6 @@ public class DBUtil {
 		return obj;
 	}
 
-	public static void update(String sql, String name0, int name1) {
-
-		Session session = null;
-		Transaction tx = null;
-		try {
-			session = HibUtil.getSession();
-			tx = session.beginTransaction();
-			Query query = session.createQuery(sql);
-
-			if (name0.length() > 0) {
-				query.setString("name0", name0);
-			}
-			if (name1 > -1) {
-				query.setInteger("name1", name1);
-			}
-			query.executeUpdate();
-			tx.commit();
-		} catch (Exception e) {
-			if (tx != null)
-				tx.rollback();
-			throw new RuntimeException(e.getMessage());
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-	}
 
 	public static void update(Object obj) {
 		Session session = HibUtil.getSession();

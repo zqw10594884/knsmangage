@@ -20,7 +20,6 @@ import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -50,11 +49,10 @@ import com.zqw.print.PrintPandect;
 import com.zqw.print.PrintSettlement;
 import com.zqw.util.DBUtil;
 import com.zqw.util.DataUtil;
-import com.zqw.util.LogUtil;
 import com.zqw.util.SortChineseName;
 import com.zqw.util.UIutil;
 
-public class MainWi extends JFrame implements ListSelectionListener {
+public class CopyOfMainWi extends JFrame implements ListSelectionListener {
 	/**
 	 * 
 	 */
@@ -68,17 +66,13 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private JTable table;
 
 	private JTextField shopName;
-	private JTextField telephone;
 	private JTextField serialNumber;
 	private JTextField sellingPrice;
 	private JTextField number;
 
 	private JLabel total;
-	private JLabel profit;
-	private JButton orderPrintBtn;
 	private JButton addBtn;
 	private JButton deleteBtn;
-	private JButton manageBtn;
 	private JButton modifyBtn;
 	private JButton submitOrderBtn;
 	private ActionListener printBtnAL;
@@ -97,7 +91,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private ArrayList<CurtainShop> curtainShopLstByLocation = new ArrayList<CurtainShop>();
 	private ArrayList<OrderLst> latelyLst;
 	private ArrayList<OrderLst> pandectList = new ArrayList<OrderLst>();
-	private JCheckBox goodChangeCB;
 	private JComboBox<String> flowersComboBox;
 	private OrderLst currentOrder;
 	private JButton btnNewButton;
@@ -109,13 +102,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private Goods currentGoods;
 	// 生命周期 点击 客户货物——生成 提交、点击其他客户货物——消亡
 	private ArrayList<Goods> libraryGoodsLst = new ArrayList<Goods>();
-	// 生命周期 同订单生命周期 记录此次提交中 此订单中发生改变的货物
-	private JButton historyListDelBtn;
-	private JButton pandectPrintBtn;
-	private JButton historyBtn;
 	private JLabel libraryNum;
 
-	public MainWi() {
+	public CopyOfMainWi() {
 		initComponents();
 		initTable();
 		initData();
@@ -128,7 +117,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainWi frame = new MainWi();
+					CopyOfMainWi frame = new CopyOfMainWi();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -146,8 +135,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				removeModifyBtnAndDeleteBtn();
 				shopName.setText(curtainShop.getName());
 				shopName.setEditable(false);
-				telephone.setText(curtainShop.getTelephone());
-				telephone.setEditable(false);
 				currentOrder = new OrderLst();
 				currentOrder.setCurtainShop(curtainShop.getName());
 				currentOrder.setGoodsLst(new ArrayList<OrderGoods>());
@@ -167,14 +154,10 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				sellingPrice.setEditable(false);
 				serialNumber.setText("");
 				serialNumber.setEditable(false);
-				// freeGoodsBC.setSelected(false);
-				goodChangeCB.setSelected(false);
 				flowersComboBox.setSelectedIndex(0);
-				removePrintBtn();
 				removeSubmit();
 			} else if (e.getSource().equals(goodsjList)) {// 客户货物
 				number.setText("");
-				goodChangeCB.setSelected(false);
 				flowersComboBox.setSelectedIndex(0);
 				int index = goodsjList.getSelectedIndex();
 				CurtainShopGoods goods = goodsLst.get(index);
@@ -253,7 +236,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	}
 
 	private void initTable() {
-		String[] columnNames = { "编号", "进价", "卖价", "数量", "备注" };
+		String[] columnNames = { "编号",  "数量", "备注" };
 		String[][] tableVales = {};
 		tableModel = new DefaultTableModel(tableVales, columnNames);
 
@@ -276,13 +259,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		// table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		TableColumn col0 = table.getColumnModel().getColumn(0);
 		col0.setPreferredWidth(100);
-		TableColumn col1 = table.getColumnModel().getColumn(1);
-		col1.setPreferredWidth(50);
-		TableColumn col2 = table.getColumnModel().getColumn(2);
-		col2.setPreferredWidth(50);
-		TableColumn col3 = table.getColumnModel().getColumn(3);
+		TableColumn col3 = table.getColumnModel().getColumn(1);
 		col3.setPreferredWidth(50);
-		TableColumn col4 = table.getColumnModel().getColumn(4);
+		TableColumn col4 = table.getColumnModel().getColumn(2);
 		col4.setPreferredWidth(150);
 	}
 
@@ -308,17 +287,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		contentPane.add(shopName);
 		shopName.setColumns(10);
 
-		JLabel label = new JLabel("电话：");
-		label.setBounds(671, 15, 54, 15);
-		label.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(label);
-
-		telephone = new JTextField();
-		telephone.setBounds(735, 13, 106, 21);
-		contentPane.add(telephone);
-
-		telephone.setColumns(10);
-
 		JLabel label_1 = new JLabel("编号：");
 		label_1.setBounds(488, 49, 54, 15);
 		label_1.setFont(new Font("宋体", Font.PLAIN, 14));
@@ -329,12 +297,8 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		contentPane.add(serialNumber);
 		serialNumber.setColumns(10);
 
-		JLabel label_2 = new JLabel("价格：");
-		label_2.setBounds(629, 77, 48, 15);
-		label_2.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(label_2);
-
 		sellingPrice = new JTextField();
+		sellingPrice.setVisible(false);
 		sellingPrice.setBounds(677, 74, 48, 21);
 		contentPane.add(sellingPrice);
 		sellingPrice.setColumns(10);
@@ -354,11 +318,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				printActionPerformed(e);
 			}
 		};
-		orderPrintBtn = new JButton("打印");
-		orderPrintBtn.setBounds(779, 105, 62, 23);
-		orderPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		orderPrintBtn.setEnabled(false);
-		contentPane.add(orderPrintBtn);
 
 		addBtn = new JButton("添加");
 		addBtn.setBounds(629, 105, 62, 23);
@@ -376,38 +335,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			}
 		};
 		deleteBtn = new JButton("删除");
-		deleteBtn.setBounds(557, 105, 62, 23);
+		deleteBtn.setBounds(557, 105, 62,  23);
 		deleteBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		deleteBtn.setEnabled(false);
 		contentPane.add(deleteBtn);
 
-		manageBtn = new JButton("管理");
-		manageBtn.setBounds(479, 576, 70, 23);
-		manageBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				refreshActionPerformed(e);
-			}
-		});
-		manageBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(manageBtn);
-
 		total = new JLabel("");
+		total.setVisible(false);
 		total.setBounds(787, 580, 38, 15);
 		contentPane.add(total);
-
-		JLabel lblNewLabel_1 = new JLabel("总价：");
-		lblNewLabel_1.setBounds(739, 580, 52, 15);
-		lblNewLabel_1.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(lblNewLabel_1);
-
-		JLabel label_4 = new JLabel("利润：");
-		label_4.setBounds(831, 580, 45, 15);
-		label_4.setFont(new Font("宋体", Font.PLAIN, 14));
-		contentPane.add(label_4);
-
-		profit = new JLabel("");
-		profit.setBounds(887, 580, 54, 15);
-		contentPane.add(profit);
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(488, 162, 353, 344);
@@ -445,16 +381,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		jlabel_2.setBounds(980, 10, 70, 15);
 		contentPane.add(jlabel_2);
 
-		pandectPrintBtn = new JButton("目录打印");
-		pandectPrintBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		pandectPrintBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pandectActionPerformed(e);
-			}
-		});
-		pandectPrintBtn.setBounds(956, 576, 94, 23);
-		contentPane.add(pandectPrintBtn);
-
 		submitOrderBtn = new JButton("提交");
 		submitOrderAL = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -465,11 +391,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		submitOrderBtn.setEnabled(false);
 		submitOrderBtn.setBounds(697, 105, 62, 23);
 		contentPane.add(submitOrderBtn);
-
-		goodChangeCB = new JCheckBox("换货");
-		goodChangeCB.setFont(new Font("宋体", Font.PLAIN, 14));
-		goodChangeCB.setBounds(488, 73, 54, 23);
-		contentPane.add(goodChangeCB);
 
 		flowersComboBox = new JComboBox<String>();
 		flowersComboBox.setModel(new DefaultComboBoxModel(new String[] { "不对花",
@@ -489,16 +410,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		modifyBtn.setEnabled(false);
 		contentPane.add(modifyBtn);
 
-		historyListDelBtn = new JButton("删除");
-		historyListDelBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		historyListDelBtn.setBounds(1072, 576, 70, 23);
-		historyListDelBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				orderDeleteAction();
-			}
-		});
-		contentPane.add(historyListDelBtn);
-
 		btnNewButton = new JButton("刷新");
 		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 14));
 		btnNewButton.addActionListener(new ActionListener() {
@@ -508,7 +419,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				initData();
 			}
 		});
-		btnNewButton.setBounds(559, 576, 70, 23);
+		btnNewButton.setBounds(498, 580, 70, 23);
 		contentPane.add(btnNewButton);
 
 		JScrollPane scrollPane_4 = new JScrollPane();
@@ -558,24 +469,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		label_9.setBounds(681, 49, 78, 15);
 		contentPane.add(label_9);
 
-		historyBtn = new JButton("历史订单");
-		historyBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		historyBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ManageOrderWi mainAdd = new ManageOrderWi();
-				mainAdd.setModal(true);
-				mainAdd.setVisible(true);
-				int state = mainAdd.getReturnStatus();
-				if (state == 0) {
-					DBUtil.refresh();
-					initTable();
-					initData();
-				}
-			}
-		});
-		historyBtn.setBounds(639, 576, 94, 23);
-		contentPane.add(historyBtn);
-
 		libraryNum = new JLabel("");
 		libraryNum.setForeground(Color.RED);
 		libraryNum.setFont(new Font("宋体", Font.BOLD, 22));
@@ -595,18 +488,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		if (deleteBtn.getActionListeners().length == 0) {
 			deleteBtn.addActionListener(deleteAl);
 			deleteBtn.setEnabled(true);
-		}
-	}
-
-	/**
-	 * 设置打印为true
-	 */
-	private void addPrintBtn() {
-		if (orderPrintBtn.getActionListeners().length == 0) {
-			orderPrintBtn.setEnabled(true);
-			orderPrintBtn.addActionListener(printBtnAL);
-		} else {
-
 		}
 	}
 
@@ -637,18 +518,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	}
 
 	/**
-	 * 打印置为 false
-	 */
-	private void removePrintBtn() {
-		if (orderPrintBtn.getActionListeners().length > 0) {
-			orderPrintBtn.setEnabled(false);
-			orderPrintBtn.removeActionListener(printBtnAL);
-		} else {
-
-		}
-	}
-
-	/**
 	 * 提交置为 false
 	 */
 	private void removeSubmit() {
@@ -657,18 +526,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			submitOrderBtn.removeActionListener(submitOrderAL);
 		} else {
 
-		}
-	}
-
-	private void refreshActionPerformed(java.awt.event.ActionEvent evt) {
-		MainAddWi mainAdd = new MainAddWi();
-		mainAdd.setModal(true);
-		mainAdd.setVisible(true);
-		int state = mainAdd.getReturnStatus();
-		if (state == 0) {
-			DBUtil.refresh();
-			initTable();
-			initData();
 		}
 	}
 
@@ -693,11 +550,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
 				DBUtil.insert(currentOrder);
-				LogUtil.setLog(currentOrder.getId(), "Submit", "");
 				latelyLst.add(currentOrder);
 			} else {
 				DBUtil.update(currentOrder);
-				LogUtil.setLog(currentOrder.getId(), "Update", "");
 			}
 			for (int i = 0; i < libraryGoodsLst.size(); i++) {
 				DBUtil.update(libraryGoodsLst.get(i));
@@ -718,7 +573,19 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	 */
 	private void printActionPerformed(ActionEvent evt) {
 		if (currentOrder.getGoodsLst().size() > 0
-				&& currentOrder.getOrderState() == 31) {
+				&& currentOrder.getOrderState() == 40) {
+			List<OrderGoods> lst = currentOrder.getGoodsLst();
+			for (int i = 0; i < lst.size(); i++) {
+				String sn = lst.get(i).getSerialNumber();
+				if (sn.contains("A-") || sn.contains("B-")) {
+
+					return;
+				}
+			}
+		}
+
+		if (currentOrder.getGoodsLst().size() > 0
+				&& currentOrder.getOrderState() >= 30) {
 			currentOrder.setOrderState(20);
 			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			currentOrder.setDeliveryTime(new Date());
@@ -728,60 +595,12 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			for (int i = 0; i < lst.size(); i++) {
 				lst.get(i).setDate(new Date());
 			}
-			removePrintBtn();
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
 			print(new PrintOrder(currentOrder, curtainShop, Global.CUSTOMER));
 			DBUtil.update(currentOrder);
-			LogUtil.setLog(currentOrder.getId(), "Print", "");
 		} else {
 
-		}
-	}
-
-	/**
-	 * 打印目录
-	 */
-	private void pandectActionPerformed(java.awt.event.ActionEvent evt) {
-		ListModel<CheckListItem> l = latelyjList.getModel();
-		if (!pandectList.isEmpty()) {
-			pandectList.clear();
-		} else {
-
-		}
-		for (int i = 0; i < l.getSize(); i++) {
-			CheckListItem cli = l.getElementAt(i);
-			if (cli.isSelected() && latelyLst.get(i).getOrderState() == 20) {
-				pandectList.add(latelyLst.get(i));
-				latelyLst.get(i).setOrderState(15);
-				DBUtil.update(latelyLst.get(i));
-			}
-		}
-		Collections.sort(pandectList, new SortChineseName());
-		print(new PrintPandect(pandectList));
-		print(new PrintSettlement(pandectList));
-		UIutil.initOrderJlist(this, latelyjList, listAdapter, true, latelyLst,
-				1);
-	}
-
-	private void orderDeleteAction() {
-		if (latelyLst != null) {
-			for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
-				Goods g;
-				OrderGoods og = currentOrder.getGoodsLst().get(i);
-				g = (Goods) DBUtil.getClass(Goods.class, "serialNumber",
-						og.getSerialNumber(), "String", "eq");
-				g.setNumber((Double.parseDouble(g.getNumber()) + og.getNumber())
-						+ "");
-				DBUtil.update(g);
-			}
-			latelyLst.remove(currentOrder);
-			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
-					latelyLst, 1);
-			LogUtil.setLog(currentOrder.getId(), "Del", "");  
-			DBUtil.del(currentOrder);
-			UIutil.delFromCurtainShopGoods();
-		} else {
 		}
 	}
 
@@ -802,7 +621,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			currentGoods.setNumber(num);
 			setLibraryGoods(currentGoods);
 			tableModel.removeRow(selectedRow);
-			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 			currentOrder.getGoodsLst().remove(selectedRow);
 			removeModifyBtnAndDeleteBtn();
@@ -816,7 +634,6 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			String[] rowValues = creatRow(og, currentOrder, true);
 			tableModel.addRow(rowValues);
 			currentOrder.getGoodsLst().add(og);
-			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 			addSubmit();
 		}
@@ -834,16 +651,14 @@ public class MainWi extends JFrame implements ListSelectionListener {
 				currentGoods = getLibraryGoods(og.getSerialNumber());
 			}
 			String remarkText = goodRemarksTF.getText();
-			String goodChange = goodChangeCB.isSelected() ? "换货-" : "";
 			String s = flowersComboBox.getSelectedItem().toString();
 			String flowers = "不对花".endsWith(s) ? "" : s;
-			String remark = remarkText + goodChange + flowers;
+			String remark = remarkText + flowers;
 			tableModel.setValueAt(number.getText(), selectedRow, 3);
 			tableModel.setValueAt(remark, selectedRow, 4);
 			creatRow(currentOrder.getGoodsLst().get(selectedRow), currentOrder,
 					true);
 
-			profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 			total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
 			removeModifyBtnAndDeleteBtn();
 			addSubmit();
@@ -867,10 +682,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			setLibraryGoods(currentGoods);
 
 			String remarkText = goodRemarksTF.getText();
-			String goodChange = goodChangeCB.isSelected() ? "换货-" : "";
 			String s = flowersComboBox.getSelectedItem().toString();
 			String flowers = "不对花".equals(s) ? "" : s;
-			String remark = remarkText + goodChange + flowers;
+			String remark = remarkText + flowers;
 
 			og.setDate(ol.getDeliveryTime());
 			og.setOwner(curtainShop.getOwner());
@@ -881,8 +695,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 			og.setNumber(numberD);
 			og.setRemark(remark);
 			if (isAdd) {
-				String[] rowValues = { serialNumber,
-						currentGoods.getPurchasePrice() + "", sellingPrice,
+				String[] rowValues = { serialNumber, 
 						DataUtil.formatDouble(numberD), remark };
 				return rowValues;
 			} else {
@@ -953,12 +766,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		orderRemarksTF.setText(currentOrder.getRemarks());// 设置订单备注
 
 		shopName.setText(curtainShop.getName());
-		telephone.setText(curtainShop.getTelephone());
 		total.setText(DataUtil.getTotalm(currentOrder.getGoodsLst()) + "");
-		profit.setText(DataUtil.getProfitm(currentOrder.getGoodsLst()) + "");
 		preferentialAmountTF.setText(currentOrder.getPreferentialAmount() + "");
 
-		addPrintBtn();
 	}
 
 	private void print(Printable printOrder) {

@@ -14,6 +14,8 @@ public class SaleOrderLst extends KNSOrder {
 	private String libraryPerson;
 	private String machiningPerson;
 	private String salePerson;
+	private String measurePerson;
+	private String examinationClerk;
 	private Date deliveryTime;
 	private Date submitTime;
 	private int arrears;
@@ -25,6 +27,37 @@ public class SaleOrderLst extends KNSOrder {
 	public SaleOrderLst() {
 		super();
 	}
+
+	
+	
+	
+	public String getMeasurePerson() {
+		return measurePerson;
+	}
+
+
+
+
+	public void setMeasurePerson(String measurePerson) {
+		this.measurePerson = measurePerson;
+	}
+
+
+
+
+	public String getExaminationClerk() {
+		return examinationClerk;
+	}
+
+
+
+
+	public void setExaminationClerk(String examinationClerk) {
+		this.examinationClerk = examinationClerk;
+	}
+
+
+
 
 	public CurtainCustomer getCustomer() {
 		return customer;

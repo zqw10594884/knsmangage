@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.zqw.bean">
+	<class name="Logs" table="_logs" lazy="true">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="orderId" type="string" column="_orderId" />
+		<property name="user" type="string" column="_user" />
+		<property name="date" type="string" column="_date" />
+		<property name="operation" type="string" column="_operation" />
+		<property name="content" type="string" column="_content"/>
+	</class>
+
+</hibernate-mapping>
+

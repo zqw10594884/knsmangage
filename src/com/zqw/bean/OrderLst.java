@@ -36,10 +36,6 @@ public class OrderLst {
 		this.orderState = orderState;
 	}
 
-	
-	
-	
-
 	public String getRemarks() {
 		return remarks;
 	}

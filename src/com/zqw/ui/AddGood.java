@@ -179,15 +179,15 @@ public class AddGood extends JDialog {
 			this.dispose();
 			return;
 		}
-		if (numberTF.getText().trim().length() != 0) {
-			Global.goods.setNumber(numberTF.getText().trim());
-		} else {
-			Global.goods = null;
-			JOptionPane.showMessageDialog(this, "请输入电话", "alert",
-					JOptionPane.ERROR_MESSAGE);
-			this.dispose();
-			return;
-		}
+//		if (numberTF.getText().trim().length() != 0) {
+//			Global.goods.setNumber(numberTF.getText().trim());
+//		} else {
+//			Global.goods = null;
+//			JOptionPane.showMessageDialog(this, "请输入电话", "alert",
+//					JOptionPane.ERROR_MESSAGE);
+//			this.dispose();
+//			return;
+//		}
 		this.dispose();
 	}
 

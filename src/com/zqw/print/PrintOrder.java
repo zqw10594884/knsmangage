@@ -14,13 +14,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.zqw.bean.CurtainCustomer;
 import com.zqw.bean.CurtainShop;
 import com.zqw.bean.Global;
 import com.zqw.bean.OrderGoods;
 import com.zqw.bean.OrderLst;
-import com.zqw.bean.SaleOrderLst;
-import com.zqw.util.DataUtil;
 
 public class PrintOrder implements Printable {
 

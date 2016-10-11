@@ -72,7 +72,7 @@ public class loginCBWi extends JFrame {
 						&& (user.getAuthority() == 20)) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							MainWi main = new MainWi();
+							CopyOfMainWi main = new CopyOfMainWi();
 							main.setVisible(true);
 							main.setLocationRelativeTo(null);
 						}

@@ -7,16 +7,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -35,7 +32,6 @@ import com.zqw.bean.Global;
 import com.zqw.bean.OrderLst;
 import com.zqw.bean.SaleOrderGoods;
 import com.zqw.bean.SaleOrderLst;
-import com.zqw.bean.User;
 import com.zqw.util.DBUtil;
 import com.zqw.util.HibUtil;
 import com.zqw.util.UIutil;
@@ -66,8 +62,6 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 	private JLabel nameLab;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField customerAdr;
-	private JPasswordField password;
-	private JTextField userName;
 	private ActionListener submitBtnAL;
 	private JButton delBtn;
 	private JTable saleTable;
@@ -76,6 +70,16 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 	private ActionListener delBtnAl;
 	private JButton submitOrderBtn;
 	private ActionListener submitOrderBtnAl;
+	private JTextField customerTel1;
+	private JTextField customerTel2;
+	private JTextField customerDeposit;
+	private JTextField textField_3;
+	private JTextField salePersonTF;
+	private JTextField measurePersonTF;
+	private JTextField libraryPersonTF;
+	private JTextField machiningPersonTF;
+	private JTextField examinationClerkTF;
+	private JTextField installPersonTF;
 
 	public ManageSaleOrderWi(int power) {
 		initComponents();
@@ -104,17 +108,17 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 
 	@SuppressWarnings("unchecked")
 	public void valueChanged(ListSelectionEvent e) {
-		if (e.getValueIsAdjusting()) {
-			for (int i = 0; i < tableModel.getRowCount();) {
-				tableModel.removeRow(0);
-			}
-			int index = checkedjList.getSelectedIndex();
-			for (int i = 0; i < retailLst.get(index).getGoodsLst().size(); i++) {
-				String[] rowValues = creatRow((SaleOrderGoods) retailLst
-						.get(index).getGoodsLst().get(i));
-				tableModel.addRow(rowValues);
-			}
-		}
+//		if (e.getValueIsAdjusting()) {
+//			for (int i = 0; i < tableModel.getRowCount();) {
+//				tableModel.removeRow(0);
+//			}
+//			int index = checkedjList.getSelectedIndex();
+//			for (int i = 0; i < retailLst.get(index).getGoodsLst().size(); i++) {
+//				String[] rowValues = creatRow((SaleOrderGoods) retailLst
+//						.get(index).getGoodsLst().get(i));
+//				tableModel.addRow(rowValues);
+//			}
+//		}
 	}
 
 	private String[] creatRow(SaleOrderGoods sog) {
@@ -173,18 +177,18 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 		contentPane.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("姓名：");
-		lblNewLabel.setBounds(24, 136, 54, 15);
+		lblNewLabel.setBounds(27, 103, 54, 15);
 		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 14));
 		contentPane.add(lblNewLabel);
 
 		customerName = new JTextField();
 		customerName.setEditable(false);
-		customerName.setBounds(67, 134, 130, 21);
+		customerName.setBounds(70, 101, 130, 21);
 		contentPane.add(customerName);
 		customerName.setColumns(10);
 
 		scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(500, 10, 270, 344);
+		scrollPane_3.setBounds(500, 10, 270, 321);
 		contentPane.add(scrollPane_3);
 
 		submitBtnAL = new ActionListener() {
@@ -195,73 +199,26 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 		submitBtn = new JButton("提交");
 		submitBtn.setEnabled(false);
 		submitBtn.setFont(new Font("宋体", Font.PLAIN, 14));
-		submitBtn.setBounds(31, 203, 62, 23);
+		submitBtn.setBounds(27, 297, 62, 23);
 		contentPane.add(submitBtn);
 
 		nameLab = new JLabel("");
 		nameLab.setFont(new Font("仿宋", Font.BOLD, 30));
-		nameLab.setBounds(24, 64, 343, 42);
+		nameLab.setBounds(24, 20, 343, 42);
 		contentPane.add(nameLab);
 
 		nameLab.setText("");
 
 		JLabel label = new JLabel("地址：");
 		label.setFont(new Font("宋体", Font.PLAIN, 14));
-		label.setBounds(24, 163, 54, 15);
+		label.setBounds(27, 163, 54, 15);
 		contentPane.add(label);
 
 		customerAdr = new JTextField();
 		customerAdr.setEditable(false);
 		customerAdr.setColumns(10);
-		customerAdr.setBounds(67, 161, 262, 21);
+		customerAdr.setBounds(70, 161, 262, 21);
 		contentPane.add(customerAdr);
-
-		JLabel label_1 = new JLabel("用户名：");
-		label_1.setFont(new Font("宋体", Font.PLAIN, 12));
-		label_1.setBounds(24, 32, 54, 15);
-		contentPane.add(label_1);
-
-		userName = new JTextField();
-		userName.setBounds(77, 29, 82, 21);
-		contentPane.add(userName);
-		userName.setColumns(10);
-
-		JLabel label_2 = new JLabel("密码：");
-		label_2.setFont(new Font("宋体", Font.PLAIN, 12));
-		label_2.setBounds(179, 35, 54, 15);
-		contentPane.add(label_2);
-
-		password = new JPasswordField();
-		password.setBounds(219, 30, 89, 18);
-		contentPane.add(password);
-
-		JButton btnNewButton = new JButton("登录");
-		btnNewButton.setFont(new Font("宋体", Font.PLAIN, 12));
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String name = userName.getText().trim();
-				String pass = password.getText().trim();
-				userName.setText("");
-				password.setText("");
-				User user = (User) DBUtil.getClass(User.class, "name", name,
-						"String", "eq");
-				if (name.equals(user.getName())
-						&& pass.equals(user.getPassword())) {
-					if (user.getAuthority() == 22 || user.getAuthority() == 23) {
-						submitBtn.setEnabled(true);
-						Global.User = user;
-						nameLab.setText(user.getRealName());
-						initJlist();
-						if (submitBtn.getActionListeners().length < 1) {
-							submitBtn.addActionListener(submitBtnAL);
-						}
-					}
-				}
-
-			}
-		});
-		btnNewButton.setBounds(318, 28, 69, 23);
-		contentPane.add(btnNewButton);
 
 		delBtn = new JButton("删除");
 		delBtnAl = new ActionListener() {
@@ -274,7 +231,7 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 
 		delBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		delBtn.setEnabled(false);
-		delBtn.setBounds(112, 203, 62, 23);
+		delBtn.setBounds(108, 297, 62, 23);
 		contentPane.add(delBtn);
 
 		submitOrderBtn = new JButton("结账");
@@ -289,17 +246,122 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 
 		submitOrderBtn.setFont(new Font("宋体", Font.PLAIN, 14));
 		submitOrderBtn.setEnabled(false);
-		submitOrderBtn.setBounds(191, 203, 62, 23);
+		submitOrderBtn.setBounds(187, 297, 62, 23);
 		contentPane.add(submitOrderBtn);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 364, 764, 237);
+		scrollPane.setBounds(6, 341, 764, 260);
 		contentPane.add(scrollPane);
 
 		saleTable = new JTable();
 		saleTable.setToolTipText("窗帘");
 		saleTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		scrollPane.setViewportView(saleTable);
+
+		customerTel1 = new JTextField();
+		customerTel1.setEditable(false);
+		customerTel1.setColumns(10);
+		customerTel1.setBounds(70, 132, 130, 21);
+		contentPane.add(customerTel1);
+
+		JLabel label_1 = new JLabel("电话：");
+		label_1.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_1.setBounds(27, 134, 54, 15);
+		contentPane.add(label_1);
+
+		customerTel2 = new JTextField();
+		customerTel2.setEditable(false);
+		customerTel2.setColumns(10);
+		customerTel2.setBounds(210, 132, 130, 21);
+		contentPane.add(customerTel2);
+
+		JLabel label_2 = new JLabel("订金：");
+		label_2.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_2.setBounds(210, 103, 54, 15);
+		contentPane.add(label_2);
+
+		customerDeposit = new JTextField();
+		customerDeposit.setEditable(false);
+		customerDeposit.setColumns(10);
+		customerDeposit.setBounds(253, 101, 79, 21);
+		contentPane.add(customerDeposit);
+
+		JLabel label_3 = new JLabel("备注：");
+		label_3.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_3.setBounds(27, 188, 54, 15);
+		contentPane.add(label_3);
+
+		textField_3 = new JTextField();
+		textField_3.setEditable(false);
+		textField_3.setColumns(10);
+		textField_3.setBounds(70, 188, 412, 21);
+		contentPane.add(textField_3);
+
+		JLabel label_4 = new JLabel("销售：");
+		label_4.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_4.setBounds(27, 230, 54, 15);
+		contentPane.add(label_4);
+
+		salePersonTF = new JTextField();
+		salePersonTF.setEditable(false);
+		salePersonTF.setColumns(10);
+		salePersonTF.setBounds(70, 224, 62, 21);
+		contentPane.add(salePersonTF);
+
+		measurePersonTF = new JTextField();
+		measurePersonTF.setEditable(false);
+		measurePersonTF.setColumns(10);
+		measurePersonTF.setBounds(197, 224, 62, 21);
+		contentPane.add(measurePersonTF);
+
+		JLabel label_5 = new JLabel("尺寸：");
+		label_5.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_5.setBounds(154, 230, 54, 15);
+		contentPane.add(label_5);
+
+		libraryPersonTF = new JTextField();
+		libraryPersonTF.setEditable(false);
+		libraryPersonTF.setColumns(10);
+		libraryPersonTF.setBounds(325, 224, 62, 21);
+		contentPane.add(libraryPersonTF);
+
+		JLabel label_6 = new JLabel("裁布：");
+		label_6.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_6.setBounds(282, 230, 54, 15);
+		contentPane.add(label_6);
+
+		machiningPersonTF = new JTextField();
+		machiningPersonTF.setEditable(false);
+		machiningPersonTF.setColumns(10);
+		machiningPersonTF.setBounds(70, 255, 62, 21);
+		contentPane.add(machiningPersonTF);
+
+		JLabel label_7 = new JLabel("加工：");
+		label_7.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_7.setBounds(27, 261, 54, 15);
+		contentPane.add(label_7);
+
+		examinationClerkTF = new JTextField();
+		examinationClerkTF.setEditable(false);
+		examinationClerkTF.setColumns(10);
+		examinationClerkTF.setBounds(197, 255, 62, 21);
+		contentPane.add(examinationClerkTF);
+
+		JLabel label_8 = new JLabel("检验：");
+		label_8.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_8.setBounds(154, 261, 54, 15);
+		contentPane.add(label_8);
+
+		installPersonTF = new JTextField();
+		installPersonTF.setEditable(false);
+		installPersonTF.setColumns(10);
+		installPersonTF.setBounds(325, 255, 62, 21);
+		contentPane.add(installPersonTF);
+
+		JLabel label_9 = new JLabel("安装：");
+		label_9.setFont(new Font("宋体", Font.PLAIN, 14));
+		label_9.setBounds(282, 261, 54, 15);
+		contentPane.add(label_9);
 		listAdapter = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -326,28 +388,42 @@ public class ManageSaleOrderWi extends JFrame implements ListSelectionListener {
 	 */
 	private void submitOrderactionPerformed(ActionEvent e) {
 		if (tableModel.getRowCount() > 0) {
-			if (Global.User.getAuthority() == 20) {// 裁布
+			if (Global.User.getAuthority() == 21) {// 售货员
 				if (currentRetailOrder.getLibraryPerson() == null
 						|| currentRetailOrder.getLibraryPerson().length() == 0) {
-					currentRetailOrder.setOrderState(35);
-					currentRetailOrder.setLibraryPerson(Global.User.getName());
-				}
-			} else if (Global.User.getAuthority() == 21) {// 售货员
-				if (currentRetailOrder.getLibraryPerson() == null
-						|| currentRetailOrder.getLibraryPerson().length() == 0) {
+					if (salePersonTF.getText().length() == 0) {
+						currentRetailOrder.setSalePerson(Global.User.getName());
+					}
 				}
 			} else if (Global.User.getAuthority() == 22) {// 裁缝
 				if (currentRetailOrder.getMachiningPerson() == null
 						|| currentRetailOrder.getLibraryPerson().length() == 0) {
-					currentRetailOrder.setOrderState(21);
-					currentRetailOrder
-							.setMachiningPerson(Global.User.getName());
+					if (currentRetailOrder.getOrderState() == 35
+							&& machiningPersonTF.getText().length() == 0) {
+						currentRetailOrder.setOrderState(30);
+						currentRetailOrder.setMachiningPerson(Global.User
+								.getName());
+					}
 				}
 			} else if (Global.User.getAuthority() == 23) {// 安装工
 				if (currentRetailOrder.getInstallPerson() == null
 						|| currentRetailOrder.getLibraryPerson().length() == 0) {
-					currentRetailOrder.setOrderState(20);
-					currentRetailOrder.setInstallPerson(Global.User.getName());
+					if (currentRetailOrder.getOrderState() == 30
+							&& installPersonTF.getText().length() == 0) {
+						currentRetailOrder.setOrderState(20);
+						currentRetailOrder.setInstallPerson(Global.User
+								.getName());
+					}
+				}
+			} else if (Global.User.getAuthority() == 24) {// 检验
+				if (currentRetailOrder.getInstallPerson() == null
+						|| currentRetailOrder.getLibraryPerson().length() == 0) {
+					// currentRetailOrder.setInstallPerson(Global.User.getName());
+				}
+			}else if (Global.User.getAuthority() < 20) {// 结账
+				if (currentRetailOrder.getInstallPerson() == null
+						|| currentRetailOrder.getLibraryPerson().length() == 0) {
+					 
 				}
 			}
 			initJlist();
