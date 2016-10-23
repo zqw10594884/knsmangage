@@ -13,7 +13,7 @@ import org.hibernate.criterion.Restrictions;
 
 public class DBUtil {
 
-	public static void insert(Object obj) {
+	public static int insert(Object obj) {
 		Session session = null;
 		try {
 			session = HibUtil.getSession();
@@ -22,11 +22,13 @@ public class DBUtil {
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return -1;
 		} finally {
 			if (session != null) {
 				session.close();
 			}
 		}
+		return 0;
 	}
 
 	public static Object getClassLst(String sql, String name) {

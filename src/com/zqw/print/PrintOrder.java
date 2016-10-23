@@ -176,7 +176,9 @@ public class PrintOrder implements Printable {
 			y = drawLine(g2, y, x, w, TotalCol, Total);
 			g2.drawLine(x, y, x + w, y);
 			y += rowH;
+			g2.setColor(Color.red);
 			g2.drawString("备注：" + order.getRemarks(), x - 10, y - 13);
+			g2.setColor(Color.black);
 			y += rowH;
 			g2.drawString("订货电话：" + Global.Tel, x - 10, y - 13);
 			// g2.drawString(order.getId() + "", x - 20, 800);

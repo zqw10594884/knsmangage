@@ -91,7 +91,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 
 	private void initComponents() {
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 922, 617);
+		setBounds(100, 100, 970, 617);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -114,7 +114,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		contentPane.add(scrollPane);
 
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(179, 39, 133, 494);
+		scrollPane_1.setBounds(179, 39, 162, 494);
 		contentPane.add(scrollPane_1);
 
 		curtainShopBtnAdd = new JButton();
@@ -141,7 +141,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "\u8D27\u7269\u6DFB\u52A0",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBounds(322, 10, 283, 418);
+		panel.setBounds(363, 10, 283, 418);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -207,7 +207,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "\u8D27\u7269\u4FEE\u6539",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(322, 426, 283, 140);
+		panel_1.setBounds(363, 426, 283, 140);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -253,14 +253,14 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		panel_1.add(label_13);
 
 		scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(616, 10, 283, 268);
+		scrollPane_3.setBounds(656, 10, 283, 268);
 		contentPane.add(scrollPane_3);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null,
 				"\u5BA2\u6237\u8D27\u7269\u4FEE\u6539", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
-		panel_2.setBounds(616, 288, 288, 149);
+		panel_2.setBounds(656, 288, 288, 149);
 		contentPane.add(panel_2);
 		panel_2.setLayout(null);
 
@@ -306,7 +306,7 @@ public class MainAddWi extends JDialog implements ListSelectionListener {
 		panel_3.setBorder(new TitledBorder(null,
 				"\u5BA2\u6237\u4FE1\u606F\u4FEE\u6539", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
-		panel_3.setBounds(614, 436, 285, 130);
+		panel_3.setBounds(654, 436, 285, 130);
 		contentPane.add(panel_3);
 		panel_3.setLayout(null);
 

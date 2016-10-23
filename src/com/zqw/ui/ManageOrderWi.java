@@ -47,7 +47,7 @@ import com.zqw.util.DataUtil;
 import com.zqw.util.KnsJFreeChart;
 import com.zqw.util.UIutil;
 
-public class ManageOrderWi  extends JDialog implements ListSelectionListener {
+public class ManageOrderWi extends JDialog implements ListSelectionListener {
 
 	/**
 	 * 
@@ -98,6 +98,8 @@ public class ManageOrderWi  extends JDialog implements ListSelectionListener {
 	private MouseAdapter listAdapter;
 	private int orderOrUncheckOrder = -1;
 	private int state = 0;
+	private JLabel orderLibraryPerson;
+	private JLabel label_11;
 
 	/**
 	 * Launch the application.
@@ -178,12 +180,22 @@ public class ManageOrderWi  extends JDialog implements ListSelectionListener {
 					// 订单信息
 					this.orderId.setText(currentOrderLst.getId() + "");
 					this.orderId.setEditable(false);
-					this.orderDate.setText(currentOrderLst.getDeliveryTime()
-							.toString());
+					if (currentOrderLst.getDeliveryTime() == null) {
+						this.orderDate.setText(currentOrderLst.getSubmitTime()
+								.toString());
+					} else {
+
+						this.orderDate.setText(currentOrderLst
+								.getDeliveryTime().toString());
+					}
 					this.orderDate.setEditable(false);
 					this.orderArrears
 							.setText(currentOrderLst.getArrears() + "");
 					this.orderArrears.setEditable(false);
+
+					this.orderLibraryPerson.setText(currentOrderLst
+							.getLibraryPerson() + "");
+
 					UIutil.tableAddAll(curtainShopOrderGoodsLst, tableModel);
 					total.setText(DataUtil.getTotal(curtainShopOrderGoodsLst)
 							+ "");
@@ -245,7 +257,11 @@ public class ManageOrderWi  extends JDialog implements ListSelectionListener {
 		DefaultListModel<CheckListItem> checkboxModel = new DefaultListModel<CheckListItem>();
 		for (int i = 0; i < curtainShopOrderLst.size(); i++) {
 			OrderLst ol = curtainShopOrderLst.get(i);
-			CheckListItem cli = new CheckListItem(ol.getDeliveryTime()
+			String t = "";
+			if (ol.getDeliveryTime() != null) {
+				t = ol.getDeliveryTime().toString().split("-")[2];
+			}
+			CheckListItem cli = new CheckListItem(ol.getSubmitTime() + "~" + t
 					+ ol.getCurtainShop());
 			checkboxModel.add(i, cli);
 		}
@@ -391,10 +407,6 @@ public class ManageOrderWi  extends JDialog implements ListSelectionListener {
 		orderProfit.setBounds(66, 231, 54, 15);
 		orderPanel.add(orderProfit);
 
-		JLabel label_8 = new JLabel("利润：");
-		label_8.setBounds(20, 231, 44, 15);
-		orderPanel.add(label_8);
-
 		orderPay = new JLabel("");
 		orderPay.setBounds(188, 231, 54, 15);
 		orderPanel.add(orderPay);
@@ -410,6 +422,14 @@ public class ManageOrderWi  extends JDialog implements ListSelectionListener {
 		total = new JLabel("");
 		total.setBounds(289, 231, 54, 15);
 		orderPanel.add(total);
+
+		orderLibraryPerson = new JLabel("");
+		orderLibraryPerson.setBounds(399, 231, 54, 15);
+		orderPanel.add(orderLibraryPerson);
+
+		label_11 = new JLabel("备货：");
+		label_11.setBounds(353, 231, 44, 15);
+		orderPanel.add(label_11);
 
 		tablePanel = new JPanel();
 		tablePanel.setBorder(new LineBorder(new Color(0, 0, 0)));

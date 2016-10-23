@@ -84,7 +84,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private ActionListener printBtnAL;
 	private ActionListener modifyAL;
 	private ActionListener deleteAl;
-	private ActionListener submitOrderAL;
+	private MouseAdapter submitOrderAL;
 	private MouseAdapter listAdapter;
 	private CurtainShop curtainShop = null;
 	private int curtainShopLstIndex = -1;
@@ -275,15 +275,15 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		});
 		// table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		TableColumn col0 = table.getColumnModel().getColumn(0);
-		col0.setPreferredWidth(100);
+		col0.setPreferredWidth(150);
 		TableColumn col1 = table.getColumnModel().getColumn(1);
-		col1.setPreferredWidth(50);
+		col1.setPreferredWidth(10);
 		TableColumn col2 = table.getColumnModel().getColumn(2);
-		col2.setPreferredWidth(50);
+		col2.setPreferredWidth(10);
 		TableColumn col3 = table.getColumnModel().getColumn(3);
 		col3.setPreferredWidth(50);
 		TableColumn col4 = table.getColumnModel().getColumn(4);
-		col4.setPreferredWidth(150);
+		col4.setPreferredWidth(180);
 	}
 
 	/**
@@ -456,8 +456,9 @@ public class MainWi extends JFrame implements ListSelectionListener {
 		contentPane.add(pandectPrintBtn);
 
 		submitOrderBtn = new JButton("提交");
-		submitOrderAL = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		submitOrderAL = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				submitOrderactionPerformed(e);
 			}
 		};
@@ -616,7 +617,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private void addSubmit() {
 		if (submitOrderBtn.getActionListeners().length == 0) {
 			submitOrderBtn.setEnabled(true);
-			submitOrderBtn.addActionListener(submitOrderAL);
+			submitOrderBtn.addMouseListener(submitOrderAL);
 		} else {
 
 		}
@@ -654,7 +655,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	private void removeSubmit() {
 		if (submitOrderBtn.getActionListeners().length > 0) {
 			submitOrderBtn.setEnabled(false);
-			submitOrderBtn.removeActionListener(submitOrderAL);
+			submitOrderBtn.removeMouseListener(submitOrderAL);
 		} else {
 
 		}
@@ -677,27 +678,37 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	 * 
 	 * @param e
 	 */
-	private void submitOrderactionPerformed(ActionEvent e) {
+	private void submitOrderactionPerformed(MouseEvent e) {
+		String log = "";
 		if (tableModel.getRowCount() > 0) {
 			if (currentOrder.getOrderState() == 0) {
 				currentOrder.setOrderState(40);
 			}
 			currentOrder.setSubmitTime(new Date());
 			currentOrder.setArrears(DataUtil.getTotalm(currentOrder
-					.getGoodsLst()));
+					.getGoodsLst()) - currentOrder.getPreferentialAmount());
 			if (preferentialAmountTF.getText().trim().length() > 0) {
 				currentOrder.setPreferentialAmount(Integer
 						.parseInt(preferentialAmountTF.getText().trim()));
 			}
 			currentOrder.setRemarks(orderRemarksTF.getText().trim());
+			for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
+				log += currentOrder.getGoodsLst().get(i).getSerialNumber()
+						+ "_" + currentOrder.getGoodsLst().get(i).getNumber()
+						+ "*";
+			}
 			// 判断id是否为空
 			if (currentOrder.getId() < 1) {
-				DBUtil.insert(currentOrder);
-				LogUtil.setLog(currentOrder.getId(), "Submit", "");
+				if (DBUtil.insert(currentOrder) == -1) {
+					System.out
+							.println("false-------------------------------------------------------");
+				}
+				// DBUtil.insert(currentOrder);
+				LogUtil.setLog(currentOrder.getId(), "Submit", log);
 				latelyLst.add(currentOrder);
 			} else {
 				DBUtil.update(currentOrder);
-				LogUtil.setLog(currentOrder.getId(), "Update", "");
+				LogUtil.setLog(currentOrder.getId(), "Update", log);
 			}
 			for (int i = 0; i < libraryGoodsLst.size(); i++) {
 				DBUtil.update(libraryGoodsLst.get(i));
@@ -717,23 +728,25 @@ public class MainWi extends JFrame implements ListSelectionListener {
 	 * @param evt
 	 */
 	private void printActionPerformed(ActionEvent evt) {
+		String log = "";
 		if (currentOrder.getGoodsLst().size() > 0
 				&& currentOrder.getOrderState() == 31) {
 			currentOrder.setOrderState(20);
-			currentOrder.setArrears(Integer.parseInt(total.getText()));
 			currentOrder.setDeliveryTime(new Date());
 			currentOrder.setPreferentialAmount(Integer
 					.parseInt(preferentialAmountTF.getText().trim()));
 			List<OrderGoods> lst = currentOrder.getGoodsLst();
 			for (int i = 0; i < lst.size(); i++) {
 				lst.get(i).setDate(new Date());
+				log += lst.get(i).getSerialNumber() + "_"
+						+ lst.get(i).getNumber() + "*";
 			}
 			removePrintBtn();
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
 			print(new PrintOrder(currentOrder, curtainShop, Global.CUSTOMER));
 			DBUtil.update(currentOrder);
-			LogUtil.setLog(currentOrder.getId(), "Print", "");
+			LogUtil.setLog(currentOrder.getId(), "Print", log);
 		} else {
 
 		}
@@ -766,6 +779,7 @@ public class MainWi extends JFrame implements ListSelectionListener {
 
 	private void orderDeleteAction() {
 		if (latelyLst != null) {
+			String log = "";
 			for (int i = 0; i < currentOrder.getGoodsLst().size(); i++) {
 				Goods g;
 				OrderGoods og = currentOrder.getGoodsLst().get(i);
@@ -773,12 +787,14 @@ public class MainWi extends JFrame implements ListSelectionListener {
 						og.getSerialNumber(), "String", "eq");
 				g.setNumber((Double.parseDouble(g.getNumber()) + og.getNumber())
 						+ "");
+				log += og.getSerialNumber() + "_" + og.getNumber() + "*";
+
 				DBUtil.update(g);
 			}
 			latelyLst.remove(currentOrder);
 			UIutil.initOrderJlist(this, latelyjList, listAdapter, true,
 					latelyLst, 1);
-			LogUtil.setLog(currentOrder.getId(), "Del", "");  
+			LogUtil.setLog(currentOrder.getId(), "Del", log);
 			DBUtil.del(currentOrder);
 			UIutil.delFromCurtainShopGoods();
 		} else {
